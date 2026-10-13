@@ -3,109 +3,122 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">  <!-- maqueta: que Google no la indexe -->
-  <title>King Muebles · Fábrica de muebles</title>
-  <meta name="description" content="Camas con cajones, bauleras y botineros en melamina de 18 mm. Hechas en nuestra fábrica. Consultá por WhatsApp.">
+  <meta name="robots" content="noindex, nofollow">  <!-- versión de prueba: que Google no la indexe -->
+  <title>King Muebles · Fábrica de muebles de melamina</title>
+  <meta name="description" content="Camas con cajones, bauleras y botineros en melamina de 18 mm, hechas en nuestra fábrica. Envío con instalación en CABA y GBA.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="estilos.css">
   <script src="datos.js"></script>
 </head>
 <body>
 
-  <div class="aviso">Maqueta para King Muebles · precios y datos a confirmar</div>
-
   <header class="cabecera">
     <div class="contenedor">
-      <a class="logo" href="index.html"><img src="assets/logo.png" alt="King Muebles"></a>
+      <a class="logo" href="index.html"><img src="assets/logo-negro.png" alt="King Muebles"></a>
       <nav>
         <a href="#catalogo">Catálogo</a>
-        <a href="#fabrica">La fábrica</a>
+        <a href="#como-comprar">Cómo comprar</a>
+        <a href="#fabrica">Fábrica</a>
         <a href="#envios">Envíos</a>
         <a href="#preguntas">Preguntas</a>
       </nav>
-      <a class="boton boton-wa boton-chico" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">
-        <img src="assets/whatsapp.png" alt=""> Escribinos
-      </a>
+      <a class="contacto" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">WhatsApp</a>
     </div>
   </header>
 
   <section class="hero">
-    <div class="contenedor">
+    <div class="contenedor hero-grid">
       <div>
-        <h1>Muebles que <span>guardan todo</span>, hechos en nuestra fábrica.</h1>
-        <p>Camas con cajones, bauleras y botineros en melamina de 18&nbsp;mm. Elegí el modelo, la medida y el color, y lo charlamos por WhatsApp.</p>
+        <p class="eyebrow">Fábrica de muebles de melamina</p>
+        <h1>Camas con guardado, hechas en nuestra fábrica.</h1>
+        <p class="lead">Cajones, bauleras y botineros en melamina de 18&nbsp;mm. Elegí el modelo, la medida y el color, y lo coordinamos por WhatsApp.</p>
         <div class="acciones">
-          <a class="boton boton-claro" href="#catalogo">Ver catálogo</a>
-          <a class="boton boton-wa" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">
-            <img src="assets/whatsapp.png" alt=""> Consultar por WhatsApp
-          </a>
+          <a class="btn btn-negro" href="#catalogo">Ver catálogo</a>
+          <a class="btn btn-borde" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">Consultar</a>
         </div>
       </div>
-      <div class="hero-video">
-        <video src="assets/video-kng.mp4#t=0.3" poster="assets/video-kng-poster.jpg" autoplay muted loop playsinline></video>
-      </div>
+      <figure class="hero-foto">
+        <img src="assets/kng-1.jpg" alt="Cama KNG con cajones, bauleras y botineros abiertos">
+      </figure>
     </div>
   </section>
 
-  <section class="franja">
+  <section class="datos">
     <ul class="contenedor">
-      <li><strong>18 mm</strong><span>melamina adentro y afuera</span></li>
-      <li><strong>600 kg</strong><span>soporta la Cama KNG</span></li>
-      <li><strong>Metal</strong><span>herrajes sin plástico</span></li>
-      <li><strong>Envío</strong><span>con instalación en CABA y GBA</span></li>
+      <li><strong>18 mm</strong><span>Melamina interior y exterior</span></li>
+      <li><strong>600 kg</strong><span>Carga máxima de la Cama KNG</span></li>
+      <li><strong>Metálicos</strong><span>Herrajes sin piezas de plástico</span></li>
+      <li><strong>Instalación</strong><span>Incluida con el envío</span></li>
     </ul>
   </section>
 
   <section class="seccion" id="catalogo">
     <div class="contenedor">
-      <h2>Catálogo</h2>
-      <p class="bajada">Tocá un mueble para ver medidas, colores y precio.</p>
-      <div class="chips">
-        <span class="chip activo">Todos</span>
-        <span class="chip">Camas</span>
-        <span class="chip">Combos con colchón</span>
-        <span class="chip">Más muebles</span>
+      <div class="seccion-cabeza">
+        <h2>Catálogo</h2>
+        <div class="pestanas" role="tablist">
+          <button class="pestana activa" data-cat="todos">Todos</button>
+          <button class="pestana" data-cat="Camas">Camas</button>
+          <button class="pestana" data-cat="Combos">Combos con colchón</button>
+          <button class="pestana" data-cat="Otros">Más muebles</button>
+        </div>
       </div>
       <div class="grilla" id="grilla">
         <!-- los productos reales se cargan desde datos.js -->
-        <div class="tarjeta vacia"><div class="foto">Acá va otro mueble del catálogo de WhatsApp</div><div class="info"><h3>Próximo producto</h3><span class="detalle">Fotos, medidas y precio</span></div></div>
-        <div class="tarjeta vacia"><div class="foto">Acá va otro mueble del catálogo de WhatsApp</div><div class="info"><h3>Próximo producto</h3><span class="detalle">Fotos, medidas y precio</span></div></div>
-        <div class="tarjeta vacia"><div class="foto">Acá va otro mueble del catálogo de WhatsApp</div><div class="info"><h3>Próximo producto</h3><span class="detalle">Fotos, medidas y precio</span></div></div>
+        <div class="producto proximo" data-cat="Combos"><div class="foto"><span>Próximamente</span></div><span class="categoria">Combos</span><h3>Combo con colchón</h3></div>
+        <div class="producto proximo" data-cat="Otros"><div class="foto"><span>Próximamente</span></div><span class="categoria">Más muebles</span><h3>Próximo producto</h3></div>
+        <div class="producto proximo" data-cat="Otros"><div class="foto"><span>Próximamente</span></div><span class="categoria">Más muebles</span><h3>Próximo producto</h3></div>
       </div>
     </div>
   </section>
 
-  <section class="seccion seccion-oscura">
-    <div class="contenedor atencion">
+  <section class="seccion seccion-alt">
+    <div class="contenedor destacado">
+      <video src="assets/video-kng.mp4#t=0.3" poster="assets/video-kng-poster.jpg" autoplay muted loop playsinline></video>
       <div>
-        <h2>Te atiende una persona, <span>no un robot.</span></h2>
-        <p class="bajada">Consultás por WhatsApp y te responde alguien de la fábrica. Te ayudamos a elegir la medida, el color y la cantidad de cajones.</p>
-        <a class="boton boton-wa" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">
-          <img src="assets/whatsapp.png" alt=""> Hablar con King Muebles
-        </a>
-      </div>
-      <div class="burbujas" aria-hidden="true">
-        <div class="burbuja cliente">Hola! Vi en la web la Cama KNG de 1,40 x 1,90 en blanco. ¿Me pasás más info?</div>
-        <div class="burbuja km">¡Hola! Gracias por escribir. Te paso fotos y te cuento todo.</div>
+        <p class="eyebrow">Cama KNG</p>
+        <h2>Seis cajones, dos bauleras y dos botineros.</h2>
+        <p class="lead">Todo el guardado de un dormitorio, debajo de la cama. Los cajones corren sobre guías telescópicas y los botineros abren con pistones.</p>
+        <a class="link-flecha" href="cama-kng.html">Ver la Cama KNG →</a>
       </div>
     </div>
   </section>
 
-  <section class="seccion" id="fabrica">
-    <div class="contenedor dos-columnas">
-      <div class="caja">
-        <h3>Vení a conocer la fábrica</h3>
-        <p>Podés ver los muebles en persona antes de comprar.</p>
-        <div class="marcador">Foto de la fábrica · dirección y horarios<br>(los pasa Ramiro)</div>
-        <a class="boton boton-wa" data-wa="Hola! Quiero coordinar una visita a la fábrica.">
-          <img src="assets/whatsapp.png" alt=""> Coordinar visita
-        </a>
+  <section class="seccion" id="como-comprar">
+    <div class="contenedor">
+      <div class="seccion-cabeza"><h2>Cómo comprar</h2></div>
+      <ol class="pasos">
+        <li><span class="numero">01</span><h3>Elegí tu mueble</h3><p>Mirá el catálogo y elegí la medida, el color y la cantidad de cajones.</p></li>
+        <li><span class="numero">02</span><h3>Consultanos por WhatsApp</h3><p>Te responde alguien de la fábrica, sin respuestas automáticas.</p></li>
+        <li><span class="numero">03</span><h3>Lo llevamos y lo instalamos</h3><p>Envío con instalación en CABA y Gran Buenos Aires.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="seccion seccion-alt" id="fabrica">
+    <div class="contenedor dos-col">
+      <div>
+        <p class="eyebrow">La fábrica</p>
+        <h2>Vení a ver los muebles en persona.</h2>
+        <p class="lead">Fabricamos cada mueble. Si querés verlos antes de comprar, coordinamos una visita.</p>
+        <dl class="ficha-datos">
+          <div><dt>Dirección</dt><dd class="pendiente">A confirmar</dd></div>
+          <div><dt>Horarios</dt><dd class="pendiente">A confirmar</dd></div>
+        </dl>
+        <a class="btn btn-borde" data-wa="Hola! Quiero coordinar una visita a la fábrica.">Coordinar visita</a>
       </div>
-      <div class="caja" id="envios">
-        <h3>Te lo llevamos y te lo instalamos</h3>
-        <p>El flete incluye la instalación. Llegamos a:</p>
+      <div class="foto-pendiente">Foto de la fábrica</div>
+    </div>
+  </section>
+
+  <section class="seccion" id="envios">
+    <div class="contenedor dos-col">
+      <div>
+        <p class="eyebrow">Envíos</p>
+        <h2>Te lo llevamos y te lo instalamos.</h2>
+        <p class="lead">El flete incluye la instalación. Llegamos a:</p>
         <ul class="zonas">
           <li>CABA</li>
           <li>Zona Norte</li>
@@ -114,53 +127,52 @@
           <li>Pilar y Escobar</li>
           <li>La Plata</li>
         </ul>
-        <label class="buscar-zona">
-          <span>¿Llegamos a tu casa? Escribí tu localidad o barrio</span>
-          <input id="localidad" list="localidades" placeholder="Ej: Ramos Mejía, Palermo, Quilmes" autocomplete="off">
-          <datalist id="localidades"></datalist>
-        </label>
+        <p class="nota">Por ahora no hacemos envíos al interior del país.</p>
+        <p class="nota">Costo del flete por zona: a confirmar.</p>
+      </div>
+      <div class="buscador">
+        <label for="localidad">¿Llegamos a tu casa?</label>
+        <input id="localidad" list="localidades" placeholder="Escribí tu barrio o localidad" autocomplete="off">
+        <datalist id="localidades"></datalist>
         <p class="resultado-zona" id="resultado-zona" aria-live="polite"></p>
-        <p class="nota-zona">Por ahora no hacemos envíos al interior del país.</p>
-        <div class="marcador">Costo del flete por zona (a confirmar)</div>
-        <a class="boton boton-wa" id="consultar-envio" data-wa="Hola! Quería consultar el envío a mi zona.">
-          <img src="assets/whatsapp.png" alt=""> Consultar envío
-        </a>
+        <a class="btn btn-negro btn-ancho" id="consultar-envio" data-wa="Hola! Quería consultar el envío a mi zona.">Consultar envío</a>
       </div>
     </div>
   </section>
 
-  <section class="seccion preguntas" id="preguntas">
+  <section class="seccion seccion-alt" id="preguntas">
     <div class="contenedor">
-      <h2>Preguntas frecuentes</h2>
-      <p class="bajada">Lo que más nos consultan.</p>
-      <details>
-        <summary>¿Qué colchón va en la Cama KNG?</summary>
-        <p>La KNG de 1,40 x 1,90 lleva un colchón de 2 plazas de 1,40 x 1,90. También la hacemos en otras medidas: consultanos.</p>
-      </details>
-      <details>
-        <summary>¿Cuánto peso aguanta?</summary>
-        <p>La estructura de la Cama KNG soporta hasta 600 kg.</p>
-      </details>
-      <details>
-        <summary>¿Se puede pedir con más o menos cajones?</summary>
-        <p>Sí. La KNG se hace con 4, 6 u 8 cajones, siempre con 2 bauleras y 2 botineros.</p>
-      </details>
-      <details>
-        <summary>¿Qué altura tiene?</summary>
-        <p>La base mide 40 cm de alto. Si la querés más baja, la hacemos de 30 cm.</p>
-      </details>
-      <details>
-        <summary>¿De qué está hecha?</summary>
-        <p>Melamina sobre aglomerado de 18 mm, adentro y afuera. Cajones con guías telescópicas, herrajes metálicos (sin plástico), bauleras con bisagras y botineros con pistones.</p>
-      </details>
-      <details>
-        <summary>¿A qué zonas llegan? ¿La instalan?</summary>
-        <p>Llegamos a CABA, Zona Norte, Zona Sur, Zona Oeste, Pilar, Escobar y La Plata, y el flete incluye la instalación. Por ahora no hacemos envíos al interior del país.</p>
-      </details>
-      <details>
-        <summary>¿Puedo ir a verla antes de comprar?</summary>
-        <p>Sí, podés visitar la fábrica. Escribinos por WhatsApp y coordinamos el día.</p>
-      </details>
+      <div class="seccion-cabeza"><h2>Preguntas frecuentes</h2></div>
+      <div class="preguntas">
+        <details>
+          <summary>¿Qué colchón va en la Cama KNG?</summary>
+          <p>La KNG de 1,40 x 1,90 lleva un colchón de 2 plazas de 1,40 x 1,90. También la hacemos en otras medidas: consultanos.</p>
+        </details>
+        <details>
+          <summary>¿Cuánto peso aguanta?</summary>
+          <p>La estructura de la Cama KNG soporta hasta 600 kg.</p>
+        </details>
+        <details>
+          <summary>¿Se puede pedir con más o menos cajones?</summary>
+          <p>Sí. La KNG se hace con 4, 6 u 8 cajones, siempre con 2 bauleras y 2 botineros.</p>
+        </details>
+        <details>
+          <summary>¿Qué altura tiene?</summary>
+          <p>La base mide 40 cm de alto. Si la querés más baja, la hacemos de 30 cm.</p>
+        </details>
+        <details>
+          <summary>¿De qué está hecha?</summary>
+          <p>Melamina sobre aglomerado de 18 mm, interior y exterior. Cajones con guías telescópicas, herrajes metálicos, bauleras con bisagras y botineros con pistones.</p>
+        </details>
+        <details>
+          <summary>¿A qué zonas llegan? ¿La instalan?</summary>
+          <p>Llegamos a CABA, Zona Norte, Zona Sur, Zona Oeste, Pilar, Escobar y La Plata, y el flete incluye la instalación. Por ahora no hacemos envíos al interior del país.</p>
+        </details>
+        <details>
+          <summary>¿Puedo ir a verla antes de comprar?</summary>
+          <p>Sí, podés visitar la fábrica. Escribinos por WhatsApp y coordinamos el día.</p>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -168,40 +180,53 @@
     <div class="contenedor">
       <div>
         <img class="logo-pie" src="assets/logo.png" alt="King Muebles">
-        <p>Fábrica de muebles de melamina.<br>Dirección de la fábrica (a confirmar).</p>
-      </div>
-      <div class="redes">
-        <a data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta."><img src="assets/whatsapp.png" alt="">11 3957-3474</a>
-        <a href="https://www.instagram.com/kingmuebless/" target="_blank" rel="noopener"><img src="assets/instagram.png" alt="">@kingmuebless</a>
+        <p style="margin-top:16px">Fábrica de muebles de melamina.</p>
       </div>
       <div>
-        <p>Maqueta · precios y datos a confirmar.</p>
+        <h4>Contacto</h4>
+        <p><a data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">WhatsApp 11 3957-3474</a></p>
+        <p><a href="https://www.instagram.com/kingmuebless/" target="_blank" rel="noopener">Instagram @kingmuebless</a></p>
+      </div>
+      <div>
+        <h4>Fábrica</h4>
+        <p>Dirección a confirmar</p>
+        <p class="prueba">Versión de prueba · precios y datos a confirmar</p>
       </div>
     </div>
   </footer>
 
-  <a class="wa-flotante" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">
-    <img src="assets/whatsapp.png" alt=""> Consultanos
+  <a class="wa-flotante" aria-label="Escribinos por WhatsApp" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">
+    <img src="assets/whatsapp.png" alt="">
   </a>
 
   <script>
-    // tarjeta de cada producto real, al principio de la grilla
+    // productos reales, al principio de la grilla
     const grilla = document.getElementById("grilla");
     KM.productos.slice().reverse().forEach((p) => {
       const a = document.createElement("a");
-      a.className = "tarjeta";
+      a.className = "producto";
       a.href = p.url;
+      a.dataset.cat = p.categoria;
       a.innerHTML = `
         <div class="foto"><img src="${p.foto}" alt="${p.nombre}" loading="lazy"></div>
-        <div class="info">
-          <h3>${p.nombre}</h3>
-          <span class="detalle">${p.bajada}</span>
-          <span class="precio">desde<b>${pesos(p.desde)}</b></span>
-        </div>`;
+        <span class="categoria">${p.categoria}</span>
+        <h3>${p.nombre}</h3>
+        <span class="detalle">${p.bajada}</span>
+        <span class="precio"><small>Desde </small>${pesos(p.desde)}</span>`;
       grilla.prepend(a);
     });
 
-    // ¿Llegamos a tu zona?
+    // filtro por categoría
+    document.querySelectorAll(".pestana").forEach((b) => {
+      b.addEventListener("click", () => {
+        document.querySelectorAll(".pestana").forEach((x) => x.classList.toggle("activa", x === b));
+        document.querySelectorAll("#grilla .producto").forEach((p) => {
+          p.hidden = b.dataset.cat !== "todos" && p.dataset.cat !== b.dataset.cat;
+        });
+      });
+    });
+
+    // ¿Llegamos a tu casa?
     const lista = document.getElementById("localidades");
     Object.values(KM.zonas).flat().forEach((l) => {
       const o = document.createElement("option");
@@ -217,13 +242,13 @@
       if (!campo.value.trim()) {
         resultado.textContent = "";
       } else if (z) {
-        resultado.classList.add("si");
         const donde = z.localidad === z.zona ? z.localidad : `${z.localidad} (${z.zona})`;
-        resultado.textContent = `Sí, llegamos a ${donde}, con instalación incluida.`;
+        resultado.classList.add("si");
+        resultado.textContent = `Llegamos a ${donde}, con instalación incluida.`;
         botonEnvio.href = waLink(`Hola! Quería consultar el envío a ${donde}.`);
       } else if (normal(campo.value).length >= 3) {
         resultado.classList.add("no");
-        resultado.textContent = "No la tenemos en la lista. Escribinos y te confirmamos si llegamos.";
+        resultado.textContent = "No la tenemos en la lista. Escribinos y te confirmamos.";
         botonEnvio.href = waLink(`Hola! Quería consultar si llegan con el envío a ${campo.value.trim()}.`);
       }
     });

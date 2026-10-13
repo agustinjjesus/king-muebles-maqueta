@@ -3,36 +3,33 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">  <!-- maqueta: que Google no la indexe -->
+  <meta name="robots" content="noindex, nofollow">  <!-- versión de prueba: que Google no la indexe -->
   <title>Cama KNG · King Muebles</title>
   <meta name="description" content="Cama KNG con 6 cajones, 2 bauleras y 2 botineros. Melamina de 18 mm, soporta 600 kg. Consultá por WhatsApp.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="estilos.css">
   <script src="datos.js"></script>
 </head>
 <body>
 
-  <div class="aviso">Maqueta para King Muebles · precios y datos a confirmar</div>
-
   <header class="cabecera">
     <div class="contenedor">
-      <a class="logo" href="index.html"><img src="assets/logo.png" alt="King Muebles"></a>
+      <a class="logo" href="index.html"><img src="assets/logo-negro.png" alt="King Muebles"></a>
       <nav>
         <a href="index.html#catalogo">Catálogo</a>
-        <a href="index.html#fabrica">La fábrica</a>
+        <a href="index.html#como-comprar">Cómo comprar</a>
+        <a href="index.html#fabrica">Fábrica</a>
         <a href="index.html#envios">Envíos</a>
         <a href="index.html#preguntas">Preguntas</a>
       </nav>
-      <a class="boton boton-wa boton-chico" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">
-        <img src="assets/whatsapp.png" alt=""> Escribinos
-      </a>
+      <a class="contacto" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">WhatsApp</a>
     </div>
   </header>
 
   <main class="contenedor">
-    <div class="migas"><a href="index.html#catalogo">Catálogo</a> › Camas › Cama KNG</div>
+    <div class="migas"><a href="index.html#catalogo">Catálogo</a> / Camas / Cama KNG</div>
 
     <div class="ficha">
       <div class="galeria">
@@ -42,11 +39,12 @@
         <div class="miniaturas">
           <button class="activa" data-tipo="img" data-src="assets/kng-1.jpg" aria-label="Foto 1"><img src="assets/kng-1.jpg" alt=""></button>
           <button data-tipo="img" data-src="assets/kng-2.jpg" aria-label="Foto 2"><img src="assets/kng-2.jpg" alt=""></button>
-          <button data-tipo="video" data-src="assets/video-kng.mp4" aria-label="Video"><img src="assets/video-kng-poster.jpg" alt=""><span class="play">▶ Video</span></button>
+          <button data-tipo="video" data-src="assets/video-kng.mp4" aria-label="Video"><img src="assets/video-kng-poster.jpg" alt=""><span class="play">Video</span></button>
         </div>
       </div>
 
-      <div>
+      <div class="info-producto">
+        <p class="eyebrow">Camas</p>
         <h1>Cama KNG</h1>
         <p class="sub">6 cajones · 2 bauleras · 2 botineros</p>
 
@@ -66,27 +64,19 @@
           <div class="botones" data-grupo="cajones"></div>
         </div>
 
-        <a class="boton boton-wa" id="consultar"><img src="assets/whatsapp.png" alt=""> Consultar por WhatsApp</a>
-        <p class="ayuda">Te atiende una persona de la fábrica, no un robot.<br>
-          Envío con instalación en CABA y GBA · <a href="index.html#envios">ver zonas</a></p>
+        <a class="btn btn-negro btn-ancho" id="consultar">Consultar por WhatsApp</a>
+        <p class="ayuda">Te responde alguien de la fábrica. Envío con instalación en CABA y GBA · <a href="index.html#envios">Ver zonas</a></p>
 
-        <div class="specs">
-          <div class="spec"><strong>18 mm</strong><span>melamina adentro y afuera</span></div>
-          <div class="spec"><strong>600 kg</strong><span>de carga</span></div>
-          <div class="spec"><strong>40 cm</strong><span>de alto (o 30 cm)</span></div>
-          <div class="spec"><strong>Telescópicas</strong><span>guías de los cajones</span></div>
-        </div>
-
-        <div class="incluye">
-          <h2>Qué tiene</h2>
-          <ul>
-            <li>6 cajones con guías telescópicas (también con 4 u 8)</li>
-            <li>2 bauleras con bisagras</li>
-            <li>2 botineros al frente, con pistones</li>
-            <li>Herrajes metálicos, nada de plástico</li>
-            <li>Cantos de PVC</li>
-          </ul>
-        </div>
+        <dl class="tabla-specs">
+          <div><dt>Material</dt><dd>Melamina sobre aglomerado de 18 mm, interior y exterior</dd></div>
+          <div><dt>Carga máxima</dt><dd>600 kg</dd></div>
+          <div><dt>Altura</dt><dd>40 cm (también de 30 cm)</dd></div>
+          <div><dt>Cajones</dt><dd>6 con guías telescópicas (también 4 u 8)</dd></div>
+          <div><dt>Bauleras</dt><dd>2, con bisagras</dd></div>
+          <div><dt>Botineros</dt><dd>2 al frente, con pistones</dd></div>
+          <div><dt>Herrajes</dt><dd>Metálicos, sin piezas de plástico</dd></div>
+          <div><dt>Cantos</dt><dd>PVC</dd></div>
+        </dl>
       </div>
     </div>
   </main>
@@ -95,19 +85,28 @@
     <div class="contenedor">
       <div>
         <img class="logo-pie" src="assets/logo.png" alt="King Muebles">
-        <p>Fábrica de muebles de melamina.<br>Dirección de la fábrica (a confirmar).</p>
+        <p style="margin-top:16px">Fábrica de muebles de melamina.</p>
       </div>
-      <div class="redes">
-        <a data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta."><img src="assets/whatsapp.png" alt="">11 3957-3474</a>
-        <a href="https://www.instagram.com/kingmuebless/" target="_blank" rel="noopener"><img src="assets/instagram.png" alt="">@kingmuebless</a>
+      <div>
+        <h4>Contacto</h4>
+        <p><a data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">WhatsApp 11 3957-3474</a></p>
+        <p><a href="https://www.instagram.com/kingmuebless/" target="_blank" rel="noopener">Instagram @kingmuebless</a></p>
       </div>
-      <div><p>Maqueta · precios y datos a confirmar.</p></div>
+      <div>
+        <h4>Fábrica</h4>
+        <p>Dirección a confirmar</p>
+        <p class="prueba">Versión de prueba · precios y datos a confirmar</p>
+      </div>
     </div>
   </footer>
 
+  <a class="wa-flotante" aria-label="Escribinos por WhatsApp" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">
+    <img src="assets/whatsapp.png" alt="">
+  </a>
+
   <script>
     // Precios: solo el de 1,40 x 1,90 en blanco con 6 cajones está confirmado.
-    // El resto queda "a confirmar" hasta tener la lista de Ramiro.
+    // El resto queda "a consultar" hasta tener la lista de Ramiro.
     const OPCIONES = {
       medida: [
         { id: "1,40 x 1,90", precio: 499000 },
@@ -128,7 +127,7 @@
       OPCIONES[grupo].forEach((op) => {
         const b = document.createElement("button");
         b.type = "button";
-        b.textContent = grupo === "cajones" ? op.id + " cajones" : (grupo === "medida" && op.id.length < 5 ? op.id + " m" : op.id);
+        b.textContent = grupo === "cajones" ? op.id : (grupo === "medida" && op.id.length < 5 ? op.id + " m" : op.id);
         b.dataset.id = op.id;
         b.addEventListener("click", () => { elegido[grupo] = op.id; actualizar(); });
         caja.appendChild(b);
@@ -145,9 +144,9 @@
       const conocido = medida.precio !== null && elegido.cajones === "6";
       const total = conocido ? medida.precio + color.extra : null;
 
-      document.getElementById("precio").textContent = total ? pesos(total) : "Consultá el precio";
+      document.getElementById("precio").textContent = total ? pesos(total) : "Precio a consultar";
       document.getElementById("nota").textContent = total
-        ? (color.extra ? `Blanco ${pesos(medida.precio)} + ${pesos(color.extra)} por color` : "Precio en blanco con 6 cajones")
+        ? (color.extra ? `Blanco ${pesos(medida.precio)} + ${pesos(color.extra)} por color` : "En blanco, con 6 cajones")
         : "Te pasamos el precio por WhatsApp";
 
       const medidaTxt = medida.id.includes("x") ? medida.id : medida.id + " m";
