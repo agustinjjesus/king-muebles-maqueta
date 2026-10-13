@@ -160,6 +160,18 @@ a { color: inherit; }
 .zonas { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-wrap: wrap; gap: 8px; }
 .zonas li { background: var(--crema); border: 1px solid var(--borde); border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 600; }
 
+.buscar-zona { display: block; margin: 4px 0 8px; }
+.buscar-zona span { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.buscar-zona input {
+  width: 100%; font: inherit; font-size: 16px; padding: 12px 14px;
+  border: 1.5px solid var(--borde); border-radius: 10px; background: var(--crema);
+}
+.buscar-zona input:focus { outline: none; border-color: var(--madera); background: var(--blanco); }
+.resultado-zona { min-height: 22px; font-size: 14px; font-weight: 600; margin: 0 0 8px; }
+.resultado-zona.si { color: var(--wa-osc); }
+.resultado-zona.no { color: var(--madera); }
+.nota-zona { font-size: 13px; }
+
 /* preguntas */
 .preguntas details { background: var(--blanco); border-radius: 12px; padding: 0 18px; margin-bottom: 10px; box-shadow: var(--sombra); }
 .preguntas summary { cursor: pointer; padding: 16px 0; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 12px; }

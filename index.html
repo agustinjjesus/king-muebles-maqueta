@@ -54,7 +54,7 @@
       <li><strong>18 mm</strong><span>melamina adentro y afuera</span></li>
       <li><strong>600 kg</strong><span>soporta la Cama KNG</span></li>
       <li><strong>Metal</strong><span>herrajes sin plástico</span></li>
-      <li><strong>Envíos</strong><span>Capital, Zona Norte y Oeste</span></li>
+      <li><strong>Envío</strong><span>con instalación en CABA y GBA</span></li>
     </ul>
   </section>
 
@@ -104,16 +104,25 @@
         </a>
       </div>
       <div class="caja" id="envios">
-        <h3>Te lo llevamos</h3>
-        <p>Hacemos envíos a:</p>
+        <h3>Te lo llevamos y te lo instalamos</h3>
+        <p>El flete incluye la instalación. Llegamos a:</p>
         <ul class="zonas">
-          <li>Capital Federal</li>
+          <li>CABA</li>
           <li>Zona Norte</li>
+          <li>Zona Sur</li>
           <li>Zona Oeste</li>
+          <li>Pilar y Escobar</li>
+          <li>La Plata</li>
         </ul>
-        <p>¿Estás en otra zona? Consultanos.</p>
-        <div class="marcador">Costos y plazos de envío (a confirmar)</div>
-        <a class="boton boton-wa" data-wa="Hola! Quería consultar el envío a mi zona.">
+        <label class="buscar-zona">
+          <span>¿Llegamos a tu casa? Escribí tu localidad o barrio</span>
+          <input id="localidad" list="localidades" placeholder="Ej: Ramos Mejía, Palermo, Quilmes" autocomplete="off">
+          <datalist id="localidades"></datalist>
+        </label>
+        <p class="resultado-zona" id="resultado-zona" aria-live="polite"></p>
+        <p class="nota-zona">Por ahora no hacemos envíos al interior del país.</p>
+        <div class="marcador">Costo del flete por zona (a confirmar)</div>
+        <a class="boton boton-wa" id="consultar-envio" data-wa="Hola! Quería consultar el envío a mi zona.">
           <img src="assets/whatsapp.png" alt=""> Consultar envío
         </a>
       </div>
@@ -143,6 +152,10 @@
       <details>
         <summary>¿De qué está hecha?</summary>
         <p>Melamina sobre aglomerado de 18 mm, adentro y afuera. Cajones con guías telescópicas, herrajes metálicos (sin plástico), bauleras con bisagras y botineros con pistones.</p>
+      </details>
+      <details>
+        <summary>¿A qué zonas llegan? ¿La instalan?</summary>
+        <p>Llegamos a CABA, Zona Norte, Zona Sur, Zona Oeste, Pilar, Escobar y La Plata, y el flete incluye la instalación. Por ahora no hacemos envíos al interior del país.</p>
       </details>
       <details>
         <summary>¿Puedo ir a verla antes de comprar?</summary>
@@ -186,6 +199,33 @@
           <span class="precio">desde<b>${pesos(p.desde)}</b></span>
         </div>`;
       grilla.prepend(a);
+    });
+
+    // ¿Llegamos a tu zona?
+    const lista = document.getElementById("localidades");
+    Object.values(KM.zonas).flat().forEach((l) => {
+      const o = document.createElement("option");
+      o.value = l;
+      lista.appendChild(o);
+    });
+    const campo = document.getElementById("localidad");
+    const resultado = document.getElementById("resultado-zona");
+    const botonEnvio = document.getElementById("consultar-envio");
+    campo.addEventListener("input", () => {
+      const z = zonaDe(campo.value);
+      resultado.className = "resultado-zona";
+      if (!campo.value.trim()) {
+        resultado.textContent = "";
+      } else if (z) {
+        resultado.classList.add("si");
+        const donde = z.localidad === z.zona ? z.localidad : `${z.localidad} (${z.zona})`;
+        resultado.textContent = `Sí, llegamos a ${donde}, con instalación incluida.`;
+        botonEnvio.href = waLink(`Hola! Quería consultar el envío a ${donde}.`);
+      } else if (normal(campo.value).length >= 3) {
+        resultado.classList.add("no");
+        resultado.textContent = "No la tenemos en la lista. Escribinos y te confirmamos si llegamos.";
+        botonEnvio.href = waLink(`Hola! Quería consultar si llegan con el envío a ${campo.value.trim()}.`);
+      }
     });
   </script>
 </body>
