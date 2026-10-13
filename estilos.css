@@ -272,6 +272,15 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 }
 .opcion button:hover { border-color: var(--tinta); }
 .opcion button.activa { background: var(--tinta); color: var(--papel); border-color: var(--tinta); }
+.opcion .color-elegido { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--gris); font-size: 14px; }
+.opcion .botones.colores { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.opcion button.muestra {
+  min-height: 0; min-width: 0; padding: 0; display: flex; flex-direction: column; text-align: left;
+  border: 1px solid var(--linea); background: var(--papel); overflow: hidden;
+}
+.opcion button.muestra img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
+.opcion button.muestra span { font-size: 11px; line-height: 1.25; padding: 6px 6px 7px; color: var(--tinta); }
+.opcion button.muestra.activa { background: var(--papel); color: var(--tinta); border-color: var(--tinta); box-shadow: inset 0 0 0 1px var(--tinta); }
 .ayuda { font-size: 14px; color: var(--gris); margin: 14px 0 0; }
 .ayuda a { color: var(--tinta); }
 .tabla-specs { margin: 40px 0 0; border-top: 1px solid var(--tinta); }

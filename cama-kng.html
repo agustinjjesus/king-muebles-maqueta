@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css">
-  <script src="datos.js"></script>
+  <link rel="stylesheet" href="estilos.css?v=6">
+  <script src="datos.js?v=6"></script>
 </head>
 <body>
 
@@ -59,7 +59,7 @@
           <div class="botones" data-grupo="medida"></div>
         </div>
         <div class="opcion">
-          <span>Color</span>
+          <span>Color · <span class="color-elegido" id="color-elegido"></span></span>
           <div class="botones" data-grupo="color"></div>
         </div>
         <div class="opcion">
@@ -118,20 +118,24 @@
         { id: "1,80", precio: null },
         { id: "2,00", precio: null },
       ],
-      color: [
-        { id: "Blanco", extra: 0 },
-        { id: "En color", extra: 30000 },
-      ],
+      color: KM.colores.map((c) => ({ id: c.nombre, extra: c.extra, img: c.img })),
       cajones: [{ id: "4" }, { id: "6" }, { id: "8" }],
     };
     const elegido = { medida: "1,40 x 1,90", color: "Blanco", cajones: "6" };
 
     document.querySelectorAll("[data-grupo]").forEach((caja) => {
       const grupo = caja.dataset.grupo;
+      if (grupo === "color") caja.classList.add("colores");
       OPCIONES[grupo].forEach((op) => {
         const b = document.createElement("button");
         b.type = "button";
-        b.textContent = grupo === "cajones" ? op.id : (grupo === "medida" && op.id.length < 5 ? op.id + " m" : op.id);
+        if (grupo === "color") {
+          b.className = "muestra";
+          b.title = op.id;
+          b.innerHTML = `<img src="${op.img}" alt=""><span>${op.id}</span>`;
+        } else {
+          b.textContent = grupo === "cajones" ? op.id : (grupo === "medida" && op.id.length < 5 ? op.id + " m" : op.id);
+        }
         b.dataset.id = op.id;
         b.addEventListener("click", () => { elegido[grupo] = op.id; actualizar(); });
         caja.appendChild(b);
@@ -154,7 +158,8 @@
         : "Te pasamos el precio por WhatsApp";
 
       const medidaTxt = medida.id.includes("x") ? medida.id : medida.id + " m";
-      const msg = `Hola! Vi en la web la Cama KNG de ${medidaTxt}, ${elegido.color.toLowerCase()}, con ${elegido.cajones} cajones` +
+      document.getElementById("color-elegido").textContent = elegido.color;
+      const msg = `Hola! Vi en la web la Cama KNG de ${medidaTxt}, color ${elegido.color}, con ${elegido.cajones} cajones` +
         (total ? ` (${pesos(total)})` : "") + ". ¿Me pasás más info?";
       const a = document.getElementById("consultar");
       a.href = waLink(msg);

@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css">
-  <script src="datos.js"></script>
+  <link rel="stylesheet" href="estilos.css?v=6">
+  <script src="datos.js?v=6"></script>
 </head>
 <body>
 
@@ -64,13 +64,13 @@
         <div class="pestanas" role="tablist">
           <button class="pestana activa" data-cat="todos">Todos</button>
           <button class="pestana" data-cat="Camas">Camas</button>
-          <button class="pestana" data-cat="Combos">Combos con colchón</button>
+          <button class="pestana" data-cat="Combos">Combos</button>
+          <button class="pestana" data-cat="Colchones">Colchones</button>
           <button class="pestana" data-cat="A medida">A medida</button>
         </div>
       </div>
       <div class="grilla" id="grilla">
-        <!-- los productos reales se cargan desde datos.js -->
-        <div class="producto proximo" data-cat="Combos"><div class="foto"><span>Próximamente</span></div><span class="categoria">Combos</span><h3>Combo KNG + colchón</h3><span class="detalle">Precio a consultar</span></div>
+        <!-- los productos del catálogo se cargan desde datos.js, antes de estas dos tarjetas -->
         <a class="producto" data-cat="A medida" data-wa="Hola! Quería pedir presupuesto para una cocina a medida."><div class="foto proximo-foto"><span>Foto de trabajos</span></div><span class="categoria">A medida</span><h3>Cocinas</h3><span class="detalle">Bajo mesadas y alacenas</span><span class="precio"><small>Pedí presupuesto</small></span></a>
         <a class="producto" data-cat="A medida" data-wa="Hola! Quería pedir presupuesto para un mueble a medida."><div class="foto proximo-foto"><span>Foto de trabajos</span></div><span class="categoria">A medida</span><h3>Hogares y comercios</h3><span class="detalle">Diseñados para tu espacio</span><span class="precio"><small>Pedí presupuesto</small></span></a>
       </div>
@@ -100,7 +100,7 @@
       <ul class="razones">
         <li><h3>Directo de fábrica</h3><p>Fabricamos cada mueble nosotros. Sin intermediarios, con precio de fábrica.</p></li>
         <li><h3>Materiales que duran</h3><p>Melamina de 18 mm adentro y afuera, guías telescópicas y herrajes metálicos. Nada de plástico.</p></li>
-        <li><h3>A tu medida</h3><p>Elegís medida, color y cantidad de cajones. Y si necesitás algo distinto, lo diseñamos para tu espacio.</p></li>
+        <li><h3>A tu medida</h3><p>Elegís medida, cantidad de cajones y uno de nuestros 9 colores. Y si necesitás algo distinto, lo diseñamos para tu espacio.</p></li>
         <li><h3>Atención directa</h3><p>Cada consulta la responde alguien de la fábrica, por WhatsApp. Te asesoramos de principio a fin.</p></li>
         <li><h3>Envío con instalación</h3><p>Te lo llevamos y lo instalamos en tu casa, en CABA y Gran Buenos Aires.</p></li>
         <li><h3>Lo ves antes de comprar</h3><p>Podés venir a la fábrica en Loma Hermosa y ver los muebles en persona.</p></li>
@@ -255,14 +255,22 @@
     KM.productos.slice().reverse().forEach((p) => {
       const a = document.createElement("a");
       a.className = "producto";
-      a.href = p.url;
       a.dataset.cat = p.categoria;
+      if (p.url) {
+        a.href = p.url;
+      } else {
+        // sin ficha todavía: abre WhatsApp con el producto
+        const art = p.categoria === "Camas" ? "la" : "el";
+        a.href = waLink(`Hola! Vi en la web ${art} ${p.nombre} y quería consultar el precio.`);
+        a.target = "_blank";
+        a.rel = "noopener";
+      }
       a.innerHTML = `
         <div class="foto"><img src="${p.foto}" alt="${p.nombre}" loading="lazy"></div>
         <span class="categoria">${p.categoria}</span>
         <h3>${p.nombre}</h3>
         <span class="detalle">${p.bajada}</span>
-        <span class="precio"><small>Desde </small>${pesos(p.desde)}</span>`;
+        <span class="precio">${p.desde ? `<small>Desde </small>${pesos(p.desde)}` : "<small>Consultar precio</small>"}</span>`;
       grilla.prepend(a);
     });
 

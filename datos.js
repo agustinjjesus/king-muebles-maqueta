@@ -3,16 +3,42 @@
 const KM = {
   whatsapp: "5491139573474",          // +54 9 11 3957-3474
   instagram: "kingmuebless",
+  // Productos del catálogo de WhatsApp de King Muebles (capturas del 13/10).
+  // Solo la Cama KNG tiene ficha y precio confirmado; el resto abre WhatsApp para consultar.
+  // Las fotos de "assets/catalogo/" son recortes chicos de las capturas: reemplazar por las originales.
   productos: [
-    {
-      id: "cama-kng",
-      nombre: "Cama KNG",
-      categoria: "Camas",
-      bajada: "6 cajones · 2 bauleras · 2 botineros",
-      foto: "assets/kng-1.jpg",
-      url: "cama-kng.html",
-      desde: 499000,
-    },
+    { id: "cama-kng", nombre: "Cama KNG", categoria: "Camas", bajada: "6 cajones · 2 bauleras · 2 botineros",
+      foto: "assets/kng-1.jpg", url: "cama-kng.html", desde: 499000 },
+    { id: "cama-kng-mdf", nombre: "Cama KNG MDF", categoria: "Camas", bajada: "La KNG en MDF",
+      foto: "assets/catalogo/cama-kng-mdf.jpg" },
+    { id: "cama-kingdom", nombre: "Cama Kingdom", categoria: "Camas", bajada: "Con cajones y bauleras",
+      foto: "assets/catalogo/cama-kingdom.jpg" },
+    { id: "cama-boti", nombre: "Cama Boti", categoria: "Camas", bajada: "Cama con guardado",
+      foto: "assets/catalogo/cama-boti.jpg" },
+    { id: "cama-individual", nombre: "Cama Individual", categoria: "Camas", bajada: "Para una persona",
+      foto: "assets/catalogo/cama-individual.jpg" },
+    { id: "combo-kng", nombre: "Combo KNG", categoria: "Combos", bajada: "Cama KNG con respaldo y mesitas de luz",
+      foto: "assets/catalogo/combo-kng.jpg" },
+    { id: "colchon-reina-doble-pillow", nombre: "Colchón Reina Doble Pillow", categoria: "Colchones",
+      bajada: "Con doble pillow", foto: "assets/catalogo/colchon-reina-doble-pillow.jpg" },
+    { id: "colchon-isolda", nombre: "Colchón Isolda", categoria: "Colchones", bajada: "140 x 190",
+      foto: "assets/catalogo/colchon-isolda.jpg" },
+    { id: "colchon-isolda-doble-pillow", nombre: "Colchón Isolda Doble Pillow", categoria: "Colchones",
+      bajada: "Con doble pillow", foto: "assets/catalogo/colchon-isolda-doble-pillow.jpg" },
+  ],
+
+  // Catálogo de colores (13/10). Blanco es el precio base; "en color" suma $30.000 (lo dijo Ramiro
+  // por la KNG). A confirmar si Blanco Nature cuenta como blanco o como color.
+  colores: [
+    { nombre: "Blanco", img: "assets/colores/blanco.jpg", extra: 0 },
+    { nombre: "Blanco Nature", img: "assets/colores/blanco-nature.jpg", extra: 30000 },
+    { nombre: "Helsinki", img: "assets/colores/helsinki.jpg", extra: 30000 },
+    { nombre: "Pinot Gris", img: "assets/colores/pinot-gris.jpg", extra: 30000 },
+    { nombre: "Linoza Cinza", img: "assets/colores/linoza-cinza.jpg", extra: 30000 },
+    { nombre: "Atakama", img: "assets/colores/atakama.jpg", extra: 30000 },
+    { nombre: "Terrarum", img: "assets/colores/terrarum.jpg", extra: 30000 },
+    { nombre: "Fresno Negro", img: "assets/colores/fresno-negro.jpg", extra: 30000 },
+    { nombre: "Negro", img: "assets/colores/negro.jpg", extra: 30000 },
   ],
 
   // Zonas de flete de King Muebles (el flete incluye instalación). El tarifario nombra solo algunas
