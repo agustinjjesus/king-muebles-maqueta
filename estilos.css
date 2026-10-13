@@ -144,6 +144,14 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .destacado .lead { margin: 0 0 28px; }
 @media (min-width: 900px) { .destacado { grid-template-columns: 0.8fr 1.2fr; gap: 80px; } }
 
+/* por qué elegirnos */
+.razones { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 40px; }
+.razones li { border-top: 1px solid var(--tinta); padding: 22px 0 30px; }
+.razones h3 { font-size: 20px; margin-bottom: 8px; }
+.razones p { margin: 0; color: var(--gris); }
+@media (min-width: 640px) { .razones { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .razones { grid-template-columns: repeat(3, 1fr); } }
+
 /* opiniones */
 .nota-google { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
 .nota-google strong { font-size: clamp(44px, 6vw, 60px); font-weight: 500; line-height: 1; letter-spacing: -0.02em; }
