@@ -164,6 +164,30 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .atencion-lista h3 { font-size: 19px; margin-bottom: 6px; }
 .atencion-lista p { margin: 0; color: var(--gris); }
 
+/* formulario a medida */
+.form-medida { background: var(--papel); border: 1px solid var(--linea); padding: 28px; display: grid; gap: 18px; }
+.form-medida label, .form-medida legend {
+  display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.form-medida input, .form-medida select, .form-medida textarea {
+  display: block; width: 100%; margin-top: 8px; font: inherit; font-size: 16px; font-weight: 400; letter-spacing: 0; text-transform: none;
+  padding: 12px 14px; border: 1px solid var(--linea); border-radius: 2px; background: var(--papel); color: var(--tinta);
+}
+.form-medida input:focus, .form-medida select:focus, .form-medida textarea:focus { outline: none; border-color: var(--tinta); }
+.form-medida textarea { resize: vertical; }
+.form-medida fieldset { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.form-medida fieldset legend { grid-column: 1 / -1; margin-bottom: 0; padding: 0; }
+.form-medida fieldset label { font-size: 11px; color: var(--gris); }
+.form-medida .check { display: flex; align-items: center; gap: 10px; font-size: 15px; letter-spacing: 0; text-transform: none; font-weight: 400; }
+.form-medida .check input { width: 18px; height: 18px; margin: 0; accent-color: var(--tinta); }
+.form-medida .nota { margin: 0; text-align: center; }
+
+/* guía de medidas */
+.tabla-medidas { width: 100%; max-width: 520px; border-collapse: collapse; margin: 0 0 18px; font-size: 15px; }
+.tabla-medidas th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); padding: 0 0 8px; }
+.tabla-medidas td { padding: 10px 0; border-top: 1px solid var(--linea); }
+.tabla-medidas td:first-child { font-weight: 500; width: 45%; }
+
 /* opiniones */
 .nota-google { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; }
 .nota-google strong { font-size: clamp(44px, 6vw, 60px); font-weight: 500; line-height: 1; letter-spacing: -0.02em; }
@@ -301,6 +325,33 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .opcion button.muestra img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
 .opcion button.muestra span { font-size: 11px; line-height: 1.25; padding: 6px 6px 7px; color: var(--tinta); }
 .opcion button.muestra.activa { background: var(--papel); color: var(--tinta); border-color: var(--tinta); box-shadow: inset 0 0 0 1px var(--tinta); }
+.guia-medidas { margin-top: 12px; }
+.guia-medidas summary {
+  cursor: pointer; list-style: none; display: inline-block;
+  font-size: 14px; border-bottom: 1px solid var(--tinta); padding-bottom: 1px;
+}
+.guia-medidas summary::-webkit-details-marker { display: none; }
+.guia-medidas[open] summary { margin-bottom: 14px; }
+.guia-medidas p { font-size: 14px; color: var(--gris); margin: 0; }
+
+/* barra fija de la ficha (solo celular) */
+.barra-fija {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.97); border-top: 1px solid var(--linea);
+  transform: translateY(110%); transition: transform 0.25s ease;
+}
+.barra-fija.visible { transform: none; }
+.barra-info { min-width: 0; }
+.barra-info strong { display: block; font-size: 18px; font-weight: 500; }
+.barra-info span { display: block; font-size: 12px; color: var(--gris); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.barra-fija .btn { flex: none; min-height: 46px; padding: 0 22px; }
+body.con-barra .wa-flotante { display: none; }
+@media (min-width: 900px) {
+  .barra-fija { display: none; }
+  body.con-barra .wa-flotante { display: grid; }
+}
 .ayuda { font-size: 14px; color: var(--gris); margin: 14px 0 0; }
 .ayuda a { color: var(--tinta); }
 .tabla-specs { margin: 40px 0 0; border-top: 1px solid var(--tinta); }

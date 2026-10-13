@@ -8,12 +8,22 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <meta name="theme-color" content="#141414">
+  <!-- vista previa al compartir el link (WhatsApp, Instagram, Facebook) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="King Muebles">
+  <meta property="og:title" content="King Muebles · Fábrica de muebles">
+  <meta property="og:description" content="Camas con guardado y muebles a medida, de fábrica. Loma Hermosa · Envío con instalación.">
+  <meta property="og:image" content="https://agustinjjesus.github.io/king-muebles-maqueta/assets/og-king-muebles.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://agustinjjesus.github.io/king-muebles-maqueta/">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="description" content="Camas con cajones, bauleras y botineros en melamina de 18 mm, hechas en nuestra fábrica. Envío con instalación en CABA y GBA.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css?v=8">
-  <script src="datos.js?v=8"></script>
+  <link rel="stylesheet" href="estilos.css?v=9">
+  <script src="datos.js?v=9"></script>
 </head>
 <body>
 
@@ -22,6 +32,7 @@
       <a class="logo" href="index.html"><img src="assets/logo-negro.png" alt="King Muebles"></a>
       <nav>
         <a href="#catalogo">Catálogo</a>
+        <a href="#presupuesto">A medida</a>
         <a href="#como-comprar">Cómo comprar</a>
         <a href="#fabrica">Fábrica</a>
         <a href="#envios">Envíos</a>
@@ -71,8 +82,8 @@
       </div>
       <div class="grilla" id="grilla">
         <!-- los productos del catálogo se cargan desde datos.js, antes de estas dos tarjetas -->
-        <a class="producto" data-cat="A medida" data-wa="Hola! Quería pedir presupuesto para una cocina a medida."><div class="foto proximo-foto"><span>Foto de trabajos</span></div><span class="categoria">A medida</span><h3>Cocinas</h3><span class="detalle">Bajo mesadas y alacenas</span><span class="precio"><small>Pedí presupuesto</small></span></a>
-        <a class="producto" data-cat="A medida" data-wa="Hola! Quería pedir presupuesto para un mueble a medida."><div class="foto proximo-foto"><span>Foto de trabajos</span></div><span class="categoria">A medida</span><h3>Hogares y comercios</h3><span class="detalle">Diseñados para tu espacio</span><span class="precio"><small>Pedí presupuesto</small></span></a>
+        <a class="producto" data-cat="A medida" href="#presupuesto" data-tipo="Cocina: bajo mesada"><div class="foto proximo-foto"><span>Foto de trabajos</span></div><span class="categoria">A medida</span><h3>Cocinas</h3><span class="detalle">Bajo mesadas y alacenas</span><span class="precio"><small>Pedí presupuesto</small></span></a>
+        <a class="producto" data-cat="A medida" href="#presupuesto" data-tipo="Mueble para comercio"><div class="foto proximo-foto"><span>Foto de trabajos</span></div><span class="categoria">A medida</span><h3>Hogares y comercios</h3><span class="detalle">Diseñados para tu espacio</span><span class="precio"><small>Pedí presupuesto</small></span></a>
       </div>
     </div>
   </section>
@@ -167,7 +178,55 @@
     </div>
   </section>
 
-  <section class="seccion" id="fabrica">
+  <section class="seccion" id="presupuesto">
+    <div class="contenedor dos-col">
+      <div>
+        <p class="eyebrow">Muebles a medida</p>
+        <h2>Pedí tu presupuesto.</h2>
+        <p class="lead">Contanos qué necesitás y te respondemos por WhatsApp con el presupuesto. Si tenés fotos o un plano del lugar, mejor.</p>
+        <ul class="atencion-lista">
+          <li><h3>Camas y respaldos</h3><p>Con cajones, bauleras y botineros, en la medida que necesites.</p></li>
+          <li><h3>Cocinas</h3><p>Bajo mesadas y alacenas pensados para aprovechar cada espacio.</p></li>
+          <li><h3>Placares y guardado</h3><p>Muebles de guardado adaptados a cada ambiente.</p></li>
+          <li><h3>Comercios y oficinas</h3><p>Muebles para tu local o tu oficina, hechos a tu medida.</p></li>
+        </ul>
+      </div>
+      <form class="form-medida" id="form-medida">
+        <label>¿Qué mueble necesitás?
+          <select name="tipo" required>
+            <option value="">Elegí una opción</option>
+            <option>Cama o respaldo</option>
+            <option>Cocina: bajo mesada</option>
+            <option>Cocina: alacena</option>
+            <option>Placard o mueble de guardado</option>
+            <option>Rack o mueble de living</option>
+            <option>Mueble para comercio</option>
+            <option>Otro</option>
+          </select>
+        </label>
+        <fieldset class="medidas">
+          <legend>Medidas aproximadas (cm)</legend>
+          <label>Ancho<input name="ancho" type="number" min="1" inputmode="numeric" placeholder="240"></label>
+          <label>Alto<input name="alto" type="number" min="1" inputmode="numeric" placeholder="90"></label>
+          <label>Profundidad<input name="prof" type="number" min="1" inputmode="numeric" placeholder="60"></label>
+        </fieldset>
+        <label>Color
+          <select name="color" id="form-color"><option value="">Todavía no sé</option></select>
+        </label>
+        <label>Tu localidad
+          <input name="localidad" list="localidades" placeholder="Para calcular el envío" autocomplete="off">
+        </label>
+        <label>Contanos más
+          <textarea name="detalle" rows="3" placeholder="Ej: bajo mesada para una cocina de 2,40 m, con lugar para el lavarropas"></textarea>
+        </label>
+        <label class="check"><input type="checkbox" name="fotos"> Tengo fotos o un plano del lugar</label>
+        <button class="btn btn-negro btn-ancho" type="submit">Enviar por WhatsApp</button>
+        <p class="nota">Se abre WhatsApp con tu consulta ya escrita. No guardamos tus datos.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="seccion seccion-alt" id="fabrica">
     <div class="contenedor dos-col">
       <div>
         <p class="eyebrow">La fábrica</p>
@@ -188,7 +247,7 @@
     </div>
   </section>
 
-  <section class="seccion seccion-alt" id="envios">
+  <section class="seccion" id="envios">
     <div class="contenedor dos-col">
       <div>
         <p class="eyebrow">Envíos</p>
@@ -215,7 +274,7 @@
     </div>
   </section>
 
-  <section class="seccion" id="preguntas">
+  <section class="seccion seccion-alt" id="preguntas">
     <div class="contenedor">
       <div class="seccion-cabeza"><h2>Preguntas frecuentes</h2></div>
       <div class="preguntas">
@@ -242,6 +301,22 @@
         <details>
           <summary>¿A qué zonas llegan? ¿La instalan?</summary>
           <p>Llegamos a CABA, Zona Norte, Zona Sur, Zona Oeste, Pilar, Escobar y La Plata, y el flete incluye la instalación. Por ahora no hacemos envíos al interior del país.</p>
+        </details>
+        <details>
+          <summary>¿Qué medida de cama necesito?</summary>
+          <p>Depende del colchón. Estas son las medidas más comunes:</p>
+          <table class="tabla-medidas">
+            <thead><tr><th>Cama</th><th>Colchón</th></tr></thead>
+            <tbody>
+              <tr><td>1 plaza</td><td>80 x 190 o 90 x 190 cm</td></tr>
+              <tr><td>1 plaza y media</td><td>100 x 190 cm</td></tr>
+              <tr><td>2 plazas</td><td>140 x 190 cm</td></tr>
+              <tr><td>Queen</td><td>160 x 200 cm</td></tr>
+              <tr><td>King</td><td>180 x 200 cm</td></tr>
+              <tr><td>Super King</td><td>200 x 200 cm</td></tr>
+            </tbody>
+          </table>
+          <p>Si tu colchón tiene otra medida, consultanos: hacemos la cama a medida.</p>
         </details>
         <details>
           <summary>¿Puedo ir a verla antes de comprar?</summary>
@@ -312,6 +387,35 @@
           p.hidden = b.dataset.cat !== "todos" && p.dataset.cat !== b.dataset.cat;
         });
       });
+    });
+
+    // Pedí tu presupuesto a medida: arma el mensaje y abre WhatsApp
+    const form = document.getElementById("form-medida");
+    const selColor = document.getElementById("form-color");
+    KM.colores.forEach((c) => {
+      const o = document.createElement("option");
+      o.textContent = c.nombre;
+      selColor.appendChild(o);
+    });
+    // las tarjetas "A medida" del catálogo llegan con el tipo de mueble elegido
+    document.querySelectorAll("a.producto[data-tipo]").forEach((a) => {
+      a.addEventListener("click", () => { form.tipo.value = a.dataset.tipo; });
+    });
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const f = form.elements;
+      const medidas = [["ancho", f.ancho.value], ["alto", f.alto.value], ["profundidad", f.prof.value]]
+        .filter(([, v]) => v).map(([k, v]) => `${k} ${v} cm`).join(" · ");
+      const lineas = [
+        "Hola! Quiero pedir un presupuesto a medida.",
+        `• Mueble: ${f.tipo.value}`,
+        medidas && `• Medidas: ${medidas}`,
+        f.color.value && `• Color: ${f.color.value}`,
+        f.localidad.value.trim() && `• Localidad: ${f.localidad.value.trim()}`,
+        f.detalle.value.trim() && `• Detalle: ${f.detalle.value.trim()}`,
+        f.fotos.checked && "Tengo fotos o un plano del lugar, te los mando por acá.",
+      ].filter(Boolean);
+      window.open(waLink(lineas.join("\n")), "_blank", "noopener");
     });
 
     // ¿Llegamos a tu casa?
