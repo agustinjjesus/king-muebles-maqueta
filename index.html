@@ -256,28 +256,54 @@
 
     // ¿Llegamos a tu casa?
     const lista = document.getElementById("localidades");
-    Object.values(KM.zonas).flat().forEach((l) => {
+    const vistos = new Set();
+    LUGARES.forEach((l) => {
+      const clave = l.nombre + "|" + l.partido;
+      if (vistos.has(clave)) return;
+      vistos.add(clave);
       const o = document.createElement("option");
-      o.value = l;
+      o.value = l.nombre;
+      if (l.nombre !== l.partido) o.label = l.partido;
       lista.appendChild(o);
     });
     const campo = document.getElementById("localidad");
     const resultado = document.getElementById("resultado-zona");
     const botonEnvio = document.getElementById("consultar-envio");
     campo.addEventListener("input", () => {
-      const z = zonaDe(campo.value);
+      const texto = campo.value.trim();
+      const l = buscarLugar(texto);
       resultado.className = "resultado-zona";
-      if (!campo.value.trim()) {
+      if (!texto) {
         resultado.textContent = "";
-      } else if (z) {
-        const donde = z.localidad === z.zona ? z.localidad : `${z.localidad} (${z.zona})`;
+        return;
+      }
+      if (l && l.ambigua && l.exacta) {
+        // mismo nombre en dos partidos (ej. Remedios de Escalada)
         resultado.classList.add("si");
-        resultado.textContent = `Llegamos a ${donde}, con instalación incluida.`;
-        botonEnvio.href = waLink(`Hola! Quería consultar el envío a ${donde}.`);
-      } else if (normal(campo.value).length >= 3) {
+        resultado.textContent = l.opciones
+          .map((o) => `${o.nombre}, ${o.partido}: ${o.zona ? "llegamos (" + o.zona + ")" : "consultanos"}`)
+          .join(" · ");
+        botonEnvio.href = waLink(`Hola! Quería consultar el envío a ${l.opciones[0].nombre}.`);
+        return;
+      }
+      if (l && l.ambigua) {
+        resultado.textContent = "Seguí escribiendo o elegí tu localidad de la lista.";
+        return;
+      }
+      if (l && l.zona) {
+        const donde = l.nombre === l.partido || l.zona === l.partido || l.zona === "CABA" ? l.nombre : `${l.nombre}, ${l.partido}`;
+        resultado.classList.add("si");
+        resultado.textContent = `Llegamos a ${donde} (${l.zona}), con instalación incluida.`;
+        botonEnvio.href = waLink(`Hola! Quería consultar el envío a ${donde} (${l.zona}).`);
+      } else if (l) {
+        const donde = l.nombre === l.partido ? l.nombre : `${l.nombre}, ${l.partido}`;
         resultado.classList.add("no");
-        resultado.textContent = "No la tenemos en la lista. Escribinos y te confirmamos.";
-        botonEnvio.href = waLink(`Hola! Quería consultar si llegan con el envío a ${campo.value.trim()}.`);
+        resultado.textContent = `Consultanos: te confirmamos si llegamos a ${donde} y el costo del envío.`;
+        botonEnvio.href = waLink(`Hola! Quería consultar si llegan con el envío a ${donde}.`);
+      } else if (normal(texto).length >= 3) {
+        resultado.classList.add("no");
+        resultado.textContent = "No la encontramos. Escribinos y te confirmamos si llegamos.";
+        botonEnvio.href = waLink(`Hola! Quería consultar si llegan con el envío a ${texto}.`);
       }
     });
   </script>
