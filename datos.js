@@ -4,11 +4,37 @@ const KM = {
   whatsapp: "5491139573474",          // +54 9 11 3957-3474
   instagram: "kingmuebless",
   // Productos del catálogo de WhatsApp de King Muebles (capturas del 13/10).
-  // Solo la Cama KNG tiene ficha y precio confirmado; el resto abre WhatsApp para consultar.
+  // Los que tienen "url" tienen ficha (ficha.js arma la página con estos datos); el resto abre WhatsApp.
   // Las fotos de "assets/catalogo/" son recortes chicos de las capturas: reemplazar por las originales.
+  // Para sumar una ficha: copiar cama-kng-scotch.html, cambiar el id y los textos del <head>, y cargar acá
+  // fotos, medidas (precio null = "a consultar") y specs.
   productos: [
-    { id: "cama-kng", nombre: "Cama KNG", categoria: "Camas", bajada: "6 cajones · 2 bauleras · 2 botineros",
-      foto: "assets/kng-1.jpg", url: "cama-kng.html", desde: 499000 },
+    // Ramiro (13/10): "Es la que tendría que estar principal". Misma cama en cada color, con su precio:
+    // la blanca $499.000 y la Scotch $530.000. Las otras medidas y colores, a consultar.
+    { id: "cama-kng", modelo: "kng", base: "Cama KNG", nombre: "Cama KNG Blanca", color: "Blanco", categoria: "Camas",
+      bajada: "6 cajones · 2 bauleras · 2 zapateros", url: "cama-kng.html", desde: 499000,
+      foto: "assets/reales/kng-blanco-2.jpg",
+      galeria: [
+        { foto: "assets/reales/kng-blanco-2.jpg", alt: "Cama KNG blanca con cajones, bauleras y zapateros abiertos" },
+        { foto: "assets/reales/kng-blanco-1.jpg", alt: "Cama KNG blanca abierta, vista desde el costado" },
+        { foto: "assets/reales/kng-blanco-3.jpg", alt: "Cama KNG blanca cerrada" },
+        { video: "assets/reales/video-cajones.mp4", poster: "assets/reales/video-cajones-poster.jpg" },
+        { video: "assets/reales/video-bauleras.mp4", poster: "assets/reales/video-bauleras-poster.jpg" },
+      ],
+      medidas: [["1,40 x 1,90", 499000], ["1,60", null], ["1,80", null], ["2,00", null]],
+      specs: "kng" },
+    { id: "cama-kng-scotch", modelo: "kng", base: "Cama KNG", nombre: "Cama KNG Scotch", color: "Scotch", categoria: "Camas",
+      bajada: "6 cajones · 2 bauleras · 2 zapateros", url: "cama-kng-scotch.html", desde: 530000,
+      foto: "assets/reales/kng-scotch-2.jpg",
+      galeria: [
+        { foto: "assets/reales/kng-scotch-2.jpg", alt: "Cama KNG Scotch con cajones, bauleras y zapateros abiertos" },
+        { foto: "assets/reales/kng-scotch-1.jpg", alt: "Cama KNG Scotch abierta, de frente" },
+        { foto: "assets/reales/kng-scotch-3.jpg", alt: "Cama KNG Scotch cerrada" },
+        { foto: "assets/reales/kng-scotch-4.jpg", alt: "Frente de la Cama KNG Scotch con los zapateros cerrados" },
+        { foto: "assets/reales/kng-scotch-5.jpg", alt: "Costado de la Cama KNG Scotch con los cajones cerrados" },
+      ],
+      medidas: [["1,40 x 1,90", 530000], ["1,60", null], ["1,80", null], ["2,00", null]],
+      specs: "kng" },
     { id: "cama-kng-mdf", nombre: "Cama KNG MDF", categoria: "Camas", bajada: "La KNG en MDF",
       foto: "assets/catalogo/cama-kng-mdf.jpg" },
     { id: "cama-kingdom", nombre: "Cama Kingdom", categoria: "Camas", bajada: "Con cajones y bauleras",
@@ -27,19 +53,37 @@ const KM = {
       bajada: "Con doble pillow", foto: "assets/catalogo/colchon-isolda-doble-pillow.jpg" },
   ],
 
-  // Catálogo de colores (13/10). Blanco es el precio base; "en color" suma $30.000 (lo dijo Ramiro
-  // por la KNG). A confirmar si Blanco Nature cuenta como blanco o como color.
+  // Colores: los 9 del catálogo de WhatsApp (13/10) + Scotch (la KNG que mandó Ramiro el 13/10; la
+  // muestra es un recorte de esa foto). Cada color con fotos va como producto aparte, con su precio;
+  // en la ficha, el resto de los colores es "a consultar".
   colores: [
-    { nombre: "Blanco", img: "assets/colores/blanco.jpg", extra: 0 },
-    { nombre: "Blanco Nature", img: "assets/colores/blanco-nature.jpg", extra: 30000 },
-    { nombre: "Helsinki", img: "assets/colores/helsinki.jpg", extra: 30000 },
-    { nombre: "Pinot Gris", img: "assets/colores/pinot-gris.jpg", extra: 30000 },
-    { nombre: "Linoza Cinza", img: "assets/colores/linoza-cinza.jpg", extra: 30000 },
-    { nombre: "Atakama", img: "assets/colores/atakama.jpg", extra: 30000 },
-    { nombre: "Terrarum", img: "assets/colores/terrarum.jpg", extra: 30000 },
-    { nombre: "Fresno Negro", img: "assets/colores/fresno-negro.jpg", extra: 30000 },
-    { nombre: "Negro", img: "assets/colores/negro.jpg", extra: 30000 },
+    { nombre: "Blanco", img: "assets/colores/blanco.jpg" },
+    { nombre: "Scotch", img: "assets/colores/scotch.jpg" },
+    { nombre: "Blanco Nature", img: "assets/colores/blanco-nature.jpg" },
+    { nombre: "Helsinki", img: "assets/colores/helsinki.jpg" },
+    { nombre: "Pinot Gris", img: "assets/colores/pinot-gris.jpg" },
+    { nombre: "Linoza Cinza", img: "assets/colores/linoza-cinza.jpg" },
+    { nombre: "Atakama", img: "assets/colores/atakama.jpg" },
+    { nombre: "Terrarum", img: "assets/colores/terrarum.jpg" },
+    { nombre: "Fresno Negro", img: "assets/colores/fresno-negro.jpg" },
+    { nombre: "Negro", img: "assets/colores/negro.jpg" },
   ],
+
+  // Especificaciones compartidas por modelo. Las de la KNG son las que mandó Ramiro el 13/10;
+  // carga, altura y herrajes vienen de su descripción anterior de la cama.
+  specs: {
+    kng: [
+      ["Medida", "1,40 x 1,90 (colchón de 2 plazas). Otras medidas, a consultar"],
+      ["Material", "Melamina de 18 mm, interior y exterior"],
+      ["Carga máxima", "600 kg"],
+      ["Altura", "40 cm (también de 30 cm)"],
+      ["Cajones", "6 con guías telescópicas: 3 de cada lado, 1 grande y 2 chicos"],
+      ["Bauleras", "2, con bisagras"],
+      ["Zapateros", "2 al frente, con pistones y bisagras"],
+      ["Herrajes", "Metálicos, sin piezas de plástico"],
+      ["Cantos", "PVC 0,22 x 0,45"],
+    ],
+  },
 
   // Zonas de flete de King Muebles (el flete incluye instalación). El tarifario nombra solo algunas
   // localidades; acá va el PARTIDO entero en la zona donde el tarifario puso a sus localidades

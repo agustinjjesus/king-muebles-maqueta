@@ -79,7 +79,7 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 /* hero */
 .hero { padding: 48px 0 64px; }
 .hero-grid { display: grid; gap: 40px; align-items: center; }
-.hero h1 { font-size: clamp(38px, 6.2vw, 68px); margin-bottom: 20px; }
+.hero h1 { font-size: clamp(38px, 6.2vw, 68px); margin-bottom: 20px; text-wrap: balance; }
 .hero .lead { margin: 0 0 32px; }
 .acciones { display: flex; flex-wrap: wrap; gap: 12px; }
 .hero-foto { margin: 0; background: var(--hueso); aspect-ratio: 4 / 5; overflow: hidden; }
@@ -139,7 +139,7 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 
 /* video destacado */
 .destacado { display: grid; gap: 40px; align-items: center; }
-.destacado video { width: 100%; max-width: 360px; aspect-ratio: 9 / 16; object-fit: cover; background: #000 url("assets/video-kng-poster.jpg") center / cover; }
+.destacado video { width: 100%; max-width: 360px; aspect-ratio: 9 / 16; object-fit: cover; background: #000 url("assets/reales/video-cajones-poster.jpg") center / cover; }
 .destacado h2 { margin-bottom: 16px; }
 .destacado .lead { margin: 0 0 28px; }
 @media (min-width: 900px) { .destacado { grid-template-columns: 0.8fr 1.2fr; gap: 80px; } }
@@ -207,8 +207,12 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .autor .fuente { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); }
 @media (min-width: 900px) { .opiniones { grid-template-columns: repeat(3, 1fr); gap: 40px; } }
 
-/* mapa */
+/* mapa y fotos de la fábrica */
 .mapa { aspect-ratio: 4 / 3; background: var(--hueso); border: 1px solid var(--linea); }
+.fabrica-medios { display: grid; gap: 8px; }
+.fotos-fabrica { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.fotos-fabrica img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #ebe8e2; }
+.fabrica-medios .mapa { aspect-ratio: 16 / 9; }
 .mapa iframe { width: 100%; height: 100%; border: 0; display: block; filter: grayscale(1) contrast(1.05); }
 
 /* cómo comprar */
@@ -288,10 +292,13 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .migas { padding: 20px 0 0; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); }
 .migas a { text-decoration: none; }
 .ficha { display: grid; gap: 36px; padding: 24px 0 80px; }
-@media (min-width: 900px) { .ficha { grid-template-columns: 1.1fr 0.9fr; gap: 72px; align-items: start; } }
+@media (min-width: 900px) {
+  .ficha { grid-template-columns: 1.1fr 0.9fr; gap: 72px; align-items: start; }
+  .galeria { position: sticky; top: 96px; }   /* la foto acompaña mientras se leen las especificaciones */
+}
 .galeria .principal { aspect-ratio: 4 / 5; background: var(--hueso); overflow: hidden; }
 .galeria .principal img, .galeria .principal video { width: 100%; height: 100%; object-fit: cover; }
-.galeria .miniaturas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.galeria .miniaturas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
 .galeria .miniaturas button {
   aspect-ratio: 1; padding: 0; cursor: pointer; background: var(--hueso); position: relative;
   border: 1px solid transparent; border-radius: 0; overflow: hidden;
@@ -300,7 +307,7 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .galeria .miniaturas img { width: 100%; height: 100%; object-fit: cover; }
 .galeria .miniaturas .play {
   position: absolute; left: 8px; bottom: 8px; background: var(--papel); color: var(--tinta);
-  font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 8px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 6px;
 }
 .info-producto h1 { font-size: clamp(34px, 5vw, 46px); }
 .info-producto .sub { color: var(--gris); margin: 8px 0 24px; }
@@ -318,13 +325,17 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .opcion button.activa { background: var(--tinta); color: var(--papel); border-color: var(--tinta); }
 .opcion .color-elegido { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--gris); font-size: 14px; }
 .opcion .botones.colores { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
-.opcion button.muestra {
+.opcion .muestra {
   min-height: 0; min-width: 0; padding: 0; display: flex; flex-direction: column; text-align: left;
-  border: 1px solid var(--linea); background: var(--papel); overflow: hidden;
+  border: 1px solid var(--linea); border-radius: 2px; background: var(--papel); overflow: hidden;
+  font: inherit; text-decoration: none; cursor: pointer;
 }
-.opcion button.muestra img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
-.opcion button.muestra span { font-size: 11px; line-height: 1.25; padding: 6px 6px 7px; color: var(--tinta); }
-.opcion button.muestra.activa { background: var(--papel); color: var(--tinta); border-color: var(--tinta); box-shadow: inset 0 0 0 1px var(--tinta); }
+.opcion .muestra:hover { border-color: var(--tinta); }
+.opcion .muestra img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
+.opcion .muestra span { font-size: 11px; line-height: 1.25; padding: 6px 6px 7px; color: var(--tinta); }
+.opcion .muestra small { display: block; margin-top: 2px; font-size: 11px; color: var(--gris); }
+.opcion .muestra.activa { background: var(--papel); color: var(--tinta); border-color: var(--tinta); box-shadow: inset 0 0 0 1px var(--tinta); }
+.colores-nota { margin: 10px 0 0; font-size: 13px; color: var(--gris); }
 .guia-medidas { margin-top: 12px; }
 .guia-medidas summary {
   cursor: pointer; list-style: none; display: inline-block;
