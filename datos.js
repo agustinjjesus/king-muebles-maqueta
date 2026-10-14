@@ -44,7 +44,7 @@ const KM = {
     { id: "cama-individual", nombre: "Cama Individual", categoria: "Camas", bajada: "Para una persona",
       foto: "assets/catalogo/cama-individual.jpg" },
     { id: "combo-kng", nombre: "Combo KNG", categoria: "Combos", bajada: "Cama KNG con respaldo y mesitas de luz",
-      foto: "assets/catalogo/combo-kng.jpg" },
+      foto: "assets/reales/combo-kng-1.jpg" },
     { id: "colchon-reina-doble-pillow", nombre: "Colchón Reina Doble Pillow", categoria: "Colchones",
       bajada: "Con doble pillow", foto: "assets/catalogo/colchon-reina-doble-pillow.jpg" },
     { id: "colchon-isolda", nombre: "Colchón Isolda", categoria: "Colchones", bajada: "140 x 190",
