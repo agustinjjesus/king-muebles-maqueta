@@ -22,8 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css?v=11">
-  <script src="datos.js?v=11"></script>
+  <link rel="stylesheet" href="estilos.css?v=12">
+  <script src="datos.js?v=12"></script>
 </head>
 <body>
 
@@ -377,8 +377,7 @@
         a.href = p.url;
       } else {
         // sin ficha todavía: abre WhatsApp con el producto
-        const art = p.categoria === "Camas" ? "la" : "el";
-        a.href = waLink(`Hola! Vi en la web ${art} ${p.nombre} y quería consultar el precio.`);
+        a.href = waLink(`Hola! Vi en la web ${articulo(p)} ${p.nombre} y quería ${p.desde ? "más info" : "consultar el precio"}.`);
         a.target = "_blank";
         a.rel = "noopener";
       }

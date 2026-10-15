@@ -4,8 +4,8 @@
 const main = document.getElementById("ficha");
 const P = KM.productos.find((p) => p.id === main.dataset.producto);
 const base = P.base || P.nombre;   // "Cama KNG", sin el color
-// los otros colores del mismo modelo que tienen su propia ficha
-const variantes = KM.productos.filter((p) => p.modelo && p.modelo === P.modelo);
+// este producto y los otros colores del mismo modelo que tienen su propia ficha
+const variantes = KM.productos.filter((p) => p === P || (p.modelo && p.modelo === P.modelo));
 const elegido = { medida: P.medidas[0][0], color: P.color };
 
 const textoMedida = (m) => (m.includes("x") ? m : m + " m");
@@ -86,6 +86,7 @@ P.galeria.forEach((item, i) => {
   miniaturas.appendChild(b);
 });
 mostrar(P.galeria[0]);
+miniaturas.hidden = P.galeria.length < 2;
 
 // medidas
 const cajaMedidas = document.getElementById("medidas");
@@ -127,13 +128,17 @@ function actualizar() {
 
   document.getElementById("color-elegido").textContent = elegido.color;
   document.getElementById("precio").textContent = precio ? pesos(precio) : "Precio a consultar";
+  // los combos muestran cuánto sale cada parte (solo en la medida de la que pasaron el desglose)
+  const partes = P.partes && elegido.medida === P.medidas[0][0]
+    ? P.partes.map(([n, p]) => `${n} ${pesos(p)}`).join(" + ")
+    : null;
   document.getElementById("nota").textContent = precio
-    ? `Color ${elegido.color} · ${medida}`
+    ? (partes ? `${partes} · Color ${elegido.color}` : `Color ${elegido.color} · ${medida}`)
     : "Te pasamos el precio por WhatsApp";
 
   const msg = precio
-    ? `Hola! Vi en la web la ${P.nombre} de ${medida} (${pesos(precio)}). ¿Me pasás más info?`
-    : `Hola! Vi en la web la ${base} y la quiero de ${medida}, color ${elegido.color}. ¿Me pasás el precio?`;
+    ? `Hola! Vi en la web ${articulo(P)} ${P.nombre} de ${medida} (${pesos(precio)}). ¿Me pasás más info?`
+    : `Hola! Vi en la web ${articulo(P)} ${base} y ${pronombre(P)} quiero de ${medida}, color ${elegido.color}. ¿Me pasás el precio?`;
   abrirEnWhatsApp(document.getElementById("consultar"), msg);
 
   // barra fija del celular

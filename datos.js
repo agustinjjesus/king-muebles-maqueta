@@ -1,5 +1,17 @@
 // Datos de la maqueta. En la web real esto sale de la planilla de Google
 // que mantiene Agustín (precios por medida y color).
+const SPECS_KNG = [
+  ["Medida", "1,40 x 1,90 (colchón de 2 plazas). Otras medidas, a consultar"],
+  ["Material", "Melamina de 18 mm, interior y exterior"],
+  ["Carga máxima", "600 kg"],
+  ["Altura", "40 cm (también de 30 cm)"],
+  ["Cajones", "6 con guías telescópicas: 3 de cada lado, 1 grande y 2 chicos"],
+  ["Bauleras", "2, con bisagras"],
+  ["Zapateros", "2 al frente, con pistones y bisagras"],
+  ["Herrajes", "Metálicos, sin piezas de plástico"],
+  ["Cantos", "PVC 0,22 x 0,45"],
+];
+
 const KM = {
   whatsapp: "5491139573474",          // +54 9 11 3957-3474
   instagram: "kingmuebless",
@@ -41,10 +53,25 @@ const KM = {
       foto: "assets/catalogo/cama-kingdom.jpg" },
     { id: "cama-boti", nombre: "Cama Boti", categoria: "Camas", bajada: "Cama con guardado",
       foto: "assets/catalogo/cama-boti.jpg" },
-    { id: "cama-individual", nombre: "Cama Individual", categoria: "Camas", bajada: "Para una persona",
-      foto: "assets/catalogo/cama-individual.jpg" },
-    { id: "combo-kng", nombre: "Combo KNG", categoria: "Combos", bajada: "Cama KNG con respaldo y mesitas de luz",
-      foto: "assets/reales/combo-kng-1.jpg" },
+    // Ramiro (14/10): $450.000 en cualquiera de las 3 medidas. No dijo el color: va como blanca (la foto
+    // es blanca), a confirmar. Sin ficha hasta tener sus fotos originales (las del chat no llegaron).
+    { id: "cama-kng-individual", nombre: "Cama KNG Individual", color: "Blanco", categoria: "Camas",
+      bajada: "3 cajones · 2 bauleras · 1 zapatero", desde: 450000,
+      foto: "assets/catalogo/cama-individual.jpg",
+      medidas: [["80 x 1,90", 450000], ["90 x 1,90", 450000], ["1,00 x 1,90", 450000]],
+      specs: "kng-individual" },
+    // Ramiro (14/10): cama $530.000 (la de la foto es Scotch) + respaldo con mesitas flotantes $225.000.
+    { id: "combo-kng", nombre: "Combo KNG", color: "Scotch", categoria: "Combos",
+      bajada: "Cama KNG + respaldo con mesitas flotantes", url: "combo-kng.html", desde: 755000,
+      foto: "assets/reales/combo-kng-1.jpg",
+      galeria: [
+        { foto: "assets/reales/combo-kng-1.jpg", alt: "Combo KNG Scotch: cama con respaldo y mesitas flotantes" },
+        { foto: "assets/reales/kng-scotch-2.jpg", alt: "La cama del combo, con cajones, bauleras y zapateros abiertos" },
+        { foto: "assets/reales/kng-scotch-4.jpg", alt: "Frente de la cama del combo con los zapateros cerrados" },
+      ],
+      partes: [["Cama", 530000], ["respaldo y mesitas", 225000]],
+      medidas: [["1,40 x 1,90", 755000], ["1,60", null], ["1,80", null], ["2,00", null]],
+      specs: "combo-kng" },
     { id: "colchon-reina-doble-pillow", nombre: "Colchón Reina Doble Pillow", categoria: "Colchones",
       bajada: "Con doble pillow", foto: "assets/catalogo/colchon-reina-doble-pillow.jpg" },
     { id: "colchon-isolda", nombre: "Colchón Isolda", categoria: "Colchones", bajada: "140 x 190",
@@ -69,18 +96,20 @@ const KM = {
     { nombre: "Negro", img: "assets/colores/negro.jpg" },
   ],
 
-  // Especificaciones compartidas por modelo. Las de la KNG son las que mandó Ramiro el 13/10;
-  // carga, altura y herrajes vienen de su descripción anterior de la cama.
+  // Especificaciones por modelo, como las mandó Ramiro (KNG el 13/10; Individual y Combo el 14/10).
+  // Carga, altura y herrajes de la KNG vienen de su descripción anterior de la cama.
   specs: {
-    kng: [
-      ["Medida", "1,40 x 1,90 (colchón de 2 plazas). Otras medidas, a consultar"],
-      ["Material", "Melamina de 18 mm, interior y exterior"],
-      ["Carga máxima", "600 kg"],
-      ["Altura", "40 cm (también de 30 cm)"],
-      ["Cajones", "6 con guías telescópicas: 3 de cada lado, 1 grande y 2 chicos"],
+    kng: SPECS_KNG,
+    "combo-kng": [
+      ["Incluye", "Cama KNG, respaldo y 2 mesitas flotantes"],
+      ...SPECS_KNG,
+    ],
+    "kng-individual": [
+      ["Medidas", "80 x 1,90, 90 x 1,90 o 1,00 x 1,90"],
+      ["Material", "Melamina de 18 mm y MDF de 15 mm"],
+      ["Cajones", "3 con guías telescópicas (también con 2)"],
       ["Bauleras", "2, con bisagras"],
-      ["Zapateros", "2 al frente, con pistones y bisagras"],
-      ["Herrajes", "Metálicos, sin piezas de plástico"],
+      ["Zapatero", "1 al frente, con puerta rebatible, pistones y bisagras"],
       ["Cantos", "PVC 0,22 x 0,45"],
     ],
   },
@@ -200,6 +229,14 @@ function buscarLugar(texto) {
   const zonas = new Set(candidatas.map((c) => c.zona));
   if (zonas.size > 1) return { ambigua: true, exacta: exactas.length > 0, opciones: candidatas };
   return candidatas[0];
+}
+
+// "la Cama KNG" / "el Combo KNG", y "la quiero" / "lo quiero"
+function articulo(p) {
+  return p.categoria === "Camas" ? "la" : "el";
+}
+function pronombre(p) {
+  return p.categoria === "Camas" ? "la" : "lo";
 }
 
 function waLink(mensaje) {

@@ -27,6 +27,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img, video { display: block; max-width: 100%; }
+[hidden] { display: none !important; }   /* que el atributo hidden gane a los display: flex/grid */
 a { color: inherit; }
 .contenedor { width: min(var(--ancho), 100% - 40px); margin-inline: auto; }
 
