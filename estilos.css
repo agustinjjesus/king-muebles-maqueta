@@ -54,6 +54,7 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .btn-borde { background: transparent; color: var(--tinta); border: 1px solid var(--tinta); }
 .btn-borde:hover { background: var(--tinta); color: var(--papel); }
 .btn-ancho { width: 100%; }
+.btn-ancho + .btn-ancho { margin-top: 10px; }
 .link-flecha {
   font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
   text-decoration: none; border-bottom: 1px solid var(--tinta); padding-bottom: 3px;
@@ -97,7 +98,7 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .portada h1 { font-size: clamp(34px, 5.4vw, 60px); margin-bottom: 18px; text-wrap: balance; max-width: 16em; }
 /* los emojis de la frase de Ramiro: los del sistema de cada celular, un poco más chicos que el texto */
 .portada h1 .emoji { font-size: 0.8em; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
-.portada .lead { margin: 0; }
+.portada .lead { margin: 0 0 28px; }
 .portada + .seccion { padding-top: 48px; }
 @media (min-width: 900px) {
   .portada { padding-top: 72px; }

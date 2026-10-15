@@ -261,6 +261,11 @@ function pronombre(p) {
   return p.categoria === "Camas" ? "la" : "lo";
 }
 
+// Instagram (lo atiende Cande): abre el chat directo con la cuenta
+function igLink() {
+  return "https://ig.me/m/" + KM.instagram;
+}
+
 function waLink(mensaje) {
   return "https://wa.me/" + KM.whatsapp + "?text=" + encodeURIComponent(mensaje);
 }
@@ -288,6 +293,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Todos los enlaces con data-wa="mensaje" abren WhatsApp con ese mensaje ya escrito
   document.querySelectorAll("[data-wa]").forEach((a) => {
     a.href = waLink(a.dataset.wa);
+    a.target = "_blank";
+    a.rel = "noopener";
+  });
+
+  document.querySelectorAll("[data-ig]").forEach((a) => {
+    a.href = igLink();
     a.target = "_blank";
     a.rel = "noopener";
   });

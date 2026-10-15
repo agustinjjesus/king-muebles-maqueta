@@ -69,6 +69,7 @@ main.innerHTML = `
       </div>
 
       <a class="btn btn-negro btn-ancho" id="consultar">Consultar por WhatsApp</a>
+      <a class="btn btn-borde btn-ancho" href="${igLink()}" target="_blank" rel="noopener">Consultar por Instagram</a>
       <p class="ayuda">Atendido por sus dueños, sin respuestas automáticas. Envío con instalación en CABA y GBA · <a href="index.html#envios">Ver zonas</a></p>
 
       <dl class="tabla-specs">
