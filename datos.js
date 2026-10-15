@@ -117,19 +117,18 @@ const KM = {
     ],
   },
 
-  // Colores: los 9 del catálogo de WhatsApp (13/10) + Scotch (la KNG que mandó Ramiro el 13/10; la
-  // muestra es un recorte de esa foto). Cada color con fotos va como producto aparte, con su precio;
-  // en la ficha, el resto de los colores es "a consultar".
+  // Colores: la gama nueva de King Muebles (catálogo de colores del 15/10), de claro a oscuro. Las
+  // muestras de madera son recortes de ese catálogo; Blanco y Negro, de las capturas del 13/10.
+  // En las fichas, todo lo que no sea Blanco va con el precio "en color".
   colores: [
     { nombre: "Blanco", img: "assets/colores/blanco.jpg" },
-    { nombre: "Scotch", img: "assets/colores/scotch.jpg" },
     { nombre: "Blanco Nature", img: "assets/colores/blanco-nature.jpg" },
+    { nombre: "Scotch", img: "assets/colores/scotch.jpg" },
     { nombre: "Helsinki", img: "assets/colores/helsinki.jpg" },
     { nombre: "Pinot Gris", img: "assets/colores/pinot-gris.jpg" },
-    { nombre: "Linoza Cinza", img: "assets/colores/linoza-cinza.jpg" },
-    { nombre: "Atakama", img: "assets/colores/atakama.jpg" },
-    { nombre: "Terrarum", img: "assets/colores/terrarum.jpg" },
-    { nombre: "Fresno Negro", img: "assets/colores/fresno-negro.jpg" },
+    { nombre: "Olmo Finlandés", img: "assets/colores/olmo-finlandes.jpg" },
+    { nombre: "Nocce Milano", img: "assets/colores/nocce-milano.jpg" },
+    { nombre: "Roble Dakar", img: "assets/colores/roble-dakar.jpg" },
     { nombre: "Negro", img: "assets/colores/negro.jpg" },
   ],
 
