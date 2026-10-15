@@ -8,6 +8,18 @@ const base = P.base || P.nombre;   // "Cama KNG", sin el color
 const variantes = KM.productos.filter((p) => p === P || (p.modelo && p.modelo === P.modelo));
 const elegido = { medida: P.medidas[0][0], color: P.color };
 
+// De qué producto sale el precio de un color: el que tiene ese color, o el que vale para "cualquier
+// otro color" (Ramiro: la KNG blanca $499.000 y en color $530.000). Sin producto: a consultar.
+function productoDelColor(color) {
+  return variantes.find((v) => v.color === color) ||
+    (color !== "Blanco" ? variantes.find((v) => v.otrosColores) : null) || null;
+}
+function precioDe(color, medida) {
+  const prod = productoDelColor(color);
+  const fila = prod && prod.medidas.find(([m]) => m === medida);
+  return fila ? fila[1] : null;
+}
+
 const textoMedida = (m) => (m.includes("x") ? m : m + " m");
 const abrirEnWhatsApp = (a, msg) => {
   a.href = waLink(msg);
@@ -39,6 +51,8 @@ main.innerHTML = `
           <table class="tabla-medidas">
             <thead><tr><th>Cama</th><th>Colchón</th></tr></thead>
             <tbody>
+              <tr><td>1 plaza</td><td>80 x 190 o 90 x 190 cm</td></tr>
+              <tr><td>1 plaza y media</td><td>100 x 190 cm</td></tr>
               <tr><td>2 plazas</td><td>140 x 190 cm</td></tr>
               <tr><td>Queen</td><td>160 x 200 cm</td></tr>
               <tr><td>King</td><td>180 x 200 cm</td></tr>
@@ -51,7 +65,7 @@ main.innerHTML = `
       <div class="opcion">
         <span>Color · <span class="color-elegido" id="color-elegido"></span></span>
         <div class="botones colores" id="colores"></div>
-        <p class="colores-nota">Los demás colores, a consultar.</p>
+        <p class="colores-nota">Los colores sin precio, a consultar.</p>
       </div>
 
       <a class="btn btn-negro btn-ancho" id="consultar">Consultar por WhatsApp</a>
@@ -104,16 +118,19 @@ P.medidas.forEach(([m]) => {
   cajaMedidas.appendChild(b);
 });
 
-// colores: los que tienen ficha propia llevan a esa ficha; el resto se elige acá y queda a consultar
+// colores: los que tienen ficha propia llevan a esa ficha; el resto se elige acá, con su precio o a consultar
 const cajaColores = document.getElementById("colores");
+let sinPrecio = 0;
 KM.colores.forEach((c) => {
   const variante = variantes.find((v) => v.color === c.nombre);
   const propia = variante && variante.id === P.id;
+  const desde = precioDe(c.nombre, P.medidas[0][0]);
+  if (!desde) sinPrecio++;
   const el = document.createElement(variante && !propia ? "a" : "button");
   el.className = "muestra";
   el.title = c.nombre;
   el.dataset.id = c.nombre;
-  el.innerHTML = `<img src="${c.img}" alt=""><span>${c.nombre}${variante ? `<small>${pesos(variante.desde)}</small>` : ""}</span>`;
+  el.innerHTML = `<img src="${c.img}" alt=""><span>${c.nombre}${desde ? `<small>${pesos(desde)}</small>` : ""}</span>`;
   if (variante && !propia) {
     el.href = variante.url;
   } else {
@@ -122,30 +139,32 @@ KM.colores.forEach((c) => {
   }
   cajaColores.appendChild(el);
 });
+document.querySelector(".colores-nota").hidden = sinPrecio === 0;
 
 function actualizar() {
   cajaMedidas.querySelectorAll("button").forEach((b) => b.classList.toggle("activa", b.dataset.id === elegido.medida));
   cajaColores.querySelectorAll(".muestra").forEach((b) => b.classList.toggle("activa", b.dataset.id === elegido.color));
 
   const mismoColor = elegido.color === P.color;
-  const precio = mismoColor ? P.medidas.find(([m]) => m === elegido.medida)[1] : null;
+  const precio = precioDe(elegido.color, elegido.medida);
   const medida = textoMedida(elegido.medida);
+  const nombre = mismoColor ? P.nombre : `${base} en ${elegido.color}`;
 
   document.getElementById("color-elegido").textContent = elegido.color;
   document.getElementById("precio").textContent = precio ? pesos(precio) : "Precio a consultar";
   // los combos muestran cuánto sale cada parte (solo en la medida de la que pasaron el desglose)
-  const partes = P.partes && elegido.medida === P.medidas[0][0]
+  const partes = P.partes && precio && productoDelColor(elegido.color) === P && elegido.medida === P.medidas[0][0]
     ? P.partes.map(([n, p]) => `${n} ${pesos(p)}`).join(" + ")
     : null;
-  // otro color: las fotos y el título siguen siendo los de este producto, y se aclara que es a pedido
+  // otro color: las fotos y el título siguen siendo los de este producto
   document.getElementById("nota").textContent = precio
     ? (partes ? `${partes} · Color ${elegido.color}` : `Color ${elegido.color} · ${medida}`)
-    : (mismoColor
+    : (mismoColor || productoDelColor(elegido.color)
       ? "Te pasamos el precio por WhatsApp"
-      : `En ${elegido.color} ${pronombre(P)} hacemos a pedido. Te pasamos el precio por WhatsApp`);
+      : `En ${elegido.color}, te pasamos el precio por WhatsApp`);
 
   const msg = precio
-    ? `Hola! Vi en la web ${articulo(P)} ${P.nombre} de ${medida} (${pesos(precio)}). ¿Me pasás más info?`
+    ? `Hola! Vi en la web ${articulo(P)} ${nombre} de ${medida} (${pesos(precio)}). ¿Me pasás más info?`
     : `Hola! Vi en la web ${articulo(P)} ${base} y ${pronombre(P)} quiero de ${medida}, color ${elegido.color}. ¿Me pasás el precio?`;
   abrirEnWhatsApp(document.getElementById("consultar"), msg);
 

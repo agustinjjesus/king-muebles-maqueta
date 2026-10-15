@@ -21,8 +21,9 @@ const KM = {
   // Para sumar una ficha: copiar cama-kng-scotch.html, cambiar el id y los textos del <head>, y cargar acá
   // fotos, medidas (precio null = "a consultar") y specs.
   productos: [
-    // Ramiro (13/10): "Es la que tendría que estar principal". Misma cama en cada color, con su precio:
-    // la blanca $499.000 y la Scotch $530.000. Las otras medidas y colores, a consultar.
+    // Ramiro (13/10): "Es la que tendría que estar principal". "Poner 499.000 la blanca y 530.000 color,
+    // y que aparezcan las de color en el catálogo": la Scotch es la de color con fotos, y su precio vale
+    // para cualquier otro color (otrosColores). Las otras medidas, a consultar.
     { id: "cama-kng", modelo: "kng", base: "Cama KNG", nombre: "Cama KNG Blanca", color: "Blanco", categoria: "Camas",
       bajada: "6 cajones · 2 bauleras · 2 zapateros", url: "cama-kng.html", desde: 499000,
       foto: "assets/reales/kng-blanco-2.jpg",
@@ -35,7 +36,7 @@ const KM = {
       ],
       medidas: [["1,40 x 1,90", 499000], ["1,60", null], ["1,80", null], ["2,00", null]],
       specs: "kng" },
-    { id: "cama-kng-scotch", modelo: "kng", base: "Cama KNG", nombre: "Cama KNG Scotch", color: "Scotch", categoria: "Camas",
+    { id: "cama-kng-scotch", modelo: "kng", base: "Cama KNG", nombre: "Cama KNG Scotch", color: "Scotch", otrosColores: true, categoria: "Camas",
       bajada: "6 cajones · 2 bauleras · 2 zapateros", url: "cama-kng-scotch.html", desde: 530000,
       foto: "assets/reales/kng-scotch-2.jpg",
       galeria: [
@@ -53,21 +54,31 @@ const KM = {
       foto: "assets/catalogo/cama-kingdom.jpg" },
     { id: "cama-boti", nombre: "Cama Boti", categoria: "Camas", bajada: "Cama con guardado",
       foto: "assets/catalogo/cama-boti.jpg" },
-    // Ramiro (14/10): $450.000 en cualquiera de las 3 medidas. No dijo el color: va como blanca (la foto
-    // es blanca), a confirmar. Sin ficha hasta tener sus fotos originales (las del chat no llegaron).
-    { id: "cama-kng-individual", nombre: "Cama KNG Individual", color: "Blanco", categoria: "Camas",
-      bajada: "3 cajones · 2 bauleras · 1 zapatero", desde: 450000,
-      foto: "assets/catalogo/cama-individual.jpg",
+    // Ramiro (14/10): $450.000 en cualquiera de las 3 medidas. No dijo el color: va como blanca (todas
+    // las fotos son de la blanca), a confirmar; los otros colores, a consultar.
+    { id: "cama-kng-individual", base: "Cama KNG Individual", nombre: "Cama KNG Individual", color: "Blanco", categoria: "Camas",
+      bajada: "3 cajones · 2 bauleras · 1 zapatero", url: "cama-kng-individual.html", desde: 450000,
+      foto: "assets/reales/individual-3.jpg",
+      galeria: [
+        { foto: "assets/reales/individual-3.jpg", alt: "Cama KNG Individual con cajones, bauleras y zapatero abiertos" },
+        { foto: "assets/reales/individual-1.jpg", alt: "Cama KNG Individual con los cajones abiertos" },
+        { foto: "assets/reales/individual-2.jpg", alt: "Cama KNG Individual cerrada" },
+        { foto: "assets/reales/individual-4.jpg", alt: "Cama KNG Individual abierta, vista desde el costado" },
+        { foto: "assets/reales/individual-5.jpg", alt: "Cama KNG Individual con las bauleras abiertas" },
+      ],
       medidas: [["80 x 1,90", 450000], ["90 x 1,90", 450000], ["1,00 x 1,90", 450000]],
       specs: "kng-individual" },
-    // Ramiro (14/10): cama $530.000 (la de la foto es Scotch) + respaldo con mesitas flotantes $225.000.
-    { id: "combo-kng", nombre: "Combo KNG", color: "Scotch", categoria: "Combos",
+    // Ramiro (14/10): cama en color $530.000 + respaldo con mesitas flotantes $225.000 = $755.000.
+    // En blanco no lo pasó: a consultar.
+    { id: "combo-kng", nombre: "Combo KNG", color: "Scotch", otrosColores: true, categoria: "Combos",
       bajada: "Cama KNG + respaldo con mesitas flotantes", url: "combo-kng.html", desde: 755000,
       foto: "assets/reales/combo-kng-1.jpg",
       galeria: [
-        { foto: "assets/reales/combo-kng-1.jpg", alt: "Combo KNG Scotch: cama con respaldo y mesitas flotantes" },
-        { foto: "assets/reales/kng-scotch-2.jpg", alt: "La cama del combo, con cajones, bauleras y zapateros abiertos" },
-        { foto: "assets/reales/kng-scotch-4.jpg", alt: "Frente de la cama del combo con los zapateros cerrados" },
+        { foto: "assets/reales/combo-kng-1.jpg", alt: "Combo KNG: cama con respaldo y mesitas flotantes" },
+        { foto: "assets/reales/combo-kng-2.jpg", alt: "Combo KNG instalado en un dormitorio" },
+        { foto: "assets/reales/combo-kng-3.jpg", alt: "Combo KNG con cajones, bauleras y zapateros abiertos" },
+        { video: "assets/reales/combo-video-abierta.mp4", poster: "assets/reales/combo-video-abierta-poster.jpg" },
+        { foto: "assets/reales/combo-kng-claro-1.jpg", alt: "Combo KNG en un color claro, con la cama abierta" },
       ],
       partes: [["Cama", 530000], ["respaldo y mesitas", 225000]],
       medidas: [["1,40 x 1,90", 755000], ["1,60", null], ["1,80", null], ["2,00", null]],
