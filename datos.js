@@ -87,7 +87,7 @@ const KM = {
         { foto: "assets/reales/combo-kng-2.jpg", alt: "Combo KNG instalado en un dormitorio" },
         { foto: "assets/reales/combo-kng-3.jpg", alt: "Combo KNG con cajones, bauleras y zapateros abiertos" },
         { video: "assets/reales/combo-video-abierta.mp4", poster: "assets/reales/combo-video-abierta-poster.jpg" },
-        { foto: "assets/reales/combo-kng-claro-1.jpg", alt: "Combo KNG en un color claro, con la cama abierta" },
+        { foto: "assets/reales/combo-kng-claro-1.jpg", alt: "Combo KNG en Helsinki, con la cama abierta", color: "Helsinki" },
       ],
       precios: {
         blanco: [["1,40 x 1,90", 725000], ["1,60", null], ["1,80", null], ["2,00", null]],

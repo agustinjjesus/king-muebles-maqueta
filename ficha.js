@@ -87,6 +87,12 @@ function mostrar(item) {
     ? `<video src="${item.video}" poster="${item.poster}" controls autoplay muted loop playsinline></video>`
     : `<img src="${item.foto}" alt="${item.alt || P.nombre}">`;
 }
+let fotoActual = 0;
+function verFoto(i) {
+  fotoActual = i;
+  miniaturas.querySelectorAll("button").forEach((x, j) => x.classList.toggle("activa", j === i));
+  mostrar(P.galeria[i]);
+}
 P.galeria.forEach((item, i) => {
   const b = document.createElement("button");
   b.type = "button";
@@ -94,15 +100,19 @@ P.galeria.forEach((item, i) => {
   b.innerHTML = item.video
     ? `<img src="${item.poster}" alt=""><span class="play">Video</span>`
     : `<img src="${item.foto}" alt="">`;
-  b.addEventListener("click", () => {
-    miniaturas.querySelectorAll("button").forEach((x) => x.classList.toggle("activa", x === b));
-    mostrar(item);
-  });
-  if (i === 0) b.classList.add("activa");
+  b.addEventListener("click", () => verFoto(i));
   miniaturas.appendChild(b);
 });
-mostrar(P.galeria[0]);
+verFoto(0);
 miniaturas.hidden = P.galeria.length < 2;
+
+// si hay una foto del color elegido (ej. el combo en Helsinki), se muestra esa; si no hay y se estaba
+// viendo la foto de otro color, vuelve a la principal
+function fotoDelColor(color) {
+  const i = color === P.color ? 0 : P.galeria.findIndex((item) => item.color === color);
+  if (i >= 0) verFoto(i);
+  else if (P.galeria[fotoActual].color) verFoto(0);
+}
 
 // medidas
 const cajaMedidas = document.getElementById("medidas");
@@ -132,7 +142,7 @@ KM.colores.forEach((c) => {
     el.href = variante.url;
   } else {
     el.type = "button";
-    el.addEventListener("click", () => { elegido.color = c.nombre; actualizar(); });
+    el.addEventListener("click", () => { elegido.color = c.nombre; fotoDelColor(c.nombre); actualizar(); });
   }
   cajaColores.appendChild(el);
 });
