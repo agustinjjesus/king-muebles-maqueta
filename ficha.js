@@ -16,7 +16,7 @@ const abrirEnWhatsApp = (a, msg) => {
 };
 
 main.innerHTML = `
-  <div class="migas"><a href="index.html#catalogo">Catálogo</a> / ${P.categoria} / ${P.nombre}</div>
+  <div class="migas"><a href="index.html#catalogo">Catálogo</a> / <a href="index.html?cat=${encodeURIComponent(P.categoria)}#catalogo">${P.categoria}</a> / ${P.nombre}</div>
   <div class="ficha">
     <div class="galeria">
       <div class="principal" id="principal"></div>
@@ -61,7 +61,12 @@ main.innerHTML = `
         ${KM.specs[P.specs].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}
       </dl>
     </div>
-  </div>`;
+  </div>
+
+  <section class="ficha-opiniones">
+    <div class="seccion-cabeza">${htmlNotaGoogle()}</div>
+    <ul class="opiniones">${htmlOpiniones()}</ul>
+  </section>`;
 
 // galería: fotos y videos
 const principal = document.getElementById("principal");
@@ -132,9 +137,12 @@ function actualizar() {
   const partes = P.partes && elegido.medida === P.medidas[0][0]
     ? P.partes.map(([n, p]) => `${n} ${pesos(p)}`).join(" + ")
     : null;
+  // otro color: las fotos y el título siguen siendo los de este producto, y se aclara que es a pedido
   document.getElementById("nota").textContent = precio
     ? (partes ? `${partes} · Color ${elegido.color}` : `Color ${elegido.color} · ${medida}`)
-    : "Te pasamos el precio por WhatsApp";
+    : (mismoColor
+      ? "Te pasamos el precio por WhatsApp"
+      : `En ${elegido.color} ${pronombre(P)} hacemos a pedido. Te pasamos el precio por WhatsApp`);
 
   const msg = precio
     ? `Hola! Vi en la web ${articulo(P)} ${P.nombre} de ${medida} (${pesos(precio)}). ¿Me pasás más info?`

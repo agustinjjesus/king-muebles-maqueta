@@ -22,15 +22,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css?v=12">
-  <script src="datos.js?v=12"></script>
+  <link rel="stylesheet" href="estilos.css?v=13">
+  <script src="datos.js?v=13"></script>
 </head>
 <body>
 
   <header class="cabecera">
     <div class="contenedor">
       <a class="logo" href="index.html"><img src="assets/logo-negro.png" alt="King Muebles"></a>
-      <nav>
+      <nav class="menu-escritorio">
         <a href="#catalogo">Catálogo</a>
         <a href="#presupuesto">A medida</a>
         <a href="#nosotros">Nosotros</a>
@@ -38,7 +38,20 @@
         <a href="#envios">Envíos</a>
         <a href="#preguntas">Preguntas</a>
       </nav>
-      <a class="contacto" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">WhatsApp</a>
+      <div class="cabecera-acciones">
+        <details class="menu-movil">
+          <summary>Menú</summary>
+          <nav>
+            <a href="#catalogo">Catálogo</a>
+            <a href="#presupuesto">A medida</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="#fabrica">Fábrica</a>
+            <a href="#envios">Envíos</a>
+            <a href="#preguntas">Preguntas</a>
+          </nav>
+        </details>
+        <a class="contacto" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">WhatsApp</a>
+      </div>
     </div>
   </header>
 
@@ -64,7 +77,7 @@
       <li><strong>18 mm</strong><span>Melamina interior y exterior</span></li>
       <li><strong>600 kg</strong><span>Carga máxima de la Cama KNG</span></li>
       <li><strong>Metálicos</strong><span>Herrajes sin piezas de plástico</span></li>
-      <li><strong>Instalación</strong><span>Incluida con el envío</span></li>
+      <li><strong>Instalación</strong><span>Incluida en el flete</span></li>
     </ul>
   </section>
 
@@ -121,28 +134,8 @@
 
   <section class="seccion seccion-alt" id="opiniones">
     <div class="contenedor">
-      <div class="seccion-cabeza">
-        <div class="nota-google">
-          <strong>4,7</strong>
-          <span class="estrellas" aria-hidden="true">★★★★★</span>
-          <span>68 opiniones en Google</span>
-        </div>
-        <a class="link-flecha" href="https://share.google/Lflyi2ZKii5RVjfKh" target="_blank" rel="noopener">Ver opiniones en Google →</a>
-      </div>
-      <ul class="opiniones">
-        <li>
-          <blockquote>“Excelente experiencia de principio a fin. Compramos una cama y todo fue impecable. Cumplieron con los tiempos, hicieron todo muy rápido y el resultado superó nuestras expectativas.”</blockquote>
-          <div class="autor"><span class="avatar" aria-hidden="true">C</span><div><strong>Camila R.</strong><span class="fuente">Opinión en Google</span></div></div>
-        </li>
-        <li>
-          <blockquote>“Son excelentes! La cama box quedó hermosa! El color y las terminaciones impecables. Son muy amables y responden a todas las preguntas… Muy recomendable!”</blockquote>
-          <div class="autor"><span class="avatar" aria-hidden="true">S</span><div><strong>Silvana Z.</strong><span class="fuente">Opinión en Google</span></div></div>
-        </li>
-        <li>
-          <blockquote>“Excelente cama y servicio! Ramiro con toda la paciencia del mundo resolvió mis dudas y cumplieron con la entrega.”</blockquote>
-          <div class="autor"><span class="avatar" aria-hidden="true">G</span><div><strong>Guadalupe R.</strong><span class="fuente">Opinión en Google</span></div></div>
-        </li>
-      </ul>
+      <div class="seccion-cabeza" id="nota-google"></div>
+      <ul class="opiniones" id="lista-opiniones"></ul>
     </div>
   </section>
 
@@ -207,9 +200,9 @@
         </label>
         <fieldset class="medidas">
           <legend>Medidas aproximadas (cm)</legend>
-          <label>Ancho<input name="ancho" type="number" min="1" inputmode="numeric" placeholder="240"></label>
-          <label>Alto<input name="alto" type="number" min="1" inputmode="numeric" placeholder="90"></label>
-          <label>Profundidad<input name="prof" type="number" min="1" inputmode="numeric" placeholder="60"></label>
+          <label>Ancho<input name="ancho" type="number" min="1" inputmode="numeric" placeholder="Ej. 240"></label>
+          <label>Alto<input name="alto" type="number" min="1" inputmode="numeric" placeholder="Ej. 90"></label>
+          <label>Profundidad<input name="prof" type="number" min="1" inputmode="numeric" placeholder="Ej. 60"></label>
         </fieldset>
         <label>Color
           <select name="color" id="form-color"><option value="">Todavía no sé</option></select>
@@ -269,7 +262,7 @@
           <li>La Plata</li>
         </ul>
         <p class="nota">Por ahora no hacemos envíos al interior del país.</p>
-        <p class="nota">Costo del flete por zona: a confirmar.</p>
+        <p class="nota">El costo del flete depende de la zona: consultalo por WhatsApp.</p>
       </div>
       <div class="buscador">
         <label for="localidad">¿Llegamos a tu casa?</label>
@@ -390,7 +383,7 @@
       grilla.prepend(a);
     });
 
-    // filtro por categoría
+    // filtro por categoría (las migas de las fichas llegan con ?cat=Camas, etc.)
     document.querySelectorAll(".pestana").forEach((b) => {
       b.addEventListener("click", () => {
         document.querySelectorAll(".pestana").forEach((x) => x.classList.toggle("activa", x === b));
@@ -399,6 +392,13 @@
         });
       });
     });
+    const catPedida = new URLSearchParams(location.search).get("cat");
+    const pestanaPedida = [...document.querySelectorAll(".pestana")].find((b) => b.dataset.cat === catPedida);
+    if (pestanaPedida) pestanaPedida.click();
+
+    // opiniones de Google
+    document.getElementById("nota-google").innerHTML = htmlNotaGoogle();
+    document.getElementById("lista-opiniones").innerHTML = htmlOpiniones();
 
     // Pedí tu presupuesto a medida: arma el mensaje y abre WhatsApp
     const form = document.getElementById("form-medida");

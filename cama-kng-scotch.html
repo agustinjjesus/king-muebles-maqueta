@@ -22,15 +22,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css?v=12">
-  <script src="datos.js?v=12"></script>
+  <link rel="stylesheet" href="estilos.css?v=13">
+  <script src="datos.js?v=13"></script>
 </head>
 <body>
 
   <header class="cabecera">
     <div class="contenedor">
       <a class="logo" href="index.html"><img src="assets/logo-negro.png" alt="King Muebles"></a>
-      <nav>
+      <nav class="menu-escritorio">
         <a href="index.html#catalogo">Catálogo</a>
         <a href="index.html#presupuesto">A medida</a>
         <a href="index.html#nosotros">Nosotros</a>
@@ -38,7 +38,20 @@
         <a href="index.html#envios">Envíos</a>
         <a href="index.html#preguntas">Preguntas</a>
       </nav>
-      <a class="contacto" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">WhatsApp</a>
+      <div class="cabecera-acciones">
+        <details class="menu-movil">
+          <summary>Menú</summary>
+          <nav>
+            <a href="index.html#catalogo">Catálogo</a>
+            <a href="index.html#presupuesto">A medida</a>
+            <a href="index.html#nosotros">Nosotros</a>
+            <a href="index.html#fabrica">Fábrica</a>
+            <a href="index.html#envios">Envíos</a>
+            <a href="index.html#preguntas">Preguntas</a>
+          </nav>
+        </details>
+        <a class="contacto" data-wa="Hola! Vi la web de King Muebles y quería hacer una consulta.">WhatsApp</a>
+      </div>
     </div>
   </header>
 
@@ -78,6 +91,6 @@
     <img src="assets/whatsapp.png" alt="">
   </a>
 
-  <script src="ficha.js?v=12"></script>
+  <script src="ficha.js?v=13"></script>
 </body>
 </html>

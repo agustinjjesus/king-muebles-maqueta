@@ -1,11 +1,11 @@
 // Datos de la maqueta. En la web real esto sale de la planilla de Google
 // que mantiene Agustín (precios por medida y color).
 const SPECS_KNG = [
-  ["Medida", "1,40 x 1,90 (colchón de 2 plazas). Otras medidas, a consultar"],
+  ["Medidas", "1,40 x 1,90 (colchón de 2 plazas). También 1,60, 1,80 y 2,00 m, a consultar"],
   ["Material", "Melamina de 18 mm, interior y exterior"],
   ["Carga máxima", "600 kg"],
   ["Altura", "40 cm (también de 30 cm)"],
-  ["Cajones", "6 con guías telescópicas: 3 de cada lado, 1 grande y 2 chicos"],
+  ["Cajones", "6 con guías telescópicas: 3 de cada lado, 1 grande y 2 chicos (también con 4 u 8, a consultar)"],
   ["Bauleras", "2, con bisagras"],
   ["Zapateros", "2 al frente, con pistones y bisagras"],
   ["Herrajes", "Metálicos, sin piezas de plástico"],
@@ -79,6 +79,17 @@ const KM = {
     { id: "colchon-isolda-doble-pillow", nombre: "Colchón Isolda Doble Pillow", categoria: "Colchones",
       bajada: "Con doble pillow", foto: "assets/catalogo/colchon-isolda-doble-pillow.jpg" },
   ],
+
+  // Opiniones de Google (ficha de King Muebles, 12/10): nombre con inicial del apellido, sin fotos.
+  // Se muestran en el inicio y en cada ficha.
+  opiniones: {
+    nota: "4,7", total: 68, link: "https://share.google/Lflyi2ZKii5RVjfKh",
+    lista: [
+      { autor: "Camila R.", texto: "Excelente experiencia de principio a fin. Compramos una cama y todo fue impecable. Cumplieron con los tiempos, hicieron todo muy rápido y el resultado superó nuestras expectativas." },
+      { autor: "Silvana Z.", texto: "Son excelentes! La cama box quedó hermosa! El color y las terminaciones impecables. Son muy amables y responden a todas las preguntas… Muy recomendable!" },
+      { autor: "Guadalupe R.", texto: "Excelente cama y servicio! Ramiro con toda la paciencia del mundo resolvió mis dudas y cumplieron con la entrega." },
+    ],
+  },
 
   // Colores: los 9 del catálogo de WhatsApp (13/10) + Scotch (la KNG que mandó Ramiro el 13/10; la
   // muestra es un recorte de esa foto). Cada color con fotos va como producto aparte, con su precio;
@@ -247,11 +258,33 @@ function pesos(n) {
   return "$" + n.toLocaleString("es-AR");
 }
 
-// Todos los enlaces con data-wa="mensaje" abren WhatsApp con ese mensaje ya escrito
+// Opiniones de Google: la nota y las tarjetas, para el inicio y las fichas
+function htmlNotaGoogle() {
+  const o = KM.opiniones;
+  return `<div class="nota-google"><strong>${o.nota}</strong><span class="estrellas" aria-hidden="true">★★★★★</span>` +
+    `<span>${o.total} opiniones en Google</span></div>` +
+    `<a class="link-flecha" href="${o.link}" target="_blank" rel="noopener">Ver opiniones en Google →</a>`;
+}
+function htmlOpiniones() {
+  return KM.opiniones.lista.map((o) => `
+    <li>
+      <blockquote>“${o.texto}”</blockquote>
+      <div class="autor"><span class="avatar" aria-hidden="true">${o.autor[0]}</span><div><strong>${o.autor}</strong><span class="fuente">Opinión en Google</span></div></div>
+    </li>`).join("");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  // Todos los enlaces con data-wa="mensaje" abren WhatsApp con ese mensaje ya escrito
   document.querySelectorAll("[data-wa]").forEach((a) => {
     a.href = waLink(a.dataset.wa);
     a.target = "_blank";
     a.rel = "noopener";
   });
+
+  // Menú del celular: se cierra al elegir una sección o al tocar afuera
+  const menu = document.querySelector(".menu-movil");
+  if (menu) {
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => { menu.open = false; }));
+    document.addEventListener("click", (e) => { if (menu.open && !menu.contains(e.target)) menu.open = false; });
+  }
 });
