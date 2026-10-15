@@ -92,36 +92,16 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
   .menu-movil { display: none; }
 }
 
-/* hero */
-.hero { padding: 48px 0 64px; }
-.hero-grid { display: grid; gap: 40px; align-items: center; }
-.hero h1 { font-size: clamp(38px, 6.2vw, 68px); margin-bottom: 20px; text-wrap: balance; }
+/* portada: la frase de Ramiro y enseguida el catálogo */
+.portada { padding: 48px 0 0; }
+.portada h1 { font-size: clamp(34px, 5.4vw, 60px); margin-bottom: 18px; text-wrap: balance; max-width: 16em; }
 /* los emojis de la frase de Ramiro: los del sistema de cada celular, un poco más chicos que el texto */
-.hero h1 .emoji { font-size: 0.8em; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
-.hero .lead { margin: 0 0 32px; }
-.acciones { display: flex; flex-wrap: wrap; gap: 12px; }
-.hero-foto { margin: 0; background: var(--hueso); aspect-ratio: 4 / 5; overflow: hidden; }
-.hero-foto img { width: 100%; height: 100%; object-fit: cover; }
-@media (min-width: 640px) and (max-width: 899px) { .hero-foto { aspect-ratio: 3 / 2; } }
+.portada h1 .emoji { font-size: 0.8em; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+.portada .lead { margin: 0; }
+.portada + .seccion { padding-top: 48px; }
 @media (min-width: 900px) {
-  .hero { padding: 72px 0 96px; }
-  .hero-grid { grid-template-columns: 1fr 1fr; gap: 72px; }
-}
-
-/* franja de datos */
-.datos { border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); }
-.datos ul { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: 1fr 1fr; }
-.datos li { padding: 24px 0 24px 0; border-bottom: 1px solid var(--linea); }
-.datos li:nth-child(odd) { padding-right: 16px; }
-.datos li:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--linea); }
-.datos li:nth-last-child(-n+2) { border-bottom: 0; }
-.datos strong { display: block; font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
-.datos span { font-size: 14px; color: var(--gris); }
-@media (min-width: 900px) {
-  .datos ul { grid-template-columns: repeat(4, 1fr); }
-  .datos li { border-bottom: 0; padding: 32px 24px; border-left: 1px solid var(--linea); }
-  .datos li:nth-child(odd), .datos li:nth-child(even) { padding: 32px 24px; }
-  .datos li:first-child { border-left: 0; padding-left: 0; }
+  .portada { padding-top: 72px; }
+  .portada + .seccion { padding-top: 64px; }
 }
 
 /* secciones */
@@ -159,51 +139,6 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .producto.proximo .foto span, .producto .proximo-foto span { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gris-claro); }
 .producto.proximo h3 { color: var(--gris-claro); }
 
-/* video destacado */
-.destacado { display: grid; gap: 40px; align-items: center; }
-.destacado video { width: 100%; max-width: 360px; aspect-ratio: 9 / 16; object-fit: cover; background: #000 url("assets/reales/video-cajones-poster.jpg") center / cover; }
-.destacado h2 { margin-bottom: 16px; }
-.destacado .lead { margin: 0 0 28px; }
-@media (min-width: 900px) { .destacado { grid-template-columns: 0.8fr 1.2fr; gap: 80px; } }
-
-/* por qué elegirnos */
-.razones { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 40px; }
-.razones li { border-top: 1px solid var(--tinta); padding: 22px 0 30px; }
-.razones h3 { font-size: 20px; margin-bottom: 8px; }
-.razones p { margin: 0; color: var(--gris); }
-@media (min-width: 640px) { .razones { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .razones { grid-template-columns: repeat(3, 1fr); } }
-
-/* atendido por sus dueños */
-.cita {
-  margin: 0 0 32px; padding: 4px 0 4px 20px; border-left: 2px solid var(--tinta);
-  font-size: 19px; line-height: 1.45;
-}
-.cita .fuente { display: block; margin-top: 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); }
-.atencion-lista { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--linea); }
-.atencion-lista li { border-top: 1px solid var(--linea); padding: 20px 0; }
-.atencion-lista li:first-child { border-top-color: var(--tinta); }
-.atencion-lista h3 { font-size: 19px; margin-bottom: 6px; }
-.atencion-lista p { margin: 0; color: var(--gris); }
-
-/* formulario a medida */
-.form-medida { background: var(--papel); border: 1px solid var(--linea); padding: 28px; display: grid; gap: 18px; }
-.form-medida label, .form-medida legend {
-  display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-}
-.form-medida input, .form-medida select, .form-medida textarea {
-  display: block; width: 100%; margin-top: 8px; font: inherit; font-size: 16px; font-weight: 400; letter-spacing: 0; text-transform: none;
-  padding: 12px 14px; border: 1px solid var(--linea); border-radius: 2px; background: var(--papel); color: var(--tinta);
-}
-.form-medida input:focus, .form-medida select:focus, .form-medida textarea:focus { outline: none; border-color: var(--tinta); }
-.form-medida textarea { resize: vertical; }
-.form-medida fieldset { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.form-medida fieldset legend { grid-column: 1 / -1; margin-bottom: 0; padding: 0; }
-.form-medida fieldset label { font-size: 11px; color: var(--gris); }
-.form-medida .check { display: flex; align-items: center; gap: 10px; font-size: 15px; letter-spacing: 0; text-transform: none; font-weight: 400; }
-.form-medida .check input { width: 18px; height: 18px; margin: 0; accent-color: var(--tinta); }
-.form-medida .nota { margin: 0; text-align: center; }
-
 /* guía de medidas */
 .tabla-medidas { width: 100%; max-width: 520px; border-collapse: collapse; margin: 0 0 18px; font-size: 15px; }
 .tabla-medidas th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); padding: 0 0 8px; }
@@ -237,19 +172,12 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .fabrica-medios .mapa { aspect-ratio: 16 / 9; }
 .mapa iframe { width: 100%; height: 100%; border: 0; display: block; filter: grayscale(1) contrast(1.05); }
 
-/* cómo comprar */
-.pasos { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: paso; }
-.pasos li { border-top: 1px solid var(--tinta); padding: 22px 0 30px; }
-.pasos .numero { display: block; font-size: 13px; font-weight: 500; letter-spacing: 0.14em; color: var(--gris); margin-bottom: 10px; }
-.pasos h3 { font-size: 22px; margin-bottom: 8px; }
-.pasos p { margin: 0; color: var(--gris); }
-@media (min-width: 900px) { .pasos { grid-template-columns: repeat(3, 1fr); gap: 40px; } }
-
 /* fábrica y envíos */
 .dos-col { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
 @media (min-width: 900px) { .dos-col { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 80px; align-items: start; } }
 .dos-col h2 { margin-bottom: 16px; }
 .dos-col .lead { margin: 0 0 28px; }
+.acciones { display: flex; flex-wrap: wrap; gap: 12px; }
 .ficha-datos { margin: 0 0 28px; border-top: 1px solid var(--linea); }
 .ficha-datos div { display: grid; grid-template-columns: 130px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--linea); }
 .ficha-datos dt { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); padding-top: 3px; }
