@@ -58,6 +58,13 @@
       .marca .etiqueta, .largo { display: none; }
       .corto { display: inline; }
     }
+    /* celulares muy angostos: "Actualizar" pasa a ser un ícono */
+    .solo-xs { display: none; }
+    @media (max-width: 379px) {
+      .marca strong { font-size: 15px; letter-spacing: 0.03em; }
+      .no-xs { display: none; }
+      .solo-xs { display: inline; font-size: 18px; }
+    }
 
     /* resumen del mes */
     .resumen { padding: 20px 0 8px; }
@@ -68,6 +75,15 @@
     .tile strong { display: block; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin-top: 2px; }
     .tile span:last-child { font-size: 13px; color: var(--gris); }
     @media (min-width: 760px) { .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    /* ventas del mes por origen */
+    .origenes { background: var(--papel); border: 1px solid var(--linea); border-top: 0; padding: 12px 16px 14px; }
+    .origenes .etiqueta { display: block; margin-bottom: 8px; }
+    .origen-fila { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: baseline; padding: 6px 0; }
+    .origen-fila + .origen-fila { border-top: 1px solid var(--linea); }
+    .origen-fila strong { font-weight: 500; }
+    .origen-fila span { font-size: 14px; color: var(--gris); }
+    .origen-barra { grid-column: 1 / -1; height: 3px; background: var(--hueso); }
+    .origen-barra i { display: block; height: 100%; background: var(--tinta); }
 
     /* filtros */
     .barra { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; padding: 20px 0 12px; }
@@ -79,11 +95,15 @@
     }
     .pestana.activa { color: var(--tinta); border-bottom-color: var(--tinta); }
     .pestana small { font-size: 11px; letter-spacing: 0; margin-left: 4px; }
-    .buscar { width: 100%; padding: 11px 14px; border: 1px solid var(--linea); border-radius: 2px; background: var(--papel); }
-    .buscar:focus { outline: none; border-color: var(--tinta); }
+    .filtros { display: flex; gap: 8px; width: 100%; }
+    .buscar, .filtro-origen { padding: 11px 14px; border: 1px solid var(--linea); border-radius: 2px; background: var(--papel); }
+    .buscar { flex: 1; min-width: 0; }
+    .filtro-origen { flex: none; max-width: 46%; }
+    .buscar:focus, .filtro-origen:focus { outline: none; border-color: var(--tinta); }
     @media (min-width: 900px) {
       .pestanas { width: auto; border-bottom: 0; }
-      .buscar { width: 280px; }
+      .filtros { width: auto; }
+      .buscar { width: 260px; flex: none; }
     }
 
     /* pedidos */
@@ -145,7 +165,7 @@
     <div class="contenedor">
       <div class="marca"><strong>King Muebles</strong><span class="etiqueta">Pedidos</span></div>
       <div class="cabecera-acciones">
-        <button class="btn btn-chico btn-texto" id="actualizar" type="button">Actualizar</button>
+        <button class="btn btn-chico btn-texto" id="actualizar" type="button" aria-label="Actualizar"><span class="no-xs">Actualizar</span><span class="solo-xs" aria-hidden="true">↻</span></button>
         <button class="btn btn-negro btn-chico" id="nuevo" type="button"><span class="largo">+ Nuevo pedido</span><span class="corto">+ Nuevo</span></button>
       </div>
     </div>
@@ -164,11 +184,15 @@
         <div class="tile"><span class="etiqueta">Saldo a cobrar</span><strong id="r-saldo">–</strong><span>De todos los pedidos</span></div>
         <div class="tile"><span class="etiqueta">En taller</span><strong id="r-taller">–</strong><span id="r-listos"></span></div>
       </div>
+      <div class="origenes" id="origenes"></div>
     </section>
 
     <div class="barra">
       <div class="pestanas" id="pestanas" role="tablist"></div>
-      <input class="buscar" id="buscar" type="search" placeholder="Buscar cliente, teléfono o producto" autocomplete="off">
+      <div class="filtros">
+        <input class="buscar" id="buscar" type="search" placeholder="Buscar cliente, teléfono o producto" autocomplete="off">
+        <select class="filtro-origen" id="filtro-origen" aria-label="Origen de la venta"></select>
+      </div>
     </div>
 
     <section class="lista" id="lista" aria-live="polite"><p class="vacio">Cargando pedidos…</p></section>
@@ -184,16 +208,12 @@
       <div class="form-cuerpo">
         <fieldset>
           <legend>Cliente</legend>
+          <label>¿De dónde vino la venta?<select name="canal" id="form-canal"></select></label>
+          <label>¿Quién la atiende?<select name="atendio"><option>Ramiro</option><option>Cande</option></select></label>
           <label class="ancho">Nombre y apellido *<input name="cliente" required autocomplete="off"></label>
           <label>Teléfono<input name="telefono" type="tel" inputmode="tel" placeholder="11 2345-6789" autocomplete="off"></label>
           <label>Localidad<input name="localidad" autocomplete="off"></label>
           <label class="ancho">Dirección de entrega<input name="direccion" autocomplete="off"></label>
-          <label>Nos escribió por
-            <select name="canal"><option>WhatsApp</option><option>Instagram</option><option>En la fábrica</option><option>Otro</option></select>
-          </label>
-          <label>Lo atiende
-            <select name="atendio"><option>Ramiro</option><option>Cande</option></select>
-          </label>
         </fieldset>
         <fieldset>
           <legend>Pedido</legend>
@@ -236,6 +256,10 @@
     const ESTADOS = ["Presupuesto", "Señado", "En fabricación", "Listo", "Entregado", "Cancelado"];
     const ACTIVOS = ["Presupuesto", "Señado", "En fabricación", "Listo"];
     const SIGUIENTE = { "Presupuesto": "Señado", "Señado": "En fabricación", "En fabricación": "Listo", "Listo": "Entregado" };
+    // De dónde vino la venta. Ramiro vende por WhatsApp y Cande por Instagram: al elegir el origen se
+    // pone quién la atiende (se puede cambiar).
+    const CANALES = ["WhatsApp", "Instagram", "En la fábrica", "Otro"];
+    const ATIENDE_POR_CANAL = { "WhatsApp": "Ramiro", "Instagram": "Cande" };
     const PRODUCTOS = ["Cama KNG", "Cama KNG Individual", "Combo KNG", "Cama KNG MDF", "Cama Kingdom", "Cama Boti",
       "Colchón Reina Doble Pillow", "Colchón Isolda", "Colchón Isolda Doble Pillow", "Respaldo con mesitas flotantes",
       "Mueble a medida"];
@@ -296,6 +320,7 @@
     let pedidos = [];
     let filtro = "Activos";
     let busqueda = "";
+    let origen = "";   // "" = todos
     const hoy = new Date();
     let mesVisto = { anio: hoy.getFullYear(), mes: hoy.getMonth() };
 
@@ -328,6 +353,25 @@
       const listos = pedidos.filter((p) => p.estado === "Listo").length;
       $("r-taller").textContent = taller;
       $("r-listos").textContent = listos ? `${listos} listo${listos > 1 ? "s" : ""} para entregar` : "Señados y en fabricación";
+
+      // ventas del mes por origen (WhatsApp, Instagram…), de la que más vendió a la que menos
+      const porCanal = {};
+      delMes.forEach((p) => {
+        const c = p.canal || "Sin origen";
+        porCanal[c] = porCanal[c] || { pedidos: 0, vendido: 0 };
+        porCanal[c].pedidos++;
+        porCanal[c].vendido += total(p);
+      });
+      const filas = Object.entries(porCanal).sort((a, b) => b[1].vendido - a[1].vendido);
+      const maximo = Math.max(1, ...filas.map(([, v]) => v.vendido));
+      $("origenes").innerHTML = `<span class="etiqueta">Ventas del mes por origen</span>` + (filas.length
+        ? filas.map(([c, v]) => `
+          <div class="origen-fila">
+            <div><strong>${esc(c)}</strong>${ATIENDE_POR_CANAL[c] ? ` <span>· ${ATIENDE_POR_CANAL[c]}</span>` : ""}</div>
+            <div><strong>${pesos(v.vendido)}</strong> <span>· ${v.pedidos} pedido${v.pedidos > 1 ? "s" : ""}</span></div>
+            <div class="origen-barra"><i style="width:${Math.round(v.vendido / maximo * 100)}%"></i></div>
+          </div>`).join("")
+        : `<span class="pista">Todavía no hay ventas este mes.</span>`);
     }
 
     function enFiltro(p, f) {
@@ -343,16 +387,20 @@
         const b = document.createElement("button");
         b.type = "button";
         b.className = "pestana" + (f === filtro ? " activa" : "");
-        b.innerHTML = `${esc(f === "Listo" ? "Listos" : f)}<small>${pedidos.filter((p) => enFiltro(p, f)).length}</small>`;
+        b.innerHTML = `${esc(f === "Listo" ? "Listos" : f)}<small>${pedidos.filter((p) => enFiltro(p, f) && deOrigen(p)).length}</small>`;
         b.addEventListener("click", () => { filtro = f; pintarPestanas(); pintarLista(); });
         caja.appendChild(b);
       });
     }
 
+    const deOrigen = (p) => !origen || (p.canal || "") === origen;
+    // "por WhatsApp", "por Instagram", "en la fábrica"
+    const textoOrigen = (c) => !c ? "" : c === "En la fábrica" ? "en la fábrica" : c === "Otro" ? "otro origen" : "por " + c;
+
     function coincide(p) {
       if (!busqueda) return true;
       const q = busqueda.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-      const texto = [p.id, p.cliente, p.telefono, p.localidad, p.producto, p.color, p.notas].join(" ")
+      const texto = [p.id, p.cliente, p.telefono, p.localidad, p.producto, p.color, p.notas, p.canal, p.atendio].join(" ")
         .normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
       return texto.includes(q) || String(p.telefono).replace(/\D/g, "").includes(q.replace(/\D/g, "") || "—");
     }
@@ -380,7 +428,7 @@
     }
 
     function pintarLista() {
-      const lista = ordenar(pedidos.filter((p) => enFiltro(p, filtro) && coincide(p)));
+      const lista = ordenar(pedidos.filter((p) => enFiltro(p, filtro) && deOrigen(p) && coincide(p)));
       const caja = $("lista");
       if (!lista.length) {
         caja.innerHTML = `<p class="vacio">${pedidos.length ? "No hay pedidos acá." : "Todavía no hay pedidos. Tocá “+ Nuevo pedido” para cargar el primero."}</p>`;
@@ -396,12 +444,12 @@
         const sig = SIGUIENTE[p.estado];
         el.innerHTML = `
           <div class="pedido-cabeza">
-            <span class="etiqueta">N° ${esc(p.id)}${p.fecha ? " · " + fechaCorta(p.fecha) : ""}${p.canal ? " · " + esc(p.canal) : ""}</span>
+            <span class="etiqueta">N° ${esc(p.id)}${p.fecha ? " · " + fechaCorta(p.fecha) : ""}</span>
             <span class="estado">${esc(p.estado)}</span>
           </div>
           <div>
             <h3>${esc(p.cliente)}</h3>
-            ${p.localidad ? `<p class="lugar">${esc(p.localidad)}</p>` : ""}
+            <p class="lugar">${[p.localidad, textoOrigen(p.canal), p.atendio].filter(Boolean).map(esc).join(" · ")}</p>
           </div>
           <p class="que">${esc(que)}${p.detalle ? `<br><span class="lugar">${esc(p.detalle)}</span>` : ""}</p>
           ${total(p) ? `<div class="plata">
@@ -459,6 +507,14 @@
     let precioAuto = false;   // el precio lo puso el panel (se actualiza si cambian producto, medida o color)
 
     ESTADOS.forEach((e) => { const o = document.createElement("option"); o.textContent = e; $("form-estado").appendChild(o); });
+    CANALES.forEach((c) => { const o = document.createElement("option"); o.textContent = c; $("form-canal").appendChild(o); });
+    [["", "Todo origen"], ...CANALES.map((c) => [c, c])].forEach(([v, t]) => {
+      const o = document.createElement("option"); o.value = v; o.textContent = t; $("filtro-origen").appendChild(o);
+    });
+    form.elements.canal.addEventListener("change", () => {
+      const quien = ATIENDE_POR_CANAL[form.elements.canal.value];
+      if (quien) form.elements.atendio.value = quien;
+    });
     [["lista-productos", PRODUCTOS], ["lista-medidas", MEDIDAS], ["lista-colores", COLORES]].forEach(([id, valores]) => {
       valores.forEach((v) => { const o = document.createElement("option"); o.value = v; $(id).appendChild(o); });
     });
@@ -552,6 +608,7 @@
     $("nuevo").addEventListener("click", () => abrirFormulario());
     $("actualizar").addEventListener("click", async () => { await cargar(); avisar("Pedidos actualizados"); });
     $("buscar").addEventListener("input", (e) => { busqueda = e.target.value.trim(); pintarLista(); });
+    $("filtro-origen").addEventListener("change", (e) => { origen = e.target.value; pintarPestanas(); pintarLista(); });
     $("mes-anterior").addEventListener("click", () => { mesVisto.mes--; if (mesVisto.mes < 0) { mesVisto.mes = 11; mesVisto.anio--; } pintarResumen(); });
     $("mes-siguiente").addEventListener("click", () => { mesVisto.mes++; if (mesVisto.mes > 11) { mesVisto.mes = 0; mesVisto.anio++; } pintarResumen(); });
     // al volver a la pestaña, trae lo que haya cargado la otra persona
