@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel de pedidos · King Muebles (demo)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="Panel de pedidos · King Muebles">
+  <meta property="og:description" content="Demo con pedidos de ejemplo: estados, señas, saldos y entregas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    // En la compu (abriendo el archivo con doble clic, o en localhost) no hay Google: se usan pedidos de
+    // ejemplo guardados en el navegador.
+    document.write('<script src="mock-local.js"><\/script>');
+  </script>
+  <style>
+    /* Misma línea que la web: blanco y negro, esquinas rectas, líneas finas, Jost. */
+    :root {
+      --tinta: #141414; --papel: #fff; --hueso: #f5f3ef; --linea: #e4e0d9;
+      --gris: #6e6a64; --gris-claro: #a29d95; --rojo: #b3261e;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0; font-family: "Jost", "Century Gothic", system-ui, sans-serif; font-size: 16px; line-height: 1.45;
+      color: var(--tinta); background: var(--hueso); -webkit-font-smoothing: antialiased;
+    }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    .contenedor { width: min(1180px, 100% - 32px); margin-inline: auto; }
+    .etiqueta { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gris); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      min-height: 44px; padding: 0 18px; border-radius: 2px; cursor: pointer; text-decoration: none;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--papel); color: var(--tinta); border: 1px solid var(--tinta);
+    }
+    .btn:hover { background: var(--tinta); color: var(--papel); }
+    .btn-negro { background: var(--tinta); color: var(--papel); }
+    .btn-negro:hover { background: #333; }
+    .btn-chico { min-height: 36px; padding: 0 12px; font-size: 12px; }
+    .btn-texto { border-color: transparent; background: none; padding: 0 6px; }
+    .btn-texto:hover { background: none; color: var(--tinta); text-decoration: underline; }
+    .btn[disabled] { opacity: 0.5; cursor: default; }
+
+    /* cabecera */
+    .cabecera { background: var(--papel); border-bottom: 1px solid var(--linea); position: sticky; top: 0; z-index: 10; }
+    .cabecera .contenedor { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 64px; }
+    .marca { display: flex; align-items: baseline; gap: 10px; }
+    .marca strong { font-size: 17px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .cabecera-acciones { display: flex; gap: 4px; }
+    .btn, .marca strong { white-space: nowrap; }
+    .corto { display: none; }
+    @media (max-width: 479px) {
+      .marca .etiqueta, .largo { display: none; }
+      .corto { display: inline; }
+    }
+
+    /* resumen del mes */
+    .resumen { padding: 20px 0 8px; }
+    .mes { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; }
+    .mes strong { font-size: 18px; font-weight: 500; min-width: 140px; text-align: center; }
+    .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--linea); border: 1px solid var(--linea); }
+    .tile { background: var(--papel); padding: 14px 16px; }
+    .tile strong { display: block; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin-top: 2px; }
+    .tile span:last-child { font-size: 13px; color: var(--gris); }
+    @media (min-width: 760px) { .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+    /* filtros */
+    .barra { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; padding: 20px 0 12px; }
+    .pestanas { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--linea); width: 100%; }
+    .pestanas::-webkit-scrollbar { display: none; }
+    .pestana {
+      flex: none; background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 0 0 10px; cursor: pointer;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris-claro);
+    }
+    .pestana.activa { color: var(--tinta); border-bottom-color: var(--tinta); }
+    .pestana small { font-size: 11px; letter-spacing: 0; margin-left: 4px; }
+    .buscar { width: 100%; padding: 11px 14px; border: 1px solid var(--linea); border-radius: 2px; background: var(--papel); }
+    .buscar:focus { outline: none; border-color: var(--tinta); }
+    @media (min-width: 900px) {
+      .pestanas { width: auto; border-bottom: 0; }
+      .buscar { width: 280px; }
+    }
+
+    /* pedidos */
+    .lista { display: grid; gap: 12px; padding-bottom: 48px; }
+    @media (min-width: 760px) { .lista { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (min-width: 1100px) { .lista { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .pedido { background: var(--papel); border: 1px solid var(--linea); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .pedido.listo { border-left: 3px solid var(--tinta); }
+    .pedido.cerrado { opacity: 0.72; }
+    .pedido-cabeza { display: flex; justify-content: space-between; gap: 12px; }
+    .estado { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
+    .pedido h3 { margin: 0; font-size: 19px; font-weight: 500; line-height: 1.2; }
+    .pedido .que { margin: 0; }
+    .pedido .lugar, .pedido .notas { margin: 0; font-size: 14px; color: var(--gris); }
+    .plata { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--linea); padding-top: 10px; }
+    .plata span { display: block; }
+    .plata strong { font-weight: 500; }
+    .entrega { font-size: 14px; }
+    .atrasado { color: var(--rojo); font-weight: 500; }
+    .pedido-acciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 4px; }
+    .vacio { background: var(--papel); border: 1px solid var(--linea); padding: 32px 20px; text-align: center; color: var(--gris); grid-column: 1 / -1; }
+
+    /* formulario */
+    dialog { border: 0; padding: 0; width: min(720px, 100%); max-height: 100%; background: var(--papel); color: var(--tinta); }
+    dialog::backdrop { background: rgba(20, 20, 20, 0.45); }
+    @media (max-width: 759px) { dialog { width: 100%; height: 100%; max-width: none; margin: 0; } }
+    .form-cabeza { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--linea); position: sticky; top: 0; background: var(--papel); z-index: 1; }
+    .form-cabeza h2 { margin: 0; font-size: 20px; font-weight: 500; }
+    .form-cuerpo { padding: 8px 20px 20px; }
+    fieldset { border: 0; margin: 0; padding: 16px 0 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; border-bottom: 1px solid var(--linea); }
+    fieldset:last-of-type { border-bottom: 0; }
+    legend { grid-column: 1 / -1; padding: 0; margin-bottom: 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+    label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--gris); }
+    label.ancho { grid-column: 1 / -1; }
+    label.check { flex-direction: row; align-items: center; gap: 10px; color: var(--tinta); font-size: 15px; }
+    label.check input { width: 18px; height: 18px; accent-color: var(--tinta); }
+    input:not([type=checkbox]), select, textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--linea); border-radius: 2px; background: var(--papel); color: var(--tinta); font-size: 16px;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--tinta); }
+    textarea { resize: vertical; }
+    .cuentas { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 15px; padding: 4px 0 8px; }
+    .cuentas strong { font-weight: 500; }
+    .form-pie { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 20px; border-top: 1px solid var(--linea); position: sticky; bottom: 0; background: var(--papel); }
+    .pista { font-size: 12px; color: var(--gris); }
+
+    /* avisos */
+    .aviso { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 50; max-width: calc(100% - 32px);
+      background: var(--tinta); color: var(--papel); padding: 12px 18px; font-size: 14px; }
+    .aviso.error { background: var(--rojo); }
+    .pie { padding: 0 0 32px; font-size: 12px; color: var(--gris); }
+  </style>
+</head>
+<body>
+  <div style="background:#141414;color:#fff;font-size:13px;text-align:center;padding:8px 16px">
+    Demo con pedidos inventados · lo que cargues queda guardado solo en este dispositivo
+  </div>
+  <header class="cabecera">
+    <div class="contenedor">
+      <div class="marca"><strong>King Muebles</strong><span class="etiqueta">Pedidos</span></div>
+      <div class="cabecera-acciones">
+        <button class="btn btn-chico btn-texto" id="actualizar" type="button">Actualizar</button>
+        <button class="btn btn-negro btn-chico" id="nuevo" type="button"><span class="largo">+ Nuevo pedido</span><span class="corto">+ Nuevo</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="resumen" aria-label="Resumen del mes">
+      <div class="mes">
+        <button class="btn btn-chico btn-texto" id="mes-anterior" type="button" aria-label="Mes anterior">‹</button>
+        <strong id="mes-nombre"></strong>
+        <button class="btn btn-chico btn-texto" id="mes-siguiente" type="button" aria-label="Mes siguiente">›</button>
+      </div>
+      <div class="tiles">
+        <div class="tile"><span class="etiqueta">Pedidos del mes</span><strong id="r-pedidos">–</strong><span id="r-pedidos-det"></span></div>
+        <div class="tile"><span class="etiqueta">Vendido del mes</span><strong id="r-vendido">–</strong><span id="r-senas"></span></div>
+        <div class="tile"><span class="etiqueta">Saldo a cobrar</span><strong id="r-saldo">–</strong><span>De todos los pedidos</span></div>
+        <div class="tile"><span class="etiqueta">En taller</span><strong id="r-taller">–</strong><span id="r-listos"></span></div>
+      </div>
+    </section>
+
+    <div class="barra">
+      <div class="pestanas" id="pestanas" role="tablist"></div>
+      <input class="buscar" id="buscar" type="search" placeholder="Buscar cliente, teléfono o producto" autocomplete="off">
+    </div>
+
+    <section class="lista" id="lista" aria-live="polite"><p class="vacio">Cargando pedidos…</p></section>
+    <p class="pie" id="pie"></p>
+  </main>
+
+  <dialog id="dialogo">
+    <form id="form" method="dialog" novalidate>
+      <div class="form-cabeza">
+        <h2 id="form-titulo">Nuevo pedido</h2>
+        <button class="btn btn-chico btn-texto" type="button" id="cerrar">Cerrar</button>
+      </div>
+      <div class="form-cuerpo">
+        <fieldset>
+          <legend>Cliente</legend>
+          <label class="ancho">Nombre y apellido *<input name="cliente" required autocomplete="off"></label>
+          <label>Teléfono<input name="telefono" type="tel" inputmode="tel" placeholder="11 2345-6789" autocomplete="off"></label>
+          <label>Localidad<input name="localidad" autocomplete="off"></label>
+          <label class="ancho">Dirección de entrega<input name="direccion" autocomplete="off"></label>
+          <label>Nos escribió por
+            <select name="canal"><option>WhatsApp</option><option>Instagram</option><option>En la fábrica</option><option>Otro</option></select>
+          </label>
+          <label>Lo atiende
+            <select name="atendio"><option>Ramiro</option><option>Cande</option></select>
+          </label>
+        </fieldset>
+        <fieldset>
+          <legend>Pedido</legend>
+          <label class="ancho">Producto *<input name="producto" list="lista-productos" required autocomplete="off"></label>
+          <label>Medida<input name="medida" list="lista-medidas" autocomplete="off"></label>
+          <label>Color<input name="color" list="lista-colores" autocomplete="off"></label>
+          <label class="ancho">Detalle<input name="detalle" placeholder="Ej.: con 8 cajones, altura 30 cm" autocomplete="off"></label>
+        </fieldset>
+        <fieldset>
+          <legend>Plata</legend>
+          <label>Precio<input name="precio" type="number" inputmode="numeric" min="0" step="1000"></label>
+          <label>Flete<input name="flete" type="number" inputmode="numeric" min="0" step="1000"></label>
+          <label>Seña<input name="sena" type="number" inputmode="numeric" min="0" step="1000"></label>
+          <label class="check"><input name="saldoCobrado" type="checkbox"> Saldo cobrado</label>
+          <p class="cuentas" id="cuentas"></p>
+          <p class="pista ancho" id="pista-precio" hidden></p>
+        </fieldset>
+        <fieldset>
+          <legend>Fechas y estado</legend>
+          <label>Fecha del pedido<input name="fecha" type="date"></label>
+          <label>Entrega pactada<input name="entrega" type="date"></label>
+          <label class="ancho">Estado<select name="estado" id="form-estado"></select></label>
+          <label class="ancho">Notas<textarea name="notas" rows="3"></textarea></label>
+        </fieldset>
+      </div>
+      <div class="form-pie">
+        <span class="pista" id="form-info"></span>
+        <button class="btn btn-negro" type="submit" id="guardar">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <datalist id="lista-productos"></datalist>
+  <datalist id="lista-medidas"></datalist>
+  <datalist id="lista-colores"></datalist>
+  <div class="aviso" id="aviso" role="status" hidden></div>
+
+  <script>
+    // ——— Datos fijos del negocio ———
+    const ESTADOS = ["Presupuesto", "Señado", "En fabricación", "Listo", "Entregado", "Cancelado"];
+    const ACTIVOS = ["Presupuesto", "Señado", "En fabricación", "Listo"];
+    const SIGUIENTE = { "Presupuesto": "Señado", "Señado": "En fabricación", "En fabricación": "Listo", "Listo": "Entregado" };
+    const PRODUCTOS = ["Cama KNG", "Cama KNG Individual", "Combo KNG", "Cama KNG MDF", "Cama Kingdom", "Cama Boti",
+      "Colchón Reina Doble Pillow", "Colchón Isolda", "Colchón Isolda Doble Pillow", "Respaldo con mesitas flotantes",
+      "Mueble a medida"];
+    const MEDIDAS = ["1,40 x 1,90", "1,60 x 2,00", "1,80 x 2,00", "2,00 x 2,00", "80 x 1,90", "90 x 1,90", "1,00 x 1,90"];
+    const COLORES = ["Blanco", "Scotch", "Blanco Nature", "Helsinki", "Pinot Gris", "Linoza Cinza", "Atakama",
+      "Terrarum", "Fresno Negro", "Negro"];
+    // Precio sugerido al cargar un pedido: los mismos de la web (se puede cambiar a mano).
+    function precioSugerido(producto, medida, color) {
+      const enColor = color && color !== "Blanco";
+      if (producto === "Cama KNG" && medida === "1,40 x 1,90") return enColor ? 530000 : 499000;
+      if (producto === "Combo KNG" && medida === "1,40 x 1,90" && enColor) return 755000;
+      if (producto === "Cama KNG Individual" && ["80 x 1,90", "90 x 1,90", "1,00 x 1,90"].includes(medida) && !enColor) return 450000;
+      if (producto === "Respaldo con mesitas flotantes") return 225000;
+      return null;
+    }
+
+    // ——— Utilidades ———
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const num = (v) => Number(v) || 0;
+    const pesos = (n) => "$" + Math.round(n).toLocaleString("es-AR");
+    const total = (p) => num(p.precio) + num(p.flete);
+    const saldo = (p) => (p.saldoCobrado === true || p.estado === "Cancelado") ? 0 : Math.max(0, total(p) - num(p.sena));
+    const hoyISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+    const fechaCorta = (iso) => iso ? iso.slice(8, 10) + "/" + iso.slice(5, 7) : "";
+    const diasHasta = (iso) => Math.round((new Date(iso + "T00:00") - new Date(hoyISO() + "T00:00")) / 86400000);
+    const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+    // número de WhatsApp a partir de lo que anotaron (ej. "11 2345-6789" → 5491123456789)
+    function linkWhatsApp(tel) {
+      let d = String(tel || "").replace(/\D/g, "");
+      if (!d) return null;
+      if (d.startsWith("0")) d = d.slice(1);
+      if (d.startsWith("54")) d = d.slice(2);
+      if (d.startsWith("9")) d = d.slice(1);
+      d = d.replace(/^(\d{2,4})15(\d{6,8})$/, "$1$2");   // 11 15 2345-6789 → 11 2345-6789
+      return d.length >= 10 ? "https://wa.me/549" + d : null;
+    }
+
+    function api(funcion, ...args) {
+      return new Promise((ok, mal) => {
+        google.script.run.withSuccessHandler(ok).withFailureHandler(mal)[funcion](...args);
+      });
+    }
+
+    let avisoTimer;
+    function avisar(texto, error) {
+      const a = $("aviso");
+      a.textContent = texto;
+      a.className = "aviso" + (error ? " error" : "");
+      a.hidden = false;
+      clearTimeout(avisoTimer);
+      avisoTimer = setTimeout(() => { a.hidden = true; }, error ? 7000 : 2500);
+    }
+    const mensajeError = (e) => (e && e.message ? e.message : String(e)).replace(/^Exception: /, "").replace(/^Error: /, "");
+
+    // ——— Estado de la pantalla ———
+    let pedidos = [];
+    let filtro = "Activos";
+    let busqueda = "";
+    const hoy = new Date();
+    let mesVisto = { anio: hoy.getFullYear(), mes: hoy.getMonth() };
+
+    async function cargar() {
+      try {
+        pedidos = await api("listarPedidos");
+        pintar();
+      } catch (e) {
+        $("lista").innerHTML = `<p class="vacio">No se pudieron cargar los pedidos: ${esc(mensajeError(e))}</p>`;
+      }
+    }
+
+    function pintar() {
+      pintarResumen();
+      pintarPestanas();
+      pintarLista();
+    }
+
+    function pintarResumen() {
+      const clave = `${mesVisto.anio}-${String(mesVisto.mes + 1).padStart(2, "0")}`;
+      $("mes-nombre").textContent = `${MESES[mesVisto.mes]} ${mesVisto.anio}`;
+      const delMes = pedidos.filter((p) => String(p.fecha).startsWith(clave) && p.estado !== "Cancelado" && p.estado !== "Presupuesto");
+      const presupuestos = pedidos.filter((p) => String(p.fecha).startsWith(clave) && p.estado === "Presupuesto").length;
+      $("r-pedidos").textContent = delMes.length;
+      $("r-pedidos-det").textContent = presupuestos ? `+ ${presupuestos} presupuesto${presupuestos > 1 ? "s" : ""}` : "Señados o más";
+      $("r-vendido").textContent = pesos(delMes.reduce((s, p) => s + total(p), 0));
+      $("r-senas").textContent = "Señas: " + pesos(delMes.reduce((s, p) => s + num(p.sena), 0));
+      $("r-saldo").textContent = pesos(pedidos.filter((p) => p.estado !== "Presupuesto").reduce((s, p) => s + saldo(p), 0));
+      const taller = pedidos.filter((p) => p.estado === "Señado" || p.estado === "En fabricación").length;
+      const listos = pedidos.filter((p) => p.estado === "Listo").length;
+      $("r-taller").textContent = taller;
+      $("r-listos").textContent = listos ? `${listos} listo${listos > 1 ? "s" : ""} para entregar` : "Señados y en fabricación";
+    }
+
+    function enFiltro(p, f) {
+      if (f === "Activos") return ACTIVOS.includes(p.estado);
+      if (f === "Todos") return true;
+      return p.estado === f;
+    }
+
+    function pintarPestanas() {
+      const caja = $("pestanas");
+      caja.innerHTML = "";
+      ["Activos", ...ESTADOS, "Todos"].forEach((f) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "pestana" + (f === filtro ? " activa" : "");
+        b.innerHTML = `${esc(f === "Listo" ? "Listos" : f)}<small>${pedidos.filter((p) => enFiltro(p, f)).length}</small>`;
+        b.addEventListener("click", () => { filtro = f; pintarPestanas(); pintarLista(); });
+        caja.appendChild(b);
+      });
+    }
+
+    function coincide(p) {
+      if (!busqueda) return true;
+      const q = busqueda.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+      const texto = [p.id, p.cliente, p.telefono, p.localidad, p.producto, p.color, p.notas].join(" ")
+        .normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+      return texto.includes(q) || String(p.telefono).replace(/\D/g, "").includes(q.replace(/\D/g, "") || "—");
+    }
+
+    function ordenar(lista) {
+      // activos: primero los que tienen entrega más cercana; el resto, del más nuevo al más viejo
+      return lista.sort((a, b) => {
+        if (filtro !== "Entregado" && filtro !== "Cancelado" && filtro !== "Todos") {
+          const ea = a.entrega || "9999", eb = b.entrega || "9999";
+          if (ea !== eb) return ea < eb ? -1 : 1;
+        }
+        return num(b.id) - num(a.id);
+      });
+    }
+
+    function textoEntrega(p) {
+      if (!p.entrega) return "";
+      const d = diasHasta(p.entrega);
+      const cerrado = p.estado === "Entregado" || p.estado === "Cancelado";
+      if (cerrado) return `Entrega ${fechaCorta(p.entrega)}`;
+      if (d < 0) return `<span class="atrasado">Entrega ${fechaCorta(p.entrega)} · atrasada ${-d} día${d < -1 ? "s" : ""}</span>`;
+      if (d === 0) return `<strong>Entrega hoy</strong>`;
+      if (d === 1) return `<strong>Entrega mañana</strong> (${fechaCorta(p.entrega)})`;
+      return `Entrega ${fechaCorta(p.entrega)} · en ${d} días`;
+    }
+
+    function pintarLista() {
+      const lista = ordenar(pedidos.filter((p) => enFiltro(p, filtro) && coincide(p)));
+      const caja = $("lista");
+      if (!lista.length) {
+        caja.innerHTML = `<p class="vacio">${pedidos.length ? "No hay pedidos acá." : "Todavía no hay pedidos. Tocá “+ Nuevo pedido” para cargar el primero."}</p>`;
+        return;
+      }
+      caja.innerHTML = "";
+      lista.forEach((p) => {
+        const el = document.createElement("article");
+        const cerrado = p.estado === "Entregado" || p.estado === "Cancelado";
+        el.className = "pedido" + (p.estado === "Listo" ? " listo" : "") + (cerrado ? " cerrado" : "");
+        const que = [p.producto, p.medida, p.color].filter(Boolean).join(" · ");
+        const wa = linkWhatsApp(p.telefono);
+        const sig = SIGUIENTE[p.estado];
+        el.innerHTML = `
+          <div class="pedido-cabeza">
+            <span class="etiqueta">N° ${esc(p.id)}${p.fecha ? " · " + fechaCorta(p.fecha) : ""}${p.canal ? " · " + esc(p.canal) : ""}</span>
+            <span class="estado">${esc(p.estado)}</span>
+          </div>
+          <div>
+            <h3>${esc(p.cliente)}</h3>
+            ${p.localidad ? `<p class="lugar">${esc(p.localidad)}</p>` : ""}
+          </div>
+          <p class="que">${esc(que)}${p.detalle ? `<br><span class="lugar">${esc(p.detalle)}</span>` : ""}</p>
+          ${total(p) ? `<div class="plata">
+            <span><span class="etiqueta">Total</span><strong>${pesos(total(p))}</strong></span>
+            <span><span class="etiqueta">Seña</span><strong>${num(p.sena) ? pesos(num(p.sena)) : "–"}</strong></span>
+            <span><span class="etiqueta">Saldo</span><strong>${p.saldoCobrado === true ? "Cobrado" : pesos(saldo(p))}</strong></span>
+          </div>` : ""}
+          ${p.entrega ? `<p class="entrega">${textoEntrega(p)}</p>` : ""}
+          ${p.notas ? `<p class="notas">${esc(p.notas)}</p>` : ""}
+          <div class="pedido-acciones">
+            ${sig ? `<button class="btn btn-negro btn-chico" type="button" data-accion="avanzar">→ ${esc(sig)}</button>` : ""}
+            <button class="btn btn-chico" type="button" data-accion="editar">Editar</button>
+            ${wa ? `<a class="btn btn-chico" href="${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
+          </div>`;
+        el.querySelector('[data-accion="editar"]').addEventListener("click", () => abrirFormulario(p));
+        const av = el.querySelector('[data-accion="avanzar"]');
+        if (av) av.addEventListener("click", () => avanzar(p, av));
+        caja.appendChild(el);
+      });
+    }
+
+    // ——— Cambiar de estado con un toque ———
+    async function avanzar(p, boton) {
+      const sig = SIGUIENTE[p.estado];
+      // al entregar con saldo pendiente se abre el pedido para marcar si se cobró
+      if (sig === "Entregado" && saldo(p) > 0) {
+        abrirFormulario(p, { estado: "Entregado" });
+        return;
+      }
+      if (sig === "Señado" && !num(p.sena)) {
+        abrirFormulario(p, { estado: "Señado" });
+        return;
+      }
+      boton.disabled = true;
+      try {
+        const guardado = await api("guardarPedido", { ...p, estado: sig });
+        reemplazar(guardado);
+        avisar(`Pedido N° ${p.id}: ${sig}`);
+      } catch (e) {
+        avisar(mensajeError(e), true);
+        boton.disabled = false;
+      }
+    }
+
+    function reemplazar(guardado) {
+      const i = pedidos.findIndex((x) => String(x.id) === String(guardado.id));
+      if (i >= 0) pedidos[i] = guardado; else pedidos.push(guardado);
+      pintar();
+    }
+
+    // ——— Formulario ———
+    const form = $("form");
+    const dialogo = $("dialogo");
+    let editando = null;
+    let precioAuto = false;   // el precio lo puso el panel (se actualiza si cambian producto, medida o color)
+
+    ESTADOS.forEach((e) => { const o = document.createElement("option"); o.textContent = e; $("form-estado").appendChild(o); });
+    [["lista-productos", PRODUCTOS], ["lista-medidas", MEDIDAS], ["lista-colores", COLORES]].forEach(([id, valores]) => {
+      valores.forEach((v) => { const o = document.createElement("option"); o.value = v; $(id).appendChild(o); });
+    });
+
+    function abrirFormulario(p, cambios) {
+      editando = p || null;
+      form.reset();
+      const datos = { ...(p || { fecha: hoyISO(), estado: "Presupuesto", canal: "WhatsApp", atendio: "Ramiro" }), ...(cambios || {}) };
+      for (const el of form.elements) {
+        if (!el.name || !(el.name in datos)) continue;
+        if (el.type === "checkbox") el.checked = datos[el.name] === true;
+        else el.value = datos[el.name] ?? "";
+      }
+      precioAuto = false;
+      $("form-titulo").textContent = p ? `Pedido N° ${p.id}` : "Nuevo pedido";
+      $("form-info").textContent = p && p.actualizado ? `Último cambio: ${fechaCorta(String(p.actualizado).slice(0, 10))} ${String(p.actualizado).slice(11, 16)}` : "";
+      actualizarCuentas();
+      dialogo.showModal();
+      if (!p) form.elements.cliente.focus();
+    }
+
+    function leerFormulario() {
+      const d = {};
+      for (const el of form.elements) {
+        if (!el.name) continue;
+        d[el.name] = el.type === "checkbox" ? el.checked : el.value.trim();
+      }
+      return d;
+    }
+
+    function actualizarCuentas() {
+      const d = leerFormulario();
+      const t = total(d);
+      $("cuentas").innerHTML = t
+        ? `<span>Total <strong>${pesos(t)}</strong></span><span>Saldo <strong>${d.saldoCobrado ? "cobrado" : pesos(saldo(d))}</strong></span>`
+        : "";
+    }
+
+    function sugerirPrecio() {
+      const d = leerFormulario();
+      const sugerido = precioSugerido(d.producto, d.medida, d.color);
+      const pista = $("pista-precio");
+      if (sugerido && (!d.precio || precioAuto)) {
+        form.elements.precio.value = sugerido;
+        precioAuto = true;
+        pista.textContent = `Precio de lista: ${pesos(sugerido)}. Si le hiciste otro precio, cambialo.`;
+        pista.hidden = false;
+      } else if (!sugerido && precioAuto) {
+        form.elements.precio.value = "";
+        precioAuto = false;
+        pista.hidden = true;
+      }
+      actualizarCuentas();
+    }
+
+    ["producto", "medida", "color"].forEach((n) => form.elements[n].addEventListener("change", sugerirPrecio));
+    form.elements.precio.addEventListener("input", () => { precioAuto = false; $("pista-precio").hidden = true; });
+    // si anotan una seña en un presupuesto, el pedido pasa a "Señado" (se ve en el formulario y se puede cambiar)
+    form.elements.sena.addEventListener("input", () => {
+      if (num(form.elements.sena.value) > 0 && form.elements.estado.value === "Presupuesto") form.elements.estado.value = "Señado";
+    });
+    form.addEventListener("input", actualizarCuentas);
+    $("cerrar").addEventListener("click", () => dialogo.close());
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const d = leerFormulario();
+      if (!d.cliente || !d.producto) {
+        avisar("Falta el nombre del cliente o el producto.", true);
+        (d.cliente ? form.elements.producto : form.elements.cliente).focus();
+        return;
+      }
+      const p = editando ? { ...editando, ...d } : d;
+      const boton = $("guardar");
+      boton.disabled = true;
+      boton.textContent = "Guardando…";
+      try {
+        const guardado = await api("guardarPedido", p);
+        reemplazar(guardado);
+        dialogo.close();
+        avisar(editando ? `Pedido N° ${guardado.id} guardado` : `Pedido N° ${guardado.id} cargado`);
+      } catch (err) {
+        avisar(mensajeError(err), true);
+      } finally {
+        boton.disabled = false;
+        boton.textContent = "Guardar";
+      }
+    });
+
+    // ——— Arranque ———
+    $("nuevo").addEventListener("click", () => abrirFormulario());
+    $("actualizar").addEventListener("click", async () => { await cargar(); avisar("Pedidos actualizados"); });
+    $("buscar").addEventListener("input", (e) => { busqueda = e.target.value.trim(); pintarLista(); });
+    $("mes-anterior").addEventListener("click", () => { mesVisto.mes--; if (mesVisto.mes < 0) { mesVisto.mes = 11; mesVisto.anio--; } pintarResumen(); });
+    $("mes-siguiente").addEventListener("click", () => { mesVisto.mes++; if (mesVisto.mes > 11) { mesVisto.mes = 0; mesVisto.anio++; } pintarResumen(); });
+    // al volver a la pestaña, trae lo que haya cargado la otra persona
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && !dialogo.open) cargar(); });
+
+    cargar();
+    api("quienSoy").then((mail) => { if (mail) $("pie").textContent = "Entraste como " + mail; }).catch(() => {});
+  </script>
+</body>
+</html>
