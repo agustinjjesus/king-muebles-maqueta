@@ -12,6 +12,13 @@ const SPECS_KNG = [
   ["Cantos", "PVC 0,22 x 0,45"],
 ];
 
+// Precios por medida, en blanco y en color (cualquier color que no sea Blanco; Blanco Nature cuenta
+// como color). null = a consultar. Ramiro (13–15/10): la KNG $499.000 blanca y $530.000 en color.
+const PRECIOS_KNG = {
+  blanco: [["1,40 x 1,90", 499000], ["1,60", null], ["1,80", null], ["2,00", null]],
+  color: [["1,40 x 1,90", 530000], ["1,60", null], ["1,80", null], ["2,00", null]],
+};
+
 const KM = {
   whatsapp: "5491139573474",          // +54 9 11 3957-3474
   instagram: "kingmuebless",
@@ -19,11 +26,11 @@ const KM = {
   // Los que tienen "url" tienen ficha (ficha.js arma la página con estos datos); el resto abre WhatsApp.
   // Las fotos de "assets/catalogo/" son recortes chicos de las capturas: reemplazar por las originales.
   // Para sumar una ficha: copiar cama-kng-scotch.html, cambiar el id y los textos del <head>, y cargar acá
-  // fotos, medidas (precio null = "a consultar") y specs.
+  // fotos, precios (blanco y color, por medida; null = "a consultar") y specs.
   productos: [
     // Ramiro (13/10): "Es la que tendría que estar principal". "Poner 499.000 la blanca y 530.000 color,
-    // y que aparezcan las de color en el catálogo": la Scotch es la de color con fotos, y su precio vale
-    // para cualquier otro color (otrosColores). Las otras medidas, a consultar.
+    // y que aparezcan las de color en el catálogo": la Scotch es la de color con fotos. Las dos fichas
+    // tienen los mismos precios; la muestra de Scotch lleva a su ficha.
     { id: "cama-kng", modelo: "kng", base: "Cama KNG", nombre: "Cama KNG Blanca", color: "Blanco", categoria: "Camas",
       bajada: "6 cajones · 2 bauleras · 2 zapateros", url: "cama-kng.html", desde: 499000,
       foto: "assets/reales/kng-blanco-2.jpg",
@@ -34,9 +41,9 @@ const KM = {
         { video: "assets/reales/video-cajones.mp4", poster: "assets/reales/video-cajones-poster.jpg" },
         { video: "assets/reales/video-bauleras.mp4", poster: "assets/reales/video-bauleras-poster.jpg" },
       ],
-      medidas: [["1,40 x 1,90", 499000], ["1,60", null], ["1,80", null], ["2,00", null]],
+      precios: PRECIOS_KNG,
       specs: "kng" },
-    { id: "cama-kng-scotch", modelo: "kng", base: "Cama KNG", nombre: "Cama KNG Scotch", color: "Scotch", otrosColores: true, categoria: "Camas",
+    { id: "cama-kng-scotch", modelo: "kng", base: "Cama KNG", nombre: "Cama KNG Scotch", color: "Scotch", categoria: "Camas",
       bajada: "6 cajones · 2 bauleras · 2 zapateros", url: "cama-kng-scotch.html", desde: 530000,
       foto: "assets/reales/kng-scotch-2.jpg",
       galeria: [
@@ -46,7 +53,7 @@ const KM = {
         { foto: "assets/reales/kng-scotch-4.jpg", alt: "Frente de la Cama KNG Scotch con los zapateros cerrados" },
         { foto: "assets/reales/kng-scotch-5.jpg", alt: "Costado de la Cama KNG Scotch con los cajones cerrados" },
       ],
-      medidas: [["1,40 x 1,90", 530000], ["1,60", null], ["1,80", null], ["2,00", null]],
+      precios: PRECIOS_KNG,
       specs: "kng" },
     { id: "cama-kng-mdf", nombre: "Cama KNG MDF", categoria: "Camas", bajada: "La KNG en MDF",
       foto: "assets/catalogo/cama-kng-mdf.jpg" },
@@ -54,8 +61,7 @@ const KM = {
       foto: "assets/catalogo/cama-kingdom.jpg" },
     { id: "cama-boti", nombre: "Cama Boti", categoria: "Camas", bajada: "Cama con guardado",
       foto: "assets/catalogo/cama-boti.jpg" },
-    // Ramiro (14/10): $450.000 en cualquiera de las 3 medidas. No dijo el color: va como blanca (todas
-    // las fotos son de la blanca), a confirmar; los otros colores, a consultar.
+    // Ramiro (14–15/10): $450.000 en blanco en cualquiera de las 3 medidas; en color, +$30.000.
     { id: "cama-kng-individual", base: "Cama KNG Individual", nombre: "Cama KNG Individual", color: "Blanco", categoria: "Camas",
       bajada: "3 cajones · 2 bauleras · 1 zapatero", url: "cama-kng-individual.html", desde: 450000,
       foto: "assets/reales/individual-3.jpg",
@@ -66,12 +72,15 @@ const KM = {
         { foto: "assets/reales/individual-4.jpg", alt: "Cama KNG Individual abierta, vista desde el costado" },
         { foto: "assets/reales/individual-5.jpg", alt: "Cama KNG Individual con las bauleras abiertas" },
       ],
-      medidas: [["80 x 1,90", 450000], ["90 x 1,90", 450000], ["1,00 x 1,90", 450000]],
+      precios: {
+        blanco: [["80 x 1,90", 450000], ["90 x 1,90", 450000], ["1,00 x 1,90", 450000]],
+        color: [["80 x 1,90", 480000], ["90 x 1,90", 480000], ["1,00 x 1,90", 480000]],
+      },
       specs: "kng-individual" },
-    // Ramiro (14/10): cama en color $530.000 + respaldo con mesitas flotantes $225.000 = $755.000.
-    // En blanco no lo pasó: a consultar.
-    { id: "combo-kng", nombre: "Combo KNG", color: "Scotch", otrosColores: true, categoria: "Combos",
-      bajada: "Cama KNG + respaldo con mesitas flotantes", url: "combo-kng.html", desde: 755000,
+    // Ramiro (14–15/10): respaldo con mesitas flotantes $225.000 + la cama: $530.000 en color ($755.000)
+    // o $500.000 en blanco ($725.000). Se muestra en Scotch, como en las fotos.
+    { id: "combo-kng", nombre: "Combo KNG", color: "Scotch", categoria: "Combos",
+      bajada: "Cama KNG + respaldo con mesitas flotantes", url: "combo-kng.html", desde: 725000,
       foto: "assets/reales/combo-kng-1.jpg",
       galeria: [
         { foto: "assets/reales/combo-kng-1.jpg", alt: "Combo KNG: cama con respaldo y mesitas flotantes" },
@@ -80,8 +89,14 @@ const KM = {
         { video: "assets/reales/combo-video-abierta.mp4", poster: "assets/reales/combo-video-abierta-poster.jpg" },
         { foto: "assets/reales/combo-kng-claro-1.jpg", alt: "Combo KNG en un color claro, con la cama abierta" },
       ],
-      partes: [["Cama", 530000], ["respaldo y mesitas", 225000]],
-      medidas: [["1,40 x 1,90", 755000], ["1,60", null], ["1,80", null], ["2,00", null]],
+      precios: {
+        blanco: [["1,40 x 1,90", 725000], ["1,60", null], ["1,80", null], ["2,00", null]],
+        color: [["1,40 x 1,90", 755000], ["1,60", null], ["1,80", null], ["2,00", null]],
+      },
+      partes: {   // desglose, para la primera medida
+        blanco: [["Cama", 500000], ["respaldo y mesitas", 225000]],
+        color: [["Cama", 530000], ["respaldo y mesitas", 225000]],
+      },
       specs: "combo-kng" },
     { id: "colchon-reina-doble-pillow", nombre: "Colchón Reina Doble Pillow", categoria: "Colchones",
       bajada: "Con doble pillow", foto: "assets/catalogo/colchon-reina-doble-pillow.jpg" },

@@ -6,17 +6,13 @@ const P = KM.productos.find((p) => p.id === main.dataset.producto);
 const base = P.base || P.nombre;   // "Cama KNG", sin el color
 // este producto y los otros colores del mismo modelo que tienen su propia ficha
 const variantes = KM.productos.filter((p) => p === P || (p.modelo && p.modelo === P.modelo));
-const elegido = { medida: P.medidas[0][0], color: P.color };
+const MEDIDAS = (P.precios.blanco || P.precios.color).map(([m]) => m);
+const elegido = { medida: MEDIDAS[0], color: P.color };
 
-// De qué producto sale el precio de un color: el que tiene ese color, o el que vale para "cualquier
-// otro color" (Ramiro: la KNG blanca $499.000 y en color $530.000). Sin producto: a consultar.
-function productoDelColor(color) {
-  return variantes.find((v) => v.color === color) ||
-    (color !== "Blanco" ? variantes.find((v) => v.otrosColores) : null) || null;
-}
+// Los precios van por medida, en blanco o en color (cualquier color que no sea Blanco). Sin precio: a consultar.
+const tipoDeColor = (color) => (color === "Blanco" ? "blanco" : "color");
 function precioDe(color, medida) {
-  const prod = productoDelColor(color);
-  const fila = prod && prod.medidas.find(([m]) => m === medida);
+  const fila = (P.precios[tipoDeColor(color)] || []).find(([m]) => m === medida);
   return fila ? fila[1] : null;
 }
 
@@ -110,7 +106,7 @@ miniaturas.hidden = P.galeria.length < 2;
 
 // medidas
 const cajaMedidas = document.getElementById("medidas");
-P.medidas.forEach(([m]) => {
+MEDIDAS.forEach((m) => {
   const b = document.createElement("button");
   b.type = "button";
   b.textContent = textoMedida(m);
@@ -125,7 +121,7 @@ let sinPrecio = 0;
 KM.colores.forEach((c) => {
   const variante = variantes.find((v) => v.color === c.nombre);
   const propia = variante && variante.id === P.id;
-  const desde = precioDe(c.nombre, P.medidas[0][0]);
+  const desde = precioDe(c.nombre, MEDIDAS[0]);
   if (!desde) sinPrecio++;
   const el = document.createElement(variante && !propia ? "a" : "button");
   el.className = "muestra";
@@ -154,13 +150,12 @@ function actualizar() {
   document.getElementById("color-elegido").textContent = elegido.color;
   document.getElementById("precio").textContent = precio ? pesos(precio) : "Precio a consultar";
   // los combos muestran cuánto sale cada parte (solo en la medida de la que pasaron el desglose)
-  const partes = P.partes && precio && productoDelColor(elegido.color) === P && elegido.medida === P.medidas[0][0]
-    ? P.partes.map(([n, p]) => `${n} ${pesos(p)}`).join(" + ")
-    : null;
+  const desglose = P.partes && precio && elegido.medida === MEDIDAS[0] ? P.partes[tipoDeColor(elegido.color)] : null;
+  const partes = desglose ? desglose.map(([n, p]) => `${n} ${pesos(p)}`).join(" + ") : null;
   // otro color: las fotos y el título siguen siendo los de este producto
   document.getElementById("nota").textContent = precio
     ? (partes ? `${partes} · Color ${elegido.color}` : `Color ${elegido.color} · ${medida}`)
-    : (mismoColor || productoDelColor(elegido.color)
+    : (P.precios[tipoDeColor(elegido.color)]
       ? "Te pasamos el precio por WhatsApp"
       : `En ${elegido.color}, te pasamos el precio por WhatsApp`);
 
