@@ -95,11 +95,13 @@ const KM = {
         color: [["Cama", 530000], ["respaldo y mesitas", 225000]],
       },
       specs: "combo-kng" },
-    { id: "colchon-reina-doble-pillow", nombre: "Colchón Reina Doble Pillow", categoria: "Colchones",
+    // Colchones: ocultos (Candela, 15/10: los revenden y quizás no se puedan mostrar en una web propia).
+    // Para volver a mostrarlos, borrar "oculto: true" (y sumar "colchones" en la frase de la portada).
+    { id: "colchon-reina-doble-pillow", nombre: "Colchón Reina Doble Pillow", categoria: "Colchones", oculto: true,
       bajada: "Con doble pillow", foto: "assets/catalogo/colchon-reina-doble-pillow.jpg" },
-    { id: "colchon-isolda", nombre: "Colchón Isolda", categoria: "Colchones", bajada: "140 x 190",
+    { id: "colchon-isolda", nombre: "Colchón Isolda", categoria: "Colchones", bajada: "140 x 190", oculto: true,
       foto: "assets/catalogo/colchon-isolda.jpg" },
-    { id: "colchon-isolda-doble-pillow", nombre: "Colchón Isolda Doble Pillow", categoria: "Colchones",
+    { id: "colchon-isolda-doble-pillow", nombre: "Colchón Isolda Doble Pillow", categoria: "Colchones", oculto: true,
       bajada: "Con doble pillow", foto: "assets/catalogo/colchon-isolda-doble-pillow.jpg" },
   ],
 
