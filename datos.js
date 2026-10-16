@@ -56,10 +56,6 @@ const KM = {
       ],
       precios: PRECIOS_KNG,
       specs: "kng" },
-    { id: "cama-kng-mdf", nombre: "Cama KNG MDF", categoria: "Camas", bajada: "La KNG en MDF",
-      foto: "assets/catalogo/cama-kng-mdf.jpg" },
-    { id: "cama-kingdom", nombre: "Cama Kingdom", categoria: "Camas", bajada: "Con cajones y bauleras",
-      foto: "assets/catalogo/cama-kingdom.jpg" },
     { id: "cama-boti", nombre: "Cama Boti", categoria: "Camas", bajada: "Cama con guardado",
       foto: "assets/catalogo/cama-boti.jpg" },
     // Ramiro (14–15/10): $450.000 en blanco en cualquiera de las 3 medidas; en color, +$30.000.
