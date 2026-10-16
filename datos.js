@@ -1,7 +1,7 @@
 // Datos de la maqueta. En la web real esto sale de la planilla de Google
 // que mantiene Agustín (precios por medida y color).
 const SPECS_KNG = [
-  ["Medidas", "1,40 x 1,90 (colchón de 2 plazas). También 1,60, 1,80 y 2,00 m, a consultar"],
+  ["Medidas", "1,40 x 1,90 (2 plazas), 1,60 x 2,00 (Queen), 1,80 x 2,00 (King) y 2,00 x 2,00 (Super King)"],
   ["Material", "Melamina de 18 mm, interior y exterior"],
   ["Carga máxima", "600 kg"],
   ["Altura", "40 cm (también de 30 cm)"],
@@ -13,10 +13,11 @@ const SPECS_KNG = [
 ];
 
 // Precios por medida, en blanco y en color (cualquier color que no sea Blanco; Blanco Nature cuenta
-// como color). null = a consultar. Ramiro (13–15/10): la KNG $499.000 blanca y $530.000 en color.
+// como color). null = a consultar. Ramiro (13–16/10): la KNG en blanco $499.000 / $520.000 / $570.000 /
+// $610.000 según la medida; en color, $530.000 en 1,40 y en las otras +$30.000 ("al igual que todas").
 const PRECIOS_KNG = {
-  blanco: [["1,40 x 1,90", 499000], ["1,60", null], ["1,80", null], ["2,00", null]],
-  color: [["1,40 x 1,90", 530000], ["1,60", null], ["1,80", null], ["2,00", null]],
+  blanco: [["1,40 x 1,90", 499000], ["1,60 x 2,00", 520000], ["1,80 x 2,00", 570000], ["2,00 x 2,00", 610000]],
+  color: [["1,40 x 1,90", 530000], ["1,60 x 2,00", 550000], ["1,80 x 2,00", 600000], ["2,00 x 2,00", 640000]],
 };
 
 const KM = {
@@ -90,8 +91,8 @@ const KM = {
         { foto: "assets/reales/combo-kng-claro-1.jpg", alt: "Combo KNG en Helsinki, con la cama abierta", color: "Helsinki" },
       ],
       precios: {
-        blanco: [["1,40 x 1,90", 725000], ["1,60", null], ["1,80", null], ["2,00", null]],
-        color: [["1,40 x 1,90", 755000], ["1,60", null], ["1,80", null], ["2,00", null]],
+        blanco: [["1,40 x 1,90", 725000], ["1,60 x 2,00", null], ["1,80 x 2,00", null], ["2,00 x 2,00", null]],
+        color: [["1,40 x 1,90", 755000], ["1,60 x 2,00", null], ["1,80 x 2,00", null], ["2,00 x 2,00", null]],
       },
       partes: {   // desglose, para la primera medida
         blanco: [["Cama", 500000], ["respaldo y mesitas", 225000]],

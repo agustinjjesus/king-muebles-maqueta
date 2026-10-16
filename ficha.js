@@ -127,17 +127,14 @@ MEDIDAS.forEach((m) => {
 
 // colores: los que tienen ficha propia llevan a esa ficha; el resto se elige acá, con su precio o a consultar
 const cajaColores = document.getElementById("colores");
-let sinPrecio = 0;
 KM.colores.forEach((c) => {
   const variante = variantes.find((v) => v.color === c.nombre);
   const propia = variante && variante.id === P.id;
-  const desde = precioDe(c.nombre, MEDIDAS[0]);
-  if (!desde) sinPrecio++;
   const el = document.createElement(variante && !propia ? "a" : "button");
   el.className = "muestra";
   el.title = c.nombre;
   el.dataset.id = c.nombre;
-  el.innerHTML = `<img src="${c.img}" alt=""><span>${c.nombre}${desde ? `<small>${pesos(desde)}</small>` : ""}</span>`;
+  el.innerHTML = `<img src="${c.img}" alt=""><span>${c.nombre}<small></small></span>`;
   if (variante && !propia) {
     el.href = variante.url;
   } else {
@@ -146,11 +143,18 @@ KM.colores.forEach((c) => {
   }
   cajaColores.appendChild(el);
 });
-document.querySelector(".colores-nota").hidden = sinPrecio === 0;
 
 function actualizar() {
   cajaMedidas.querySelectorAll("button").forEach((b) => b.classList.toggle("activa", b.dataset.id === elegido.medida));
-  cajaColores.querySelectorAll(".muestra").forEach((b) => b.classList.toggle("activa", b.dataset.id === elegido.color));
+  // cada muestra dice cuánto sale en la medida elegida
+  let sinPrecio = 0;
+  cajaColores.querySelectorAll(".muestra").forEach((b) => {
+    b.classList.toggle("activa", b.dataset.id === elegido.color);
+    const p = precioDe(b.dataset.id, elegido.medida);
+    if (!p) sinPrecio++;
+    b.querySelector("small").textContent = p ? pesos(p) : "";
+  });
+  document.querySelector(".colores-nota").hidden = sinPrecio === 0;
 
   const mismoColor = elegido.color === P.color;
   const precio = precioDe(elegido.color, elegido.medida);
