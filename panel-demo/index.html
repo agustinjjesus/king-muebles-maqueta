@@ -70,6 +70,7 @@
     .resumen { padding: 20px 0 8px; }
     .mes { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; }
     .mes strong { font-size: 18px; font-weight: 500; min-width: 140px; text-align: center; }
+    .mes .pista { margin-left: auto; }
     .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--linea); border: 1px solid var(--linea); }
     .tile { background: var(--papel); padding: 14px 16px; }
     .tile strong { display: block; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; margin-top: 2px; }
@@ -177,6 +178,7 @@
         <button class="btn btn-chico btn-texto" id="mes-anterior" type="button" aria-label="Mes anterior">‹</button>
         <strong id="mes-nombre"></strong>
         <button class="btn btn-chico btn-texto" id="mes-siguiente" type="button" aria-label="Mes siguiente">›</button>
+        <span class="pista" id="actualizado"></span>
       </div>
       <div class="tiles">
         <div class="tile"><span class="etiqueta">Pedidos del mes</span><strong id="r-pedidos">–</strong><span id="r-pedidos-det"></span></div>
@@ -326,11 +328,15 @@
     const hoy = new Date();
     let mesVisto = { anio: hoy.getFullYear(), mes: hoy.getMonth() };
 
-    async function cargar() {
+    // silencioso: la actualización automática no tapa la lista si falla (por ej., sin internet un rato)
+    async function cargar(silencioso) {
       try {
         pedidos = await api("listarPedidos");
         pintar();
+        const h = new Date();
+        $("actualizado").textContent = `Actualizado ${String(h.getHours()).padStart(2, "0")}:${String(h.getMinutes()).padStart(2, "0")}`;
       } catch (e) {
+        if (silencioso) return;
         $("lista").innerHTML = `<p class="vacio">No se pudieron cargar los pedidos: ${esc(mensajeError(e))}</p>`;
       }
     }
@@ -613,8 +619,11 @@
     $("filtro-origen").addEventListener("change", (e) => { origen = e.target.value; pintarPestanas(); pintarLista(); });
     $("mes-anterior").addEventListener("click", () => { mesVisto.mes--; if (mesVisto.mes < 0) { mesVisto.mes = 11; mesVisto.anio--; } pintarResumen(); });
     $("mes-siguiente").addEventListener("click", () => { mesVisto.mes++; if (mesVisto.mes > 11) { mesVisto.mes = 0; mesVisto.anio++; } pintarResumen(); });
-    // al volver a la pestaña, trae lo que haya cargado la otra persona
-    document.addEventListener("visibilitychange", () => { if (!document.hidden && !dialogo.open) cargar(); });
+    // trae lo que hayan cargado los demás: al volver a la pestaña y cada 2 minutos mientras está abierta
+    // (no mientras se está cargando o editando un pedido)
+    const ACTUALIZAR_CADA = 2 * 60 * 1000;
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && !dialogo.open) cargar(true); });
+    setInterval(() => { if (!document.hidden && !dialogo.open) cargar(true); }, ACTUALIZAR_CADA);
 
     cargar();
     api("quienSoy").then((mail) => { if (mail) $("pie").textContent = "Entraste como " + mail; }).catch(() => {});
