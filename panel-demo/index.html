@@ -85,6 +85,8 @@
     .origen-fila span { font-size: 14px; color: var(--gris); }
     .origen-barra { grid-column: 1 / -1; height: 3px; background: var(--hueso); }
     .origen-barra i { display: block; height: 100%; background: var(--tinta); }
+    .por-persona { margin: 8px 0 0; padding-top: 8px; border-top: 1px solid var(--linea); font-size: 14px; color: var(--gris); }
+    .por-persona strong { color: var(--tinta); font-weight: 500; }
 
     /* filtros */
     .barra { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; padding: 20px 0 12px; }
@@ -101,10 +103,13 @@
     .buscar { flex: 1; min-width: 0; }
     .filtro-origen { flex: none; max-width: 46%; }
     .buscar:focus, .filtro-origen:focus { outline: none; border-color: var(--tinta); }
+    /* compu: estados a la izquierda y buscador a la derecha; si no entran en una fila, el buscador baja
+       (ninguno de los dos se achica, así nada queda cortado ni fuera de la pantalla) */
     @media (min-width: 900px) {
-      .pestanas { width: auto; border-bottom: 0; }
-      .filtros { width: auto; }
+      .pestanas { width: auto; border-bottom: 0; flex: none; }
+      .filtros { width: auto; flex: none; margin-left: auto; }
       .buscar { width: 260px; flex: none; }
+      .filtro-origen { max-width: none; }
     }
 
     /* pedidos */
@@ -141,10 +146,10 @@
     label.ancho { grid-column: 1 / -1; }
     label.check { flex-direction: row; align-items: center; gap: 10px; color: var(--tinta); font-size: 15px; }
     label.check input { width: 18px; height: 18px; accent-color: var(--tinta); }
-    input:not([type=checkbox]), select, textarea {
+    dialog input:not([type=checkbox]), dialog select, dialog textarea {   /* solo los campos del formulario */
       width: 100%; padding: 10px 12px; border: 1px solid var(--linea); border-radius: 2px; background: var(--papel); color: var(--tinta); font-size: 16px;
     }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--tinta); }
+    dialog input:focus, dialog select:focus, dialog textarea:focus { outline: none; border-color: var(--tinta); }
     textarea { resize: vertical; }
     .cuentas { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 15px; padding: 4px 0 8px; }
     .cuentas strong { font-weight: 500; }
@@ -288,8 +293,9 @@
     const total = (p) => num(p.precio) + num(p.flete);
     const saldo = (p) => (p.saldoCobrado === true || p.estado === "Cancelado") ? 0 : Math.max(0, total(p) - num(p.sena));
     const hoyISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
-    const fechaCorta = (iso) => iso ? iso.slice(8, 10) + "/" + iso.slice(5, 7) : "";
-    const diasHasta = (iso) => Math.round((new Date(iso + "T00:00") - new Date(hoyISO() + "T00:00")) / 86400000);
+    const esISO = (s) => /^\d{4}-\d{2}-\d{2}/.test(String(s || ""));
+    const fechaCorta = (iso) => !iso ? "" : esISO(iso) ? String(iso).slice(8, 10) + "/" + String(iso).slice(5, 7) : esc(iso);
+    const diasHasta = (iso) => Math.round((new Date(String(iso).slice(0, 10) + "T00:00") - new Date(hoyISO() + "T00:00")) / 86400000);
     const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
     // número de WhatsApp a partir de lo que anotaron (ej. "11 2345-6789" → 5491123456789)
@@ -319,6 +325,17 @@
       avisoTimer = setTimeout(() => { a.hidden = true; }, error ? 7000 : 2500);
     }
     const mensajeError = (e) => (e && e.message ? e.message : String(e)).replace(/^Exception: /, "").replace(/^Error: /, "");
+    // Los errores de Google traducidos a qué hacer
+    function explicarError(e) {
+      const m = mensajeError(e);
+      if (/permission|permiso|authoriz|autoriz/i.test(m)) {
+        return "Google no le dio permiso al panel para usar la planilla de pedidos. Si es la primera vez: entrá a " +
+          "myaccount.google.com/connections, quitale el acceso a “Panel King Muebles” y volvé a abrir el panel tildando " +
+          "todas las casillas de permisos. Si sigue igual, pedile a Agustín que te comparta la planilla “Pedidos King Muebles”.";
+      }
+      if (/network|HTTP 0|failed to fetch|conexi/i.test(m)) return "No hay conexión a internet. Probá de nuevo en un rato.";
+      return m;
+    }
 
     // ——— Estado de la pantalla ———
     let pedidos = [];
@@ -335,9 +352,10 @@
         pintar();
         const h = new Date();
         $("actualizado").textContent = `Actualizado ${String(h.getHours()).padStart(2, "0")}:${String(h.getMinutes()).padStart(2, "0")}`;
+        return true;
       } catch (e) {
-        if (silencioso) return;
-        $("lista").innerHTML = `<p class="vacio">No se pudieron cargar los pedidos: ${esc(mensajeError(e))}</p>`;
+        if (!silencioso) $("lista").innerHTML = `<p class="vacio">No se pudieron cargar los pedidos. ${esc(explicarError(e))}</p>`;
+        return false;
       }
     }
 
@@ -372,13 +390,23 @@
       });
       const filas = Object.entries(porCanal).sort((a, b) => b[1].vendido - a[1].vendido);
       const maximo = Math.max(1, ...filas.map(([, v]) => v.vendido));
+      // y por persona, según quién atendió cada venta
+      const porPersona = {};
+      delMes.forEach((p) => {
+        const q = p.atendio || "Sin asignar";
+        porPersona[q] = porPersona[q] || { pedidos: 0, vendido: 0 };
+        porPersona[q].pedidos++;
+        porPersona[q].vendido += total(p);
+      });
+      const personas = Object.entries(porPersona).sort((a, b) => b[1].vendido - a[1].vendido)
+        .map(([q, v]) => `${esc(q)}: <strong>${pesos(v.vendido)}</strong> (${v.pedidos})`).join(" · ");
       $("origenes").innerHTML = `<span class="etiqueta">Ventas del mes por origen</span>` + (filas.length
         ? filas.map(([c, v]) => `
           <div class="origen-fila">
-            <div><strong>${esc(c)}</strong>${ATIENDE_POR_CANAL[c] ? ` <span>· ${ATIENDE_POR_CANAL[c]}</span>` : ""}</div>
+            <div><strong>${esc(c)}</strong></div>
             <div><strong>${pesos(v.vendido)}</strong> <span>· ${v.pedidos} pedido${v.pedidos > 1 ? "s" : ""}</span></div>
             <div class="origen-barra"><i style="width:${Math.round(v.vendido / maximo * 100)}%"></i></div>
-          </div>`).join("")
+          </div>`).join("") + `<p class="por-persona">Por persona: ${personas}</p>`
         : `<span class="pista">Todavía no hay ventas este mes.</span>`);
     }
 
@@ -426,6 +454,7 @@
 
     function textoEntrega(p) {
       if (!p.entrega) return "";
+      if (!esISO(p.entrega)) return `Entrega ${fechaCorta(p.entrega)}`;
       const d = diasHasta(p.entrega);
       const cerrado = p.estado === "Entregado" || p.estado === "Cancelado";
       if (cerrado) return `Entrega ${fechaCorta(p.entrega)}`;
@@ -497,8 +526,13 @@
         reemplazar(guardado);
         avisar(`Pedido N° ${p.id}: ${sig}`);
       } catch (e) {
-        avisar(mensajeError(e), true);
-        boton.disabled = false;
+        if (/Alguien cambió/.test(mensajeError(e))) {
+          await cargar(true);
+          avisar(`El pedido N° ${p.id} lo acababa de cambiar otra persona. Ya traje lo último: fijate y volvé a tocar.`, true);
+        } else {
+          avisar(explicarError(e), true);
+          boton.disabled = false;
+        }
       }
     }
 
@@ -527,10 +561,19 @@
       valores.forEach((v) => { const o = document.createElement("option"); o.value = v; $(id).appendChild(o); });
     });
 
+    // lo último que se eligió en este dispositivo (en el celular de Cande queda "Instagram · Cande")
+    function ultimoUsado() {
+      try { return JSON.parse(localStorage.getItem("km-panel-ultimo")) || {}; } catch (e) { return {}; }
+    }
+    function recordarUsado(d) {
+      try { localStorage.setItem("km-panel-ultimo", JSON.stringify({ canal: d.canal, atendio: d.atendio })); } catch (e) { /* sin almacenamiento */ }
+    }
+
     function abrirFormulario(p, cambios) {
       editando = p || null;
       form.reset();
-      const datos = { ...(p || { fecha: hoyISO(), estado: "Presupuesto", canal: "WhatsApp", atendio: "Ramiro" }), ...(cambios || {}) };
+      const nuevo = { fecha: hoyISO(), estado: "Presupuesto", canal: "WhatsApp", atendio: "Ramiro", ...ultimoUsado() };
+      const datos = { ...(p || nuevo), ...(cambios || {}) };
       for (const el of form.elements) {
         if (!el.name || !(el.name in datos)) continue;
         if (el.type === "checkbox") el.checked = datos[el.name] === true;
@@ -541,7 +584,8 @@
       $("form-info").textContent = p && p.actualizado ? `Último cambio: ${fechaCorta(String(p.actualizado).slice(0, 10))} ${String(p.actualizado).slice(11, 16)}` : "";
       actualizarCuentas();
       dialogo.showModal();
-      if (!p) form.elements.cliente.focus();
+      // en la compu el cursor va al nombre; en el celular no, para que no salte el teclado tapando el formulario
+      if (!p && matchMedia("(pointer: fine)").matches) form.elements.cliente.focus();
     }
 
     function leerFormulario() {
@@ -602,10 +646,17 @@
       try {
         const guardado = await api("guardarPedido", p);
         reemplazar(guardado);
+        recordarUsado(d);
         dialogo.close();
         avisar(editando ? `Pedido N° ${guardado.id} guardado` : `Pedido N° ${guardado.id} cargado`);
       } catch (err) {
-        avisar(mensajeError(err), true);
+        if (/Alguien cambió/.test(mensajeError(err))) {
+          dialogo.close();
+          await cargar(true);
+          avisar(`Alguien cambió el pedido N° ${p.id} mientras lo editabas. Ya traje lo último: abrilo y volvé a hacer tu cambio.`, true);
+        } else {
+          avisar(explicarError(err), true);
+        }
       } finally {
         boton.disabled = false;
         boton.textContent = "Guardar";
@@ -614,7 +665,10 @@
 
     // ——— Arranque ———
     $("nuevo").addEventListener("click", () => abrirFormulario());
-    $("actualizar").addEventListener("click", async () => { await cargar(); avisar("Pedidos actualizados"); });
+    $("actualizar").addEventListener("click", async () => {
+      if (await cargar()) avisar("Pedidos actualizados");
+      else avisar("No se pudieron actualizar los pedidos", true);
+    });
     $("buscar").addEventListener("input", (e) => { busqueda = e.target.value.trim(); pintarLista(); });
     $("filtro-origen").addEventListener("change", (e) => { origen = e.target.value; pintarPestanas(); pintarLista(); });
     $("mes-anterior").addEventListener("click", () => { mesVisto.mes--; if (mesVisto.mes < 0) { mesVisto.mes = 11; mesVisto.anio--; } pintarResumen(); });
