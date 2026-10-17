@@ -435,9 +435,9 @@
 
     function coincide(p) {
       if (!busqueda) return true;
-      const q = busqueda.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+      const q = busqueda.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
       const texto = [p.id, p.cliente, p.telefono, p.localidad, p.producto, p.color, p.notas, p.canal, p.atendio].join(" ")
-        .normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
       return texto.includes(q) || String(p.telefono).replace(/\D/g, "").includes(q.replace(/\D/g, "") || "—");
     }
 
