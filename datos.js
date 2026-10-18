@@ -116,20 +116,34 @@ const KM = {
     ],
   },
 
-  // Colores: la gama nueva de King Muebles (catálogo de colores del 15/10), de claro a oscuro. Las
-  // muestras de madera son recortes de ese catálogo; Blanco y Negro, de las capturas del 13/10.
+  // Colores: la gama nueva de King Muebles (catálogo de colores del 15/10), de claro a oscuro. "img" es la
+  // muestra chica de las fichas; "grande", la del muestrario del inicio (todas recortadas de ese catálogo).
   // En las fichas, todo lo que no sea Blanco va con el precio "en color".
   colores: [
-    { nombre: "Blanco", img: "assets/colores/blanco.jpg" },
-    { nombre: "Blanco Nature", img: "assets/colores/blanco-nature.jpg" },
-    { nombre: "Scotch", img: "assets/colores/scotch.jpg" },
-    { nombre: "Helsinki", img: "assets/colores/helsinki.jpg" },
-    { nombre: "Pinot Gris", img: "assets/colores/pinot-gris.jpg" },
-    { nombre: "Olmo Finlandés", img: "assets/colores/olmo-finlandes.jpg" },
-    { nombre: "Nocce Milano", img: "assets/colores/nocce-milano.jpg" },
-    { nombre: "Roble Dakar", img: "assets/colores/roble-dakar.jpg" },
-    { nombre: "Negro", img: "assets/colores/negro.jpg" },
+    { nombre: "Blanco", img: "assets/colores/blanco.jpg", grande: "assets/colores/grande/blanco.jpg" },
+    { nombre: "Blanco Nature", img: "assets/colores/blanco-nature.jpg", grande: "assets/colores/grande/blanco-nature.jpg" },
+    { nombre: "Scotch", img: "assets/colores/scotch.jpg", grande: "assets/colores/grande/scotch.jpg" },
+    { nombre: "Helsinki", img: "assets/colores/helsinki.jpg", grande: "assets/colores/grande/helsinki.jpg" },
+    { nombre: "Pinot Gris", img: "assets/colores/pinot-gris.jpg", grande: "assets/colores/grande/pinot-gris.jpg" },
+    { nombre: "Olmo Finlandés", img: "assets/colores/olmo-finlandes.jpg", grande: "assets/colores/grande/olmo-finlandes.jpg" },
+    { nombre: "Nocce Milano", img: "assets/colores/nocce-milano.jpg", grande: "assets/colores/grande/nocce-milano.jpg" },
+    { nombre: "Roble Dakar", img: "assets/colores/roble-dakar.jpg", grande: "assets/colores/grande/roble-dakar.jpg" },
+    { nombre: "Negro", img: "assets/colores/negro.jpg", grande: "assets/colores/grande/negro.jpg" },
   ],
+
+  // Tabla "Compará las camas" del inicio. El precio "desde" sale de cada producto.
+  comparar: {
+    productos: ["cama-kng", "cama-kng-individual", "combo-kng"],
+    titulos: ["Cama KNG", "KNG Individual", "Combo KNG"],
+    filas: [
+      ["Medidas", ["1,40 x 1,90 a 2,00 x 2,00", "80, 90 o 1,00 x 1,90", "1,40 x 1,90"]],
+      ["Para", ["2 plazas, Queen, King y Super King", "1 plaza o 1 plaza y media", "2 plazas"]],
+      ["Cajones", ["6", "3 (o 2)", "6"]],
+      ["Bauleras", ["2", "2", "2"]],
+      ["Zapateros", ["2", "1", "2"]],
+      ["Respaldo y mesitas", ["—", "—", "Incluidos"]],
+    ],
+  },
 
   // Especificaciones por modelo, como las mandó Ramiro (KNG el 13/10; Individual y Combo el 14/10).
   // Carga, altura y herrajes de la KNG vienen de su descripción anterior de la cama.

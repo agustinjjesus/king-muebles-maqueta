@@ -206,6 +206,40 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .resultado-zona.si::before { content: "✓  "; font-weight: 600; }
 .resultado-zona.no { color: var(--gris); }
 
+/* compará las camas */
+/* en el celular entran las tres columnas sin deslizar: letra y márgenes más chicos */
+.comparar { width: 100%; table-layout: fixed; border-collapse: collapse; background: var(--papel); border: 1px solid var(--linea); }
+.comparar th, .comparar td { padding: 10px 7px; text-align: left; vertical-align: top; border-top: 1px solid var(--linea); font-size: 13px; line-height: 1.35; overflow-wrap: break-word; }
+.comparar thead th { border-top: 0; font-size: 15px; font-weight: 500; }
+.comparar thead td { border-top: 0; }
+.comparar tbody th, .comparar thead td { width: 27%; }
+.comparar tbody th { font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--gris); padding-top: 12px; }
+.comparar-precio td strong { font-size: 14px; font-weight: 500; white-space: nowrap; }
+.comparar-ver td { border-top: 0; padding-top: 0; }
+.comparar-ver .link-flecha { font-size: 12px; }
+@media (max-width: 379px) {
+  .comparar th, .comparar td { padding: 8px 4px; }
+  .comparar thead th { font-size: 13px; }
+  .comparar-precio td strong { font-size: 13px; }
+}
+@media (min-width: 760px) {
+  .comparar th, .comparar td { padding: 14px 16px; font-size: 15px; }
+  .comparar thead th { font-size: 18px; }
+  .comparar tbody th, .comparar thead td { width: 22%; }
+  .comparar tbody th { font-size: 11px; letter-spacing: 0.12em; padding-top: 17px; }
+  .comparar-precio td strong { font-size: 20px; }
+  .comparar-ver .link-flecha { font-size: 14px; }
+}
+
+/* muestrario de colores */
+.colores-lead { margin: 0; max-width: 460px; }
+.muestrario { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 12px; }
+.muestrario img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border: 1px solid var(--linea); background: var(--hueso); }
+.muestrario span { display: block; margin-top: 8px; font-size: 15px; font-weight: 500; }
+.muestrario small { display: block; font-size: 13px; color: var(--gris); }
+@media (min-width: 640px) { .muestrario { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .muestrario { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 32px 20px; } }
+
 /* preguntas */
 .preguntas { border-top: 1px solid var(--tinta); max-width: 860px; }
 .preguntas details { border-bottom: 1px solid var(--linea); }
@@ -288,6 +322,11 @@ h2 { font-size: clamp(28px, 4.2vw, 40px); }
 .opcion .muestra small { display: block; margin-top: 2px; font-size: 11px; color: var(--gris); }
 .opcion .muestra.activa { background: var(--papel); color: var(--tinta); border-color: var(--tinta); box-shadow: inset 0 0 0 1px var(--tinta); }
 .colores-nota { margin: 10px 0 0; font-size: 13px; color: var(--gris); }
+.ver-colores { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--tinta); }
+.compartir {
+  display: block; margin: 14px auto 0; padding: 0 0 2px; background: none; border: 0; border-bottom: 1px solid var(--tinta);
+  font: inherit; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tinta); cursor: pointer;
+}
 .guia-medidas { margin-top: 12px; }
 .guia-medidas summary {
   cursor: pointer; list-style: none; display: inline-block;

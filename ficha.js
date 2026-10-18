@@ -62,10 +62,12 @@ main.innerHTML = `
         <span>Color · <span class="color-elegido" id="color-elegido"></span></span>
         <div class="botones colores" id="colores"></div>
         <p class="colores-nota">Los colores sin precio, a consultar.</p>
+        <a class="ver-colores" href="index.html#colores">Ver los colores en grande →</a>
       </div>
 
       <a class="btn btn-negro btn-ancho" id="consultar">Consultar por WhatsApp</a>
       <a class="btn btn-borde btn-ancho" href="${igLink()}" target="_blank" rel="noopener">Consultar por Instagram</a>
+      <button class="compartir" type="button" id="compartir">Compartir ${P.categoria === "Camas" ? "esta cama" : "este combo"}</button>
       <p class="ayuda">Atendido por sus dueños, sin respuestas automáticas. Envío con instalación en CABA y GBA · <a href="index.html#envios">Ver zonas</a></p>
 
       <dl class="tabla-specs">
@@ -184,6 +186,17 @@ function actualizar() {
   abrirEnWhatsApp(document.getElementById("barra-consultar"), msg);
 }
 actualizar();
+
+// Compartir: en el celular abre el menú de compartir (WhatsApp, Instagram…); en la compu, WhatsApp
+document.getElementById("compartir").addEventListener("click", () => {
+  const url = location.href.split("#")[0].split("?")[0];
+  const texto = `Mirá ${articulo(P)} ${P.nombre} de King Muebles`;
+  if (navigator.share) {
+    navigator.share({ title: P.nombre, text: texto, url }).catch(() => {});
+  } else {
+    window.open("https://wa.me/?text=" + encodeURIComponent(`${texto}: ${url}`), "_blank", "noopener");
+  }
+});
 
 // la barra aparece cuando el botón principal no está en pantalla
 const barra = document.getElementById("barra-fija");

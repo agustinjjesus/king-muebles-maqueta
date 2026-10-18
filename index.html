@@ -22,8 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="estilos.css?v=16">
-  <script src="datos.js?v=23"></script>
+  <link rel="stylesheet" href="estilos.css?v=19">
+  <script src="datos.js?v=24"></script>
 </head>
 <body>
 
@@ -32,6 +32,7 @@
       <a class="logo" href="index.html"><img src="assets/logo-negro.png" alt="King Muebles"></a>
       <nav class="menu-escritorio">
         <a href="#catalogo">Catálogo</a>
+        <a href="#colores">Colores</a>
         <a href="#envios">Envíos</a>
         <a href="#fabrica">Fábrica</a>
         <a href="#preguntas">Preguntas</a>
@@ -41,6 +42,7 @@
           <summary>Menú</summary>
           <nav>
             <a href="#catalogo">Catálogo</a>
+            <a href="#colores">Colores</a>
             <a href="#envios">Envíos</a>
             <a href="#fabrica">Fábrica</a>
             <a href="#preguntas">Preguntas</a>
@@ -80,6 +82,31 @@
         <a class="producto" data-cat="A medida" data-wa="Hola! Quiero consultar por una cocina a medida."><div class="foto proximo-foto"><span>Foto de trabajos</span></div><span class="categoria">A medida</span><h3>Cocinas</h3><span class="detalle">Bajo mesadas y alacenas</span><span class="precio"><small>Consultar por WhatsApp</small></span></a>
         <a class="producto" data-cat="A medida" data-wa="Hola! Quiero consultar por un mueble a medida."><div class="foto proximo-foto"><span>Foto de trabajos</span></div><span class="categoria">A medida</span><h3>Hogares y comercios</h3><span class="detalle">Diseñados para tu espacio</span><span class="precio"><small>Consultar por WhatsApp</small></span></a>
       </div>
+    </div>
+  </section>
+
+  <section class="seccion seccion-alt" id="comparar">
+    <div class="contenedor">
+      <div class="seccion-cabeza">
+        <div>
+          <p class="eyebrow">Compará</p>
+          <h2>¿Cuál es tu cama?</h2>
+        </div>
+      </div>
+      <table class="comparar" id="tabla-comparar"></table>
+    </div>
+  </section>
+
+  <section class="seccion" id="colores">
+    <div class="contenedor">
+      <div class="seccion-cabeza">
+        <div>
+          <p class="eyebrow">Muestrario</p>
+          <h2>Elegí tu color.</h2>
+        </div>
+        <p class="lead colores-lead">Todas las camas se hacen en estos colores. Blanco es el precio base; los demás van con el precio en color.</p>
+      </div>
+      <ul class="muestrario" id="muestrario"></ul>
     </div>
   </section>
 
@@ -259,6 +286,23 @@
     const catPedida = new URLSearchParams(location.search).get("cat");
     const pestanaPedida = [...document.querySelectorAll(".pestana")].find((b) => b.dataset.cat === catPedida);
     if (pestanaPedida) pestanaPedida.click();
+
+    // Compará las camas
+    (() => {
+      const c = KM.comparar;
+      const prods = c.productos.map((id) => KM.productos.find((p) => p.id === id));
+      const fila = (titulo, celdas, clase) => `<tr${clase ? ` class="${clase}"` : ""}><th scope="row">${titulo}</th>${celdas.map((x) => `<td>${x}</td>`).join("")}</tr>`;
+      document.getElementById("tabla-comparar").innerHTML =
+        `<thead><tr><td></td>${c.titulos.map((t) => `<th scope="col">${t}</th>`).join("")}</tr></thead><tbody>` +
+        c.filas.map(([t, celdas]) => fila(t, celdas)).join("") +
+        fila("Desde", prods.map((p) => `<strong>${pesos(p.desde)}</strong>`), "comparar-precio") +
+        fila("", prods.map((p) => `<a class="link-flecha" href="${p.url}">Ver →</a>`), "comparar-ver") +
+        "</tbody>";
+    })();
+
+    // Muestrario de colores en grande
+    document.getElementById("muestrario").innerHTML = KM.colores.map((c) =>
+      `<li><img src="${c.grande}" alt="Color ${c.nombre}" loading="lazy"><span>${c.nombre}</span>${c.nombre === "Blanco" ? "<small>Precio base</small>" : ""}</li>`).join("");
 
     // ¿Llegamos a tu casa?
     const lista = document.getElementById("localidades");
