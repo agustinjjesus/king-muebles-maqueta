@@ -56,7 +56,8 @@ const KM = {
       ],
       precios: PRECIOS_KNG,
       specs: "kng" },
-    { id: "cama-boti", nombre: "Cama Boti", categoria: "Camas", bajada: "Cama con guardado",
+    // Boti: oculta al lanzar (01/11) hasta que Ramiro mande foto buena y precio (la de ahora es de 120 px).
+    { id: "cama-boti", nombre: "Cama Boti", categoria: "Camas", bajada: "Cama con guardado", oculto: true,
       foto: "assets/catalogo/cama-boti.jpg" },
     // Ramiro (14–15/10): $450.000 en blanco en cualquiera de las 3 medidas; en color, +$30.000.
     { id: "cama-kng-individual", base: "Cama KNG Individual", nombre: "Cama KNG Individual", color: "Blanco", categoria: "Camas",
@@ -105,10 +106,10 @@ const KM = {
       bajada: "Con doble pillow", foto: "assets/catalogo/colchon-isolda-doble-pillow.jpg" },
   ],
 
-  // Opiniones de Google (ficha de King Muebles, 12/10): nombre con inicial del apellido, sin fotos.
+  // Opiniones de Google (ficha de King Muebles, 12/10; el total, 01/11): nombre con inicial del apellido, sin fotos.
   // Se muestran en el inicio y en cada ficha.
   opiniones: {
-    nota: "4,7", total: 68, link: "https://share.google/Lflyi2ZKii5RVjfKh",
+    nota: "4,7", total: 77, link: "https://share.google/Lflyi2ZKii5RVjfKh",
     lista: [
       { autor: "Camila R.", texto: "Excelente experiencia de principio a fin. Compramos una cama y todo fue impecable. Cumplieron con los tiempos, hicieron todo muy rápido y el resultado superó nuestras expectativas." },
       { autor: "Silvana Z.", texto: "Son excelentes! La cama box quedó hermosa! El color y las terminaciones impecables. Son muy amables y responden a todas las preguntas… Muy recomendable!" },
